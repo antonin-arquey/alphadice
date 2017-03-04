@@ -1,0 +1,71 @@
+1.Installation de SDL2 sur Linux en ligne de commande
+	1.1 Faire les commandes suivantes 1 par 1 dans l'ordre
+	
+sudo apt install mercurial
+hg clone https://hg.libsdl.org/SDL SDL
+cd SDL
+mkdir build
+cd build
+../configure
+make
+sudo make install
+
+2. Créer un fichier test.sdl et copier coller le contenu suivant :
+
+//Using SDL and standard IO
+#include <stdio.h>
+#include <stdbool.h>
+#include <SDL2/SDL.h>
+
+//Screen dimension constants
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
+
+int main( int argc, char* args[] ){
+	
+	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ){
+		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+	}
+	
+	//The window we'll be rendering to
+	SDL_Window* window = SDL_CreateWindow( "AlphaWars", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED |SDL_RENDERER_PRESENTVSYNC);
+	
+	//Create window
+	if( window == NULL ){
+		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+	}else{
+		SDL_SetRenderDrawColor(renderer,255,255,255,255);
+		bool running = true;
+		SDL_Event event;
+		while(running){
+			while(SDL_PollEvent(&event)){
+				if(event.type == SDL_QUIT){
+					running=false;
+				}
+			}
+			//Clear screen
+			SDL_RenderClear(renderer);
+			
+			//Show what is draw
+			SDL_RenderPresent(renderer);
+		}
+	}
+	
+	//Destroy window
+	SDL_DestroyRenderer(renderer);
+
+	//Destroy window
+	SDL_DestroyWindow( window );
+
+	//Quit SDL subsystems
+	SDL_Quit();
+
+	return 0;
+}
+
+3. Prendre un programme utilisant SDL2 et lancer la commande suivante :
+
+gcc -o myprogram myprogram.c `sdl2-config --cflags --libs`
+
+4. Une fenetre blanche doit s'ouvrir et se fermera après avoir cliqué sur la croix.

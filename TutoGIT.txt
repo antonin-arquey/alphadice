@@ -1,0 +1,27 @@
+Première utilisation :
+	git clone https://gitlab.univ-nantes.fr/E167998G/AlphaDice.git 
+	git config --global user.name "Julien TRIAU"
+	git config --global user.email "julien.triau@etu.univ-nantes.fr"
+
+Au début de chaque séance de travail : 
+	git pull
+
+A chaque nouveau fichier créé : 
+	git add nomfichier.c
+
+A la fin de chaque séance de travail :
+	git status 
+	git commit -m "Description des modifications"
+	git push -u origin master
+
+Pour supprimer un fichier :
+	git rm nom_fichier
+	rm nom_fichier
+	
+Lorsque vous déplacez un fichier :
+	git status
+	git rm nom_fichier_old_emplacement
+	git add nom_fichier_new_emplacement
+
+
+

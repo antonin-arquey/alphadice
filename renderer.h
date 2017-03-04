@@ -5,3 +5,4 @@
 
 SDL_Renderer* createRenderer(SDL_Window* window);
 void applyRenderer(SDL_Renderer* renderer);
+void createHexagone(int x, int y);

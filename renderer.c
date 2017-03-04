@@ -14,3 +14,7 @@ void applyRenderer(SDL_Renderer* renderer){
 	//Show what is draw
 	SDL_RenderPresent(renderer);
 }
+
+void createHexagone(int x, int y){
+	
+}

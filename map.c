@@ -7,5 +7,6 @@ struct Map{
 
 Map* createMap(int nbPlayer){
 	Map* map = (Map*) malloc(sizeof(struct Map));
+	//displayMap();
 	return map;
 }

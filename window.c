@@ -2,7 +2,7 @@
 
 SDL_Window* createWindow(){	
 	//The window we'll be rendering to
-	SDL_Window* window = SDL_CreateWindow( "AlphaWars", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN );
+	SDL_Window* window = SDL_CreateWindow( "AlphaDice", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN );
 	
 	return window;
 }

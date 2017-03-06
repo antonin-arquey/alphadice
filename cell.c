@@ -8,3 +8,4 @@ struct Cell{
   Cell **neighbors; // Tableau de poiteur vers des cellules voisines
   int n_neighbors;  // Nombre de cellules voisines
 };
+

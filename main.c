@@ -1,7 +1,11 @@
 #include "window.h"
 #include "renderer.h"
+#include "arbitre.h"
 
-int main(int argc, char* args[]){
+int main(int argc, char* argv[]){
+	if(verifArguments(argc, argv)){
+		return 1;
+	}
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
 	SDL_RenderPresent(renderer);

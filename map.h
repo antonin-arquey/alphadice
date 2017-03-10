@@ -4,5 +4,5 @@
 
 typedef struct Map Map;
 
-Map* createMap(int nbPlayer);
-//void displayMap(SDL_Renderer* renderer, )
+Map* createMap(int nbPlayer, SDL_Renderer* renderer);
+void displayMap(SDL_Renderer* renderer);

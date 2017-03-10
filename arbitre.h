@@ -7,4 +7,4 @@ Cell* declareAttack(Cell* attackingCell, Cell* defendingCell);
 
 int verifArguments(int argc, char* argv[]);
 
-void rappelSyntaxe();
+void rappelSyntaxe(char* affichage);

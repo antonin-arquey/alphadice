@@ -14,7 +14,6 @@ Map* createMap(int nbPlayer, SDL_Renderer* renderer){
 void displayMap(SDL_Renderer* renderer){
 	int i=0, j=0, ligne=1;
 	for(;j<600;j+=15){
-		printf("i = %d\n", i);
 		for(;i<790;i+=20){
 			createHexagone(renderer, i, j);
 		}

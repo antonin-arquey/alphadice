@@ -15,15 +15,15 @@ struct SArbre{
 
 SArbre* CreateArbre(int taille){
 	SArbre *arbre = malloc(sizeof(Noeud));
-	Noeud *newCell = malloc(sizeof(Noeud));
+	Noeud *newNoeud = malloc(sizeof(Noeud));
 
 	Noeud listeFils[taille];
 
-	newCell->nbFils = taille;
-	newCell->Fils = listeFils;
-	newCell->Value = 12;
+	newNoeud->nbFils = taille;
+	newNoeud->Fils = listeFils;
+	newNoeud->Value = 12;
 
-	arbre->Head = newCell;
+	arbre->Head = newNoeud;
 	return arbre;
 }
 
@@ -31,51 +31,36 @@ Noeud* headOfArbre(SArbre *arbre){
 	return arbre->Head;
 }
 
-Noeud* getFils(Noeud *cell, int numero){
-	return (cell->Fils) + numero;
+Noeud* getFils(Noeud *noeud, int numero){
+	return (noeud->Fils) + numero;
 }
 
 void DeleteArbre(SArbre *arbre){
 	free(arbre);
 }
 
-<<<<<<< HEAD
-void AddElement(Noeud *cell, Data *elem, int nbElement){
-	Noeud *newCells = malloc(sizeof(Noeud)*nbElement);
-=======
-void AddElement(SCell *cell, Data *elem, int nbElement){
-	int i = 0;
-	SCell *newCells = malloc(sizeof(SCell)*nbElement);
->>>>>>> ee5d7ba6ea5a9a318b1350486c9782bb805c80db
-	cell->Fils = newCells;
-	cell->nbFils = nbElement;
 
-	for(; i < nbElement; i++){
-		newCells->Value = *elem;
-		newCells++;
+void AddElement(Noeud *noeud, Data *elem, int nbElement){
+	Noeud *newNoeuds = malloc(sizeof(Noeud)*nbElement);
+	noeud->Fils = newNoeuds;
+	noeud->nbFils = nbElement;
+
+	for(int i = 0; i < nbElement; i++){
+		newNoeuds->Value = *elem;
+		newNoeuds++;
 		elem++;
 	}
 }
 
-<<<<<<< HEAD
-int sub(Noeud *cell, int niv, int tab[],int taille){
-=======
-int sub(SCell *cell, int niv, int tab[],int taille){
-	int i = 0;
->>>>>>> ee5d7ba6ea5a9a318b1350486c9782bb805c80db
+int sub(Noeud *noeud, int niv, int tab[],int taille){
 	//printf("%d\n",niv);
 	if (niv == 0){
 		return 0;
 	}
 	niv--;
-<<<<<<< HEAD
 	Noeud *fils;
 	for(int i = 0; i < taille; i++){
-=======
-	SCell *fils;
-	for(; i < taille; i++){
->>>>>>> ee5d7ba6ea5a9a318b1350486c9782bb805c80db
-		fils = getFils(cell,i);
+		fils = getFils(noeud,i);
 		AddElement(fils,tab,taille);
 		sub(fils,niv,tab,taille);
 	}
@@ -90,54 +75,54 @@ void creation(SArbre *arbre, int niveau){
 }
 /*
 Noeud* AddElementEnd(SArbre *arbre,Data elem){
-	Noeud *newCell = malloc(sizeof(elem));
+	Noeud *newNoeud = malloc(sizeof(elem));
 
-	newCell->Value = elem;
-	newCell->suivant = NULL;
+	newNoeud->Value = elem;
+	newNoeud->suivant = NULL;
 
 	if(arbre == NULL){
-		arbre->Head = newCell;
-		return newCell;
+		arbre->Head = newNoeud;
+		return newNoeud;
 	}
 	Noeud *temp = arbre->Head;
 	while(temp->suivant != NULL){
 		temp = temp->suivant;
 	}
-	temp->suivant = newCell;
-	return newCell;
+	temp->suivant = newNoeud;
+	return newNoeud;
 }
 
-Noeud* AddElementAfter(SArbre *arbre,Noeud *cell,Data elem){
-	Noeud *newCell = malloc(sizeof(elem));
+Noeud* AddElementAfter(SArbre *arbre,Noeud *noeud,Data elem){
+	Noeud *newNoeud = malloc(sizeof(elem));
 
-	newCell->Value = elem;
+	newNoeud->Value = elem;
 	if(arbre->Head == NULL){
-		arbre->Head = newCell;
-		newCell->suivant = NULL;
-		newCell->precedent = NULL;
-		return newCell;
+		arbre->Head = newNoeud;
+		newNoeud->suivant = NULL;
+		newNoeud->precedent = NULL;
+		return newNoeud;
 	}
 
-	newCell->precedent = cell;
-	newCell->suivant = cell->suivant;
-	cell->suivant = newCell;
+	newNoeud->precedent = noeud;
+	newNoeud->suivant = noeud->suivant;
+	noeud->suivant = newNoeud;
 
-	return newCell;
+	return newNoeud;
 }
 
-void DeleteCell(SArbre *arbre,Noeud *cell){
+void DeleteNoeud(SArbre *arbre,Noeud *noeud){
 	if(arbre->Head == NULL){
 		return;
 	}
 	Noeud *temp = arbre->Head;
 	Noeud *last;
-	while(temp != cell && temp->suivant != NULL){
+	while(temp != noeud && temp->suivant != NULL){
 		last = temp;
 		temp = temp->suivant;
 	}
 	temp->suivant->precedent = last;
 	last->suivant = temp->suivant;
-	free(cell);
+	free(noeud);
 }
 
 Noeud* GetFirstElement(SArbre *arbre){
@@ -154,17 +139,17 @@ Noeud* GetLastElement(SArbre *arbre){
 	return arbre->Head->precedent;
 }
 
-Noeud* GetPrevElement(Noeud *cell){
-	return cell->precedent;
+Noeud* GetPrevElement(Noeud *noeud){
+	return noeud->precedent;
 }
 
-Noeud* GetNextElement(Noeud *cell){
-	return cell->suivant;
+Noeud* GetNextElement(Noeud *noeud){
+	return noeud->suivant;
 }
 */
-Data getData(Noeud *cell){
-	if(cell != NULL){
-		return cell->Value;
+Data getData(Noeud *noeud){
+	if(noeud != NULL){
+		return noeud->Value;
 	}
 	return NULL;
 }

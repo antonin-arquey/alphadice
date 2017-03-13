@@ -7,20 +7,20 @@ typedef struct SArbre SArbre;
 
 SArbre* CreateArbre(int taille);
 void DeleteArbre(SArbre *arbre);
-void AddElement(Noeud *cell, Data *elem, int nbElement);
+void AddElement(Noeud *noeud, Data *elem, int nbElement);
 
 Noeud* headOfArbre(SArbre *arbre);
-Noeud* getFils(Noeud *cell, int numero);
+Noeud* getFils(Noeud *noeud, int numero);
 void creation(SArbre *arbre, int niveau);
 /*Noeud* AddElementBegin(SArbre *arbre,Data elem);
 Noeud* AddElementEnd(SArbre *arbre,Data elem);
-Noeud* AddElementAfter(SArbre *arbre,Noeud *cell,Data elem);
-void DeleteCell(SArbre *arbre,Noeud *cell);
+Noeud* AddElementAfter(SArbre *arbre,Noeud *noeud,Data elem);
+void DeleteCell(SArbre *arbre,Noeud *noeud);
 
 Noeud* GetFirstElement(SArbre *arbre);
 Noeud* GetLastElement(SArbre *arbre);
-Noeud* GetPrevElement(Noeud *cell);
-Noeud* GetNextElement(Noeud *cell);*/
-Data getData(Noeud *cell);
+Noeud* GetPrevElement(Noeud *noeud);
+Noeud* GetNextElement(Noeud *noeud);*/
+Data getData(Noeud *noeud);
 
 #endif

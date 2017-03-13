@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "window.h"
 #include "renderer.h"
 #include "arbitre.h"
@@ -16,7 +18,7 @@ int main(int argc, char* argv[]){
 	displayMap(renderer);
 	SDL_RenderPresent(renderer);
 	while(windowIsNotClosed()){
-		
+
 	}
 	destroyWindow(window, renderer);
 	return 0;

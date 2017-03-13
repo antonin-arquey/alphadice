@@ -1,4 +1,6 @@
 #include "arbitre.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 void chgOwnerCell(Cell* cell, int idNewOwner){
 	//cell->owner = idNewOwner; //Ne fonctionne pas donc en commentaire pour pas avoir d'erreur
@@ -20,7 +22,7 @@ int verifArguments(int argc, char* argv[]){
 	}
 	if(argc>3){
 		if(argc-3>atoi(argv[2])){
-			rappelSyntaxe("Trop de paramètre par rapport au nombre de joueurs\n");
+			rappelSyntaxe("Trop de paramètres par rapport au nombre de joueurs\n");
 		}
 	}
 	return 0;

@@ -1,5 +1,4 @@
 #include "cell.h"
-#include <stdio.h>
 
 void chgOwnerCell(Cell* cell, int idNewOwner);
 

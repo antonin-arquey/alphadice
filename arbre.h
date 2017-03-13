@@ -2,25 +2,25 @@
 	#define _ARBRE_H
 
 typedef int Data;
-typedef struct SCell SCell;
+typedef struct Noeud Noeud;
 typedef struct SArbre SArbre;
 
 SArbre* CreateArbre(int taille);
 void DeleteArbre(SArbre *arbre);
-void AddElement(SCell *cell, Data *elem, int nbElement);
+void AddElement(Noeud *cell, Data *elem, int nbElement);
 
-SCell* headOfArbre(SArbre *arbre);
-SCell* getFils(SCell *cell, int numero);
+Noeud* headOfArbre(SArbre *arbre);
+Noeud* getFils(Noeud *cell, int numero);
 void creation(SArbre *arbre, int niveau);
-/*SCell* AddElementBegin(SArbre *arbre,Data elem);
-SCell* AddElementEnd(SArbre *arbre,Data elem);
-SCell* AddElementAfter(SArbre *arbre,SCell *cell,Data elem);
-void DeleteCell(SArbre *arbre,SCell *cell);
+/*Noeud* AddElementBegin(SArbre *arbre,Data elem);
+Noeud* AddElementEnd(SArbre *arbre,Data elem);
+Noeud* AddElementAfter(SArbre *arbre,Noeud *cell,Data elem);
+void DeleteCell(SArbre *arbre,Noeud *cell);
 
-SCell* GetFirstElement(SArbre *arbre);
-SCell* GetLastElement(SArbre *arbre);
-SCell* GetPrevElement(SCell *cell);
-SCell* GetNextElement(SCell *cell);*/
-Data getData(SCell *cell);
+Noeud* GetFirstElement(SArbre *arbre);
+Noeud* GetLastElement(SArbre *arbre);
+Noeud* GetPrevElement(Noeud *cell);
+Noeud* GetNextElement(Noeud *cell);*/
+Data getData(Noeud *cell);
 
 #endif

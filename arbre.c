@@ -3,21 +3,21 @@
 #include "arbre.h"
 
 
-struct SCell{
+struct Noeud{
 	Data Value;
-	SCell *Fils;
+	Noeud *Fils;
 	int nbFils;
 };
 
 struct SArbre{
-	SCell *Head;
+	Noeud *Head;
 };
 
 SArbre* CreateArbre(int taille){
-	SArbre *arbre = malloc(sizeof(SCell));
-	SCell *newCell = malloc(sizeof(SCell));
+	SArbre *arbre = malloc(sizeof(Noeud));
+	Noeud *newCell = malloc(sizeof(Noeud));
 
-	SCell listeFils[taille];
+	Noeud listeFils[taille];
 
 	newCell->nbFils = taille;
 	newCell->Fils = listeFils;
@@ -27,11 +27,11 @@ SArbre* CreateArbre(int taille){
 	return arbre;
 }
 
-SCell* headOfArbre(SArbre *arbre){
+Noeud* headOfArbre(SArbre *arbre){
 	return arbre->Head;
 }
 
-SCell* getFils(SCell *cell, int numero){
+Noeud* getFils(Noeud *cell, int numero){
 	return (cell->Fils) + numero;
 }
 
@@ -39,8 +39,8 @@ void DeleteArbre(SArbre *arbre){
 	free(arbre);
 }
 
-void AddElement(SCell *cell, Data *elem, int nbElement){
-	SCell *newCells = malloc(sizeof(SCell)*nbElement);
+void AddElement(Noeud *cell, Data *elem, int nbElement){
+	Noeud *newCells = malloc(sizeof(Noeud)*nbElement);
 	cell->Fils = newCells;
 	cell->nbFils = nbElement;
 
@@ -51,13 +51,13 @@ void AddElement(SCell *cell, Data *elem, int nbElement){
 	}
 }
 
-int sub(SCell *cell, int niv, int tab[],int taille){
+int sub(Noeud *cell, int niv, int tab[],int taille){
 	//printf("%d\n",niv);
 	if (niv == 0){
 		return 0;
 	}
 	niv--;
-	SCell *fils;
+	Noeud *fils;
 	for(int i = 0; i < taille; i++){
 		fils = getFils(cell,i);
 		AddElement(fils,tab,taille);
@@ -68,13 +68,13 @@ int sub(SCell *cell, int niv, int tab[],int taille){
 
 void creation(SArbre *arbre, int niveau){
 	int tab[10] = {45,2};
-	SCell *head = headOfArbre(arbre);
+	Noeud *head = headOfArbre(arbre);
 	AddElement(head,tab,2);
 	sub(head,--niveau,tab,2);
 }
 /*
-SCell* AddElementEnd(SArbre *arbre,Data elem){
-	SCell *newCell = malloc(sizeof(elem));
+Noeud* AddElementEnd(SArbre *arbre,Data elem){
+	Noeud *newCell = malloc(sizeof(elem));
 
 	newCell->Value = elem;
 	newCell->suivant = NULL;
@@ -83,7 +83,7 @@ SCell* AddElementEnd(SArbre *arbre,Data elem){
 		arbre->Head = newCell;
 		return newCell;
 	}
-	SCell *temp = arbre->Head;
+	Noeud *temp = arbre->Head;
 	while(temp->suivant != NULL){
 		temp = temp->suivant;
 	}
@@ -91,8 +91,8 @@ SCell* AddElementEnd(SArbre *arbre,Data elem){
 	return newCell;
 }
 
-SCell* AddElementAfter(SArbre *arbre,SCell *cell,Data elem){
-	SCell *newCell = malloc(sizeof(elem));
+Noeud* AddElementAfter(SArbre *arbre,Noeud *cell,Data elem){
+	Noeud *newCell = malloc(sizeof(elem));
 
 	newCell->Value = elem;
 	if(arbre->Head == NULL){
@@ -109,12 +109,12 @@ SCell* AddElementAfter(SArbre *arbre,SCell *cell,Data elem){
 	return newCell;
 }
 
-void DeleteCell(SArbre *arbre,SCell *cell){
+void DeleteCell(SArbre *arbre,Noeud *cell){
 	if(arbre->Head == NULL){
 		return;
 	}
-	SCell *temp = arbre->Head;
-	SCell *last;
+	Noeud *temp = arbre->Head;
+	Noeud *last;
 	while(temp != cell && temp->suivant != NULL){
 		last = temp;
 		temp = temp->suivant;
@@ -124,29 +124,29 @@ void DeleteCell(SArbre *arbre,SCell *cell){
 	free(cell);
 }
 
-SCell* GetFirstElement(SArbre *arbre){
+Noeud* GetFirstElement(SArbre *arbre){
 	if(arbre == NULL){
 		return NULL;
 	}
 	return arbre->Head;
 }
 
-SCell* GetLastElement(SArbre *arbre){
+Noeud* GetLastElement(SArbre *arbre){
 	if(arbre == NULL){
 		return NULL;
 	}
 	return arbre->Head->precedent;
 }
 
-SCell* GetPrevElement(SCell *cell){
+Noeud* GetPrevElement(Noeud *cell){
 	return cell->precedent;
 }
 
-SCell* GetNextElement(SCell *cell){
+Noeud* GetNextElement(Noeud *cell){
 	return cell->suivant;
 }
 */
-Data getData(SCell *cell){
+Data getData(Noeud *cell){
 	if(cell != NULL){
 		return cell->Value;
 	}

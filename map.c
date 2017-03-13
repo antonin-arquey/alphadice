@@ -2,9 +2,17 @@
 #include "interface.h"
 
 
+int aleatoire(int a, int b){
+	return 1;
+}
+
 // Fonction initialisant la carte et l'affichant sur le renderer
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
 	SMap *map = malloc(sizeof(SMap));
+
+	int reserve[8] = {0,0,0,0,0,0,0,0};
+	map->nbCells = aleatoire(30, 60);
+	map->stack = reserve;
 	return map;
 }
 

@@ -3,6 +3,7 @@
 
 // Fonction initialisant la carte et l'affichant sur le renderer
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer);
+int aleatoire(int a, int b);
 
 // Fonction affichant la carte sur le renderer
 // Actuellement en test afin d'afficher juste 

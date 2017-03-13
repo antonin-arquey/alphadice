@@ -1,9 +1,10 @@
 #include "map.h"
 #include "interface.h"
+#include <time.h>
 
 
 int aleatoire(int a, int b){
-	return 1;
+	return rand() % (b-a+1) + a;
 }
 
 // Fonction initialisant la carte et l'affichant sur le renderer

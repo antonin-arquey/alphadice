@@ -18,8 +18,9 @@ int main(int argc, char* argv[]){
 	/* Création de l'affichage*/ 
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
+	SMap *map = createMap(nbPlayer, renderer);
 	SDL_RenderPresent(renderer);
-	displayMap(renderer);
+	displayMap(renderer, map);
 	SDL_RenderPresent(renderer);
 	
 	/*Initialisation du jeu */

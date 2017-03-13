@@ -1,14 +1,10 @@
 #include "map.h"
+#include "interface.h"
 
-// Structure de la carte
-struct Map{
-    SCell** cells;   // Tableau des cellules
-	int n_cells;   // Nombre de cellules
-};
 
 // Fonction initialisant la carte et l'affichant sur le renderer
-Map* createMap(int nbPlayer, SDL_Renderer* renderer){
-	Map* map = (Map*) malloc(sizeof(struct Map));
+SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
+	SMap *map = malloc(sizeof(SMap));
 	displayMap(renderer);
 	return map;
 }

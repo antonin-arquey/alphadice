@@ -1,11 +1,8 @@
 #include "interface.h"
 #include "renderer.h"
 
-// Structure de la carte
-typedef struct Map Map;
-
 // Fonction initialisant la carte et l'affichant sur le renderer
-Map* createMap(int nbPlayer, SDL_Renderer* renderer);
+SMap* createMap(int nbPlayer, SDL_Renderer* renderer);
 
 // Fonction affichant la carte sur le renderer
 // Actuellement en test afin d'afficher juste 

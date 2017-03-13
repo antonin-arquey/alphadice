@@ -1,10 +1,11 @@
-#include "cell.h"
-#include <stdio.h>
+#include "interface.h"
 
-void chgOwnerCell(Cell* cell, int idNewOwner);
+// Fonction modifiant le propriétaire d'un territoire (cell)
+void chgOwnerCell(SCell* cell, int idNewOwner);
 
-Cell* declareAttack(Cell* attackingCell, Cell* defendingCell);
-
+// Verifie les paramètres mis par l'utilisateur au lancement du
+// programme.
 int verifArguments(int argc, char* argv[]);
 
+// Affichage des régles en cas de problème de paramètre au lancement
 void rappelSyntaxe(char* affichage);

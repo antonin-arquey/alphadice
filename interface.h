@@ -14,7 +14,7 @@ typedef struct SCell
 	int owner;	// Id du joueur qui la possède
 	int nbDices;	// Nombre de dés
 
-	SCell **neighbors;	// Tableau de poiteur vers des cellules voisines
+	struct SCell **neighbors;	// Tableau de poiteur vers des cellules voisines
 	int nbNeighbors;	// Nombre de cellules voisines
 } SCell;
 
@@ -23,6 +23,7 @@ typedef struct
 {
   SCell *cells;	// Tableau des cellules
   int nbCells;	// Nombre de cellules
+  unsigned int *stack;	// Nombre de dés en réserve par joueur -tableau dim nb joueur)
 } SMap;
 
 // Structure définissant les paramètres d'un coup joué

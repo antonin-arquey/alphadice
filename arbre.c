@@ -39,26 +39,42 @@ void DeleteArbre(SArbre *arbre){
 	free(arbre);
 }
 
+<<<<<<< HEAD
 void AddElement(Noeud *cell, Data *elem, int nbElement){
 	Noeud *newCells = malloc(sizeof(Noeud)*nbElement);
+=======
+void AddElement(SCell *cell, Data *elem, int nbElement){
+	int i = 0;
+	SCell *newCells = malloc(sizeof(SCell)*nbElement);
+>>>>>>> ee5d7ba6ea5a9a318b1350486c9782bb805c80db
 	cell->Fils = newCells;
 	cell->nbFils = nbElement;
 
-	for(int i = 0; i < nbElement; i++){
+	for(; i < nbElement; i++){
 		newCells->Value = *elem;
 		newCells++;
 		elem++;
 	}
 }
 
+<<<<<<< HEAD
 int sub(Noeud *cell, int niv, int tab[],int taille){
+=======
+int sub(SCell *cell, int niv, int tab[],int taille){
+	int i = 0;
+>>>>>>> ee5d7ba6ea5a9a318b1350486c9782bb805c80db
 	//printf("%d\n",niv);
 	if (niv == 0){
 		return 0;
 	}
 	niv--;
+<<<<<<< HEAD
 	Noeud *fils;
 	for(int i = 0; i < taille; i++){
+=======
+	SCell *fils;
+	for(; i < taille; i++){
+>>>>>>> ee5d7ba6ea5a9a318b1350486c9782bb805c80db
 		fils = getFils(cell,i);
 		AddElement(fils,tab,taille);
 		sub(fils,niv,tab,taille);

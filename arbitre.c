@@ -1,14 +1,14 @@
 #include "arbitre.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-void chgOwnerCell(Cell* cell, int idNewOwner){
-	//cell->owner = idNewOwner; //Ne fonctionne pas donc en commentaire pour pas avoir d'erreur
+// Fonction modifiant le propriétaire d'un territoire (cell)
+void chgOwnerCell(SCell* cell, int idNewOwner){
+	cell->owner = idNewOwner;
 }
 
-Cell* declareAttack(Cell* attackingCell, Cell* defendingCell){
-	Cell* winningCell = attackingCell; //Temporaire pour pas avoir d'erreur
-	return winningCell;
-}
-
+// Verifie les paramètres mis par l'utilisateur au lancement du
+// programme.
 int verifArguments(int argc, char* argv[]){
 	if(argc<3){
 		rappelSyntaxe("Mauvais nombre d'arguments\n");
@@ -20,12 +20,13 @@ int verifArguments(int argc, char* argv[]){
 	}
 	if(argc>3){
 		if(argc-3>atoi(argv[2])){
-			rappelSyntaxe("Trop de paramètre par rapport au nombre de joueurs\n");
+			rappelSyntaxe("Trop de paramètres par rapport au nombre de joueurs\n");
 		}
 	}
 	return 0;
 }
 
+// Affichage des régles en cas de problème de paramètre au lancement
 void rappelSyntaxe(char* affichage){
 	printf("%s",affichage);
 	printf("Parametre 1 : Nombre de parties souhaitees (max 9)\n");

@@ -1,5 +1,5 @@
 #ifndef _ARBRE_H
-	#define _ARBRE_H
+#define _ARBRE_H
 
 typedef int Data;
 typedef struct SCell SCell;

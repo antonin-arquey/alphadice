@@ -40,11 +40,12 @@ void DeleteArbre(SArbre *arbre){
 }
 
 void AddElement(SCell *cell, Data *elem, int nbElement){
+	int i = 0;
 	SCell *newCells = malloc(sizeof(SCell)*nbElement);
 	cell->Fils = newCells;
 	cell->nbFils = nbElement;
 
-	for(int i = 0; i < nbElement; i++){
+	for(; i < nbElement; i++){
 		newCells->Value = *elem;
 		newCells++;
 		elem++;
@@ -52,13 +53,14 @@ void AddElement(SCell *cell, Data *elem, int nbElement){
 }
 
 int sub(SCell *cell, int niv, int tab[],int taille){
+	int i = 0;
 	//printf("%d\n",niv);
 	if (niv == 0){
 		return 0;
 	}
 	niv--;
 	SCell *fils;
-	for(int i = 0; i < taille; i++){
+	for(; i < taille; i++){
 		fils = getFils(cell,i);
 		AddElement(fils,tab,taille);
 		sub(fils,niv,tab,taille);

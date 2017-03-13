@@ -4,6 +4,7 @@
 #include "renderer.h"
 #include "arbitre.h"
 #include "map.h"
+#include "interface.h"
 
 int main(int argc, char* argv[]){
 	int nbPlayer, nbGame;
@@ -17,6 +18,7 @@ int main(int argc, char* argv[]){
 	SDL_RenderPresent(renderer);
 	displayMap(renderer);
 	SDL_RenderPresent(renderer);
+	//InitGame(unsigned int id, nbPlayer, SPlayerInfo *info); //id de quel joueur ? *info de quel joueur ?
 	while(windowIsNotClosed()){
 
 	}

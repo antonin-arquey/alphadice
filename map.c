@@ -92,12 +92,11 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
 				}
 			}
 			map[j][k] = paysPlusProche;
-			if(map[j][k] != map[j-1][k] || map[j][k] != map[j][k-1] || map[j][k] != map[j-1][k-1]){
-				SDL_SetRenderDrawColor(renderer,255,0,0,0);
-				createPoint(renderer,j,k);
+			tmp = territoires;
+			if(map[j][k] != map[j-1][k]){
+					(tmp + map[j][k])->
 			}else{
-				SDL_SetRenderDrawColor(renderer,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25);
-				createPoint(renderer,j,k);
+
 			}
 		}
 	}

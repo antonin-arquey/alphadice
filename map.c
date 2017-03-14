@@ -54,7 +54,53 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
 		printf("Il reste %d dés pour le joueur %d\n", deJoueur[i], i);
 	}
 	//determination des voisins et leur nombre pour chaque territoires
+	srand(time(NULL));
+	int size_map_h=800;
+	int size_map_l=600;
+	int border = 50; //bordure pour pas que les territoires sur les bords soient trop petit
+	int map[size_map_h][size_map_l];
+	int tabPays[nb_pays][2];
+	double distance;
+	for (int j=0;j<size_map_h;j++){
+		for (int k=0;k<size_map_l;k++){
+			map[j][k]=0;
+		}
+	}
 
+	//génération des centres des pays;
+	for (int j=1;j<nb_pays+1;j++){
+		int i; int k;
+		i = aleatoire(border,size_map_h - border);
+		k = aleatoire(border,size_map_l - border);
+		map[i][k]=j;
+		tabPays[j][0]=i;
+		tabPays[j][1]=k;
+		printf("Pays %d : %d %d\n",j,i,k);
+	}
+
+	for (int j=0;j<size_map_h;j++){
+		for (int k=0;k<size_map_l;k++){
+			distance = 10000000;
+			int paysPlusProche = 1;
+			double new_distance;
+			for (int f=0;f<nb_pays;f++){
+				new_distance = getDistance(tabPays[f][0],tabPays[f][1],j,k);
+				//calcul de la distance
+				if (new_distance<distance){
+					distance = new_distance;
+					paysPlusProche = f;
+				}
+			}
+			map[j][k] = paysPlusProche;
+			if(map[j][k] != map[j-1][k] || map[j][k] != map[j][k-1] || map[j][k] != map[j-1][k-1]){
+				SDL_SetRenderDrawColor(renderer,255,0,0,0);
+				createPoint(renderer,j,k);
+			}else{
+				SDL_SetRenderDrawColor(renderer,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25);
+				createPoint(renderer,j,k);
+			}
+		}
+	}
 
 	return map;
 }

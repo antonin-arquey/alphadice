@@ -9,3 +9,7 @@ int verifArguments(int argc, char* argv[]);
 
 // Affichage des régles en cas de problème de paramètre au lancement
 void rappelSyntaxe(char* affichage);
+
+int lancerDe(int nbDe);
+
+int endTurn(STurn *turn, SMap *map);

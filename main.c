@@ -7,6 +7,7 @@
 #include "interface.h"
 #include <unistd.h>
 
+
 int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
 	int nbPlayer, nbGame;
@@ -25,22 +26,32 @@ int main(int argc, char* argv[]){
 	SDL_Renderer* renderer = createRenderer(window);
 	SMap *map = createMap(nbPlayer, renderer,matrice_map);
 	SDL_RenderPresent(renderer);
-	displayMap(renderer,matrice_map);
+	displayMap(renderer,map,matrice_map,NULL);
 	SDL_RenderPresent(renderer);
 
 	STurn *turn = malloc(sizeof(STurn));
-	SMap mapBis = 
+	SMap mapBis =
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
-	while(windowIsNotClosed()){
+	int cpt=0;
+	while(windowIsNotClosed() || cpt<4){
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
 			sleep(1);
 			PlayTurn(i, map, turn);
-			/*if(verifyTurn(i, map, turn) == 1){
+			printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
+			if(verifyTurn(i, map, turn) == 1){
+				printf("Tour validé ! \n");
 				moveTurn(map, turn);
 			}
-			endTurn(i, map);*/
+			else{
+				printf("Tour non validé ! \n");
+			}
+			displayMap(renderer,map,matrice_map,turn);
+			SDL_RenderPresent(renderer);
+			endTurn(i, map);
+			SDL_Delay(1000);
 		}
+		cpt++;
 	}
 
 

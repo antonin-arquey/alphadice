@@ -7,7 +7,7 @@ OBJ = window.c main.c renderer.c map.c arbitre.c interface.c arbre.c
 	$(CC) -c -o $@ $< $(CFLAGS) -lm
 
 AlphaDice: $(OBJ)
-	gcc -std=c99 -o $@ $^ $(CFLAGS)
+	gcc -g -std=c99 -o $@ $^ $(CFLAGS)
 
 clean:
 	rm -rf AlphaDice

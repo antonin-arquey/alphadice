@@ -10,6 +10,10 @@ void rappelSyntaxe(char* affichage);
 
 int lancerDe(int nbDe);
 
-int moveTurn(STurn *turn, SMap *map);
+void moveTurn(STurn *turn, SMap *map);
 
 int verifyTurn(unsigned int idPlayer, STurn *turn, SMap *map);
+
+void endTurn(int idPlayer, SMap *map);
+
+int getDiceToDistribute(int idPlayer, SMap *map);

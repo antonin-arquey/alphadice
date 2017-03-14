@@ -96,7 +96,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 			mat_map[j][k] = paysPlusProche;
 		}
 	}
-	
+
 	//Génération des voisins
 	for (int j=1;j<size_map_h;j++){
 		for (int k=1;k<size_map_l;k++){
@@ -136,6 +136,8 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		}
 		printf("\n");
 	}
+
+	return map;
 }
 
 int isVoisin(SMap *map, int t1, int t2){

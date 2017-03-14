@@ -11,6 +11,7 @@ int aleatoire(int a, int b){
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
 	SMap *map = malloc(sizeof(SMap));
 
+
 	int reserve[8] = {0,0,0,0,0,0,0,0};
 	map->nbCells = aleatoire(30, 60);
 	map->stack = reserve;
@@ -36,8 +37,8 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 	srand(time(NULL));
 	int size_map_h=800;
 	int size_map_l=600;
+	int nb_pays = aleatoire(30,60);
 	int border = 50; //bordure pour pas que les territoires sur les bords soient trop petit
-	int nb_pays=aleatoire(30,60);
 	int map[size_map_h][size_map_l];
 	int tabPays[nb_pays][2];
 	double distance;
@@ -73,20 +74,14 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 				}
 			}
 			map[j][k] = paysPlusProche;
-			SDL_SetRenderDrawColor(renderer,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25);
-			createPoint(renderer,j,k);
-		}
-	}
-	
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
-	//affichage des bordures
-	for (int j=0;j<size_map_h;j++){
-		for (int k=0;k<size_map_l;k++){
-			if((map[j][k] != map[j+1][k]) || (map[j-1][k] != map[j][k]) || (map[j][k] != map[j][k+1]) || (map[j][k-1] != map[j][k])){
+			if(map[j][k] != map[j-1][k] || map[j][k] != map[j][k-1] || map[j][k] != map[j-1][k-1]){
+				SDL_SetRenderDrawColor(renderer,255,0,0,0);
+				createPoint(renderer,j,k);
+			}else{
+				SDL_SetRenderDrawColor(renderer,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25);
 				createPoint(renderer,j,k);
 			}
 		}
-		//printf("\n");
 	}
 }
 

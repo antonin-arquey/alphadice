@@ -29,7 +29,7 @@ int main(int argc, char* argv[]){
 
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	while(windowIsNotClosed()){
-
+		
 	}
 
 	/* Ferme le jeu */

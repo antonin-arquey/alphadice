@@ -30,3 +30,7 @@ void createHexagone(SDL_Renderer* renderer, int x, int y)
 	SDL_RenderDrawLine(renderer, x, y+15, x, y+5);
 	SDL_RenderDrawLine(renderer, x, y+5, x+10, y);
 }
+
+void createPoint(SDL_Renderer* renderer, int x, int y){
+	SDL_RenderDrawPoint(renderer,x,y);
+}

@@ -6,6 +6,6 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 						    "TRIAU Julien",
 							"PASTOR Andréas"};
 	char stratName[30] = "AlphaDice";
-	info->members = teamates;
-	info->name = "lffldlfkdfl";
+	//info->members = teamates;
+	//info->name = "lffldlfkdfl";
 }

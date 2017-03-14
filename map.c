@@ -55,7 +55,7 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 		map[i][k]=j;
 		tabPays[j][0]=i;
 		tabPays[j][1]=k;
-		//printf("Pays %d : %d %d\n",j,i,k);
+		printf("Pays %d : %d %d\n",j,i,k);
 	}
 
 	for (int j=0;j<size_map_h;j++){
@@ -66,7 +66,6 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 			int f;
 			for (f=0;f<nb_pays;f++){
 				new_distance = getDistance(tabPays[f][0],tabPays[f][1],j,k);
-				//new_distance=sqrt(pow((tabPays[f][0]-j),2)+pow((tabPays[f][1]-k),2));
 				//calcul de la distance
 				if (new_distance<distance){
 					distance = new_distance;
@@ -79,18 +78,19 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 		}
 	}
 	
-	/*//affichage de la map
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
+	//affichage des bordures
 	for (int j=0;j<size_map_h;j++){
 		for (int k=0;k<size_map_l;k++){
-			printf("%d ",map[j][k]);
+			if((map[j][k] != map[j+1][k]) || (map[j-1][k] != map[j][k]) || (map[j][k] != map[j][k+1]) || (map[j][k-1] != map[j][k])){
+				createPoint(renderer,j,k);
+			}
 		}
 		//printf("\n");
-	}*/
+	}
 }
 
 double getDistance(int x1, int y1, int x2, int y2){
-	/*double d1 = pow((x2-x1),2);
-	double d2 = pow((y2-y1),2);*/
 	double d1 = (x2-x1)*(x2-x1);
 	double d2 = (y2-y1)*(y2-y1);
 	return (d1+d2);

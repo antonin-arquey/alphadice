@@ -7,6 +7,7 @@
 #include "interface.h"
 #include <unistd.h>
 
+
 int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
 	int nbPlayer, nbGame;
@@ -34,11 +35,16 @@ int main(int argc, char* argv[]){
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
 			PlayTurn(i, map, turn);
+			printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 			if(verifyTurn(i, map, turn) == 1){
+				printf("Tour validé ! \n");
 				moveTurn(map, turn);
 			}
+			else{
+				printf("Tour non validé ! \n");
+			}
 			endTurn(i, map);
-			sleep(1);
+			SDL_Delay(100);
 		}
 	}
 

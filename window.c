@@ -11,7 +11,7 @@ SDL_Window* createWindow()
     fprintf(stderr, "Error, could not create the window: %s\n", SDL_GetError());
     exit(EXIT_FAILURE);
   }
-	
+
 	return window;
 }
 

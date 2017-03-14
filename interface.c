@@ -20,15 +20,18 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 
 int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	int nbPays = map->nbCells;
+	printf("nfn\n");
 	int nbMaxDices = 0;
 	SCell *territoires = map->cells;
 
 	for(int i = 0; i < nbPays; i ++){
+		printf("jdj\n");
 		if (territoires[i].owner == idPlayer && territoires[i].nbDices > nbMaxDices){
 			nbMaxDices = territoires[i].nbDices;
 			turn->cellFrom = territoires[i].id;
 		}
 	}
+	printf("erjr\n");
 	SCell **voisins = map->cells[turn->cellFrom].neighbors;
 	int nbVoisins = map->cells[turn->cellFrom].nbNeighbors;
 	int nbMinDices = 10;

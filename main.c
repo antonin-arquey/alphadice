@@ -29,16 +29,17 @@ int main(int argc, char* argv[]){
 	SDL_RenderPresent(renderer);
 
 	STurn *turn = malloc(sizeof(STurn));
+	SMap mapBis = 
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	while(windowIsNotClosed()){
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
+			sleep(1);
 			PlayTurn(i, map, turn);
-			if(verifyTurn(i, map, turn) == 1){
+			/*if(verifyTurn(i, map, turn) == 1){
 				moveTurn(map, turn);
 			}
-			endTurn(i, map);
-			sleep(1);
+			endTurn(i, map);*/
 		}
 	}
 

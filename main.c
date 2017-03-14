@@ -32,7 +32,7 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	int cpt=0;
-	while(cpt<60){
+	while(cpt<100){
 		printf("Tour numero : %d\n", cpt);
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
@@ -52,9 +52,6 @@ int main(int argc, char* argv[]){
 			displayMap(renderer,map,matrice_map,turn);
 			SDL_RenderPresent(renderer);
 			endTurn(i, map);
-		}
-		if(cpt > 50){
-			SDL_Delay(5000);
 		}
 		cpt++;
 	}

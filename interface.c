@@ -38,7 +38,7 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	modif = 0;
 	SCell **voisins = map->cells[turn->cellFrom].neighbors;
 	int nbVoisins = map->cells[turn->cellFrom].nbNeighbors;
-	int nbMinDices = 100000;
+	int nbMinDices = 10;
 	int amoi = 0;
 	for(int i = 0; i < nbVoisins; i++){
 		if (voisins[i]->owner != idPlayer && voisins[i]->nbDices < nbMinDices){

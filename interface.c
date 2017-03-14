@@ -18,23 +18,23 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 	}
 }
 
-int PlayTurn(const SMap *map, Sturn *turn){
+int PlayTurn(const SMap *map, STurn *turn){
 	int nbPays = map->nbCells;
 	int nbMaxDices = 0;
-	Scell *territoires = map->cells;
+	SCell *territoires = map->cells;
 
-	for(i = 0; i < nbPays; i ++){
-		If (territoires[i].owner == 1 && territoires[i].nbDices > nbMaxDices){
+	for(int i = 0; i < nbPays; i ++){
+		if (territoires[i].owner == 1 && territoires[i].nbDices > nbMaxDices){
 			nbMaxDices = territoires[i].nbDices;
 			turn->cellFrom = territoires[i].id;
 		}
 	}
-	Scell *voisins = turn->cellFrom->neighbors;
-	nbVoisins = turn->cellFrom->nbNeighbors;
-	nbMinDices = 10;
-	for(i = 0; i < nbVoisins; i++){
-		If (voisins[i].owner != 1 && voisins[i].nbDices < nbMinDices){
-			nbMinDices = voisins[i].nbDices;
+	SCell **voisins = map->cells[turn->cellFrom].neighbors;
+	int nbVoisins = map->cells[turn->cellFrom].nbNeighbors;
+	int nbMinDices = 10;
+	for(int i = 0; i < nbVoisins; i++){
+		if (voisins[i]->owner != 1 && voisins[i]->nbDices < nbMinDices){
+			nbMinDices = voisins[i]->nbDices;
 			turn->cellTo = territoires[i].id;
 		}
 	}

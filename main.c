@@ -32,6 +32,7 @@ int main(int argc, char* argv[]){
 
 	}
 
+	free(map);
 	free(info);
 	/* Ferme le jeu */
 	destroyWindow(window, renderer);

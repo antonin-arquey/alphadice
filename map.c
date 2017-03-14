@@ -11,11 +11,17 @@ int aleatoire(int a, int b){
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
 	//creation des elements de la map : map et ces territoires
 	int nb_pays = aleatoire(30,60);
+	int nb_de = (int) (nb_pays * 2)/nbPlayer;
 	SMap *map = malloc(sizeof(SMap));
 	SCell *territoires = malloc(sizeof(SCell) * nb_pays);
 
 	//initilialisation des propriétés de la map
-	int reserve[8] = {0,0,0,0,0,0,0,0};
+	int reserve[nbPlayer];
+	int deJoueur[nbPlayer];
+	for(int i = 0; i < nbPlayer; i++){
+		reserve[i] = 0;
+		deJoueur[i] = nb_de;
+	}
 	map->cells = territoires;
 	map->nbCells = nb_pays;
 	map->stack = reserve;
@@ -25,11 +31,28 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
 	for(int i = 0; i < nb_pays; i++){
 		(tmp++)->id = i;
 	}
-
+	tmp = territoires;
 	//tirages aux sorts des joueurs possédant les territoires
-
+	for(int i = 0; i < nb_pays; i++){
+		(tmp++)->owner = aleatoire(0,nbPlayer-1);//numero du player
+	}
+	tmp = territoires;
 	//repartition des dés des joueurs
+	int de;
+	for(int i = 0; i < nb_pays; i++){
+		if (deJoueur[tmp->owner] < 4){
+			de = aleatoire(0, deJoueur[tmp->owner]);
+		}else{
+			de = aleatoire(0,4);
+		}
+		deJoueur[tmp->owner] -= de;
+		(tmp++)->nbDices = 1 + de;
+	}
 
+	//affichage pour voir s'il reste des dés
+	for(int i = 0; i < nbPlayer; i++){
+		printf("Il reste %d dés pour le joueur %d\n", deJoueur[i], i);
+	}
 	//determination des voisins et leur nombre pour chaque territoires
 
 

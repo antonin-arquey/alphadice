@@ -3,12 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// Fonction modifiant le propriétaire d'un territoire (cell)
-void chgOwnerCell(SCell* cell, int idNewOwner)
-{
-	cell->owner = idNewOwner;
-}
-
 /*
 Fonction vérifiant un tour rendu
 Renvoie 1 si le tour est bon, -1 si il est pas valide
@@ -37,6 +31,7 @@ int verifyTurn(unsigned int idPlayer, STurn *turn, SMap *map)
 	{
 		return -1;
 	}
+	return 1;
 }
 
 /*
@@ -53,7 +48,7 @@ int lancerDe(int nbDe){
 
 /* Fonction qui jour le tour et modifie la map en conséquent */
 
-int endTurn(STurn *turn, SMap *map)
+int moveTurn(STurn *turn, SMap *map)
 {
 	SCell *cellAttacker = &map->cells[turn->cellFrom];
 	SCell *cellDefender = &map->cells[turn->cellTo];

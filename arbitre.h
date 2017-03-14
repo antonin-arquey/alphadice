@@ -1,7 +1,5 @@
 #include "interface.h"
 
-// Fonction modifiant le propriétaire d'un territoire (cell)
-void chgOwnerCell(SCell* cell, int idNewOwner);
 
 // Verifie les paramètres mis par l'utilisateur au lancement du
 // programme.
@@ -12,4 +10,6 @@ void rappelSyntaxe(char* affichage);
 
 int lancerDe(int nbDe);
 
-int endTurn(STurn *turn, SMap *map);
+int moveTurn(STurn *turn, SMap *map);
+
+int verifyTurn(unsigned int idPlayer, STurn *turn, SMap *map);

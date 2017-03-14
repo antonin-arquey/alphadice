@@ -12,8 +12,13 @@ int main(int argc, char* argv[]){
 	if(verifArguments(argc, argv)){
 		return 1;
 	}
-	nbPlayer = *argv[2] - '0';//car retourne le code ascii sans  - '0'
-	nbGame = *argv[1] - '0';
+	nbPlayer = atoi(argv[2]);//car retourne le code ascii sans  - '0'
+	nbGame = atoi(argv[1]);
+
+	/*Initialisation du jeu */
+	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
+	InitGame(1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
+
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
@@ -22,15 +27,12 @@ int main(int argc, char* argv[]){
 	displayMap(renderer, map);
 	SDL_RenderPresent(renderer);
 
-	/*Initialisation du jeu */
-	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
-	InitGame(1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
-
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	while(windowIsNotClosed()){
 
 	}
 
+	free(info);
 	/* Ferme le jeu */
 	destroyWindow(window, renderer);
 	return 0;

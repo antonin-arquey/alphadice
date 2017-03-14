@@ -68,6 +68,31 @@ Trouve le plus grand nombre de territoire connexe appartenant au joueur passé e
 */
 int getDiceToDistribute(int idPlayer, SMap *map)
 {
+	// SCell* tabCell[map->nbCells];
+	// SCell* tabVoisins[map->nbCells];
+	// int i = 0, y = 0, j = 0;
+	// SCell* cellActive;
+	// for(;i<nbCells;i++){
+		// if (map->cells[i]->owner == idPlayer){
+			// tabCell[y]=map->cells[i];
+			// y++;
+		// }
+	// }
+	// for(i = 0; i<y; i++){
+		// if(tabCell[i]!=NULL){
+			// cellActive = tabCell[i];
+			// for(;j<cellActive->nbNeighbors;j++){
+				// if(cellActive->neighbors[j]->owner==idPlayer){
+					// tabCell = 
+				// }
+			// }
+			// //vérifier ses voisins
+			// //Remplir un tableau des voisins du même joueur
+			// //Retirer ces voisins de tabCell
+			// //Regarder les voisins de chaque voisins
+			// //a chaque récursion augmenter de 1 et retirer les cellules de la liste
+		// }
+	// }
 	return 10;
 }
 

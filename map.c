@@ -187,7 +187,15 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 }
 
 double getDistance(int x1, int y1, int x2, int y2){
-	double d1 = (x2-x1)*(x2-x1);
-	double d2 = (y2-y1)*(y2-y1);
+	double d1 = (x2-x1);
+	double d2 = (y2-y1);
+	if (d1 < 0){
+		d1 = -1*d1;
+	}
+	if(d2< 0){
+		d2 = -1 * d2;
+	}
+	/*double d1 = (x2-x1)*(x2-x1);
+	double d2 = (y2-y1)*(y2-y1);*/
 	return (d1+d2);
 }

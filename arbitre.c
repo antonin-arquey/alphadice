@@ -16,22 +16,12 @@ int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn)
 	}
 
 	//Verifier que la cellule de départ et d'arrivée sont adjacentes
-	int voisine = 0;
-
-	for(int i = 0; i < map->cells[turn->cellFrom].nbNeighbors; i++)
-	{
-		if(map->cells[turn->cellFrom].neighbors[i]->id == turn->cellTo)
-		{
-			voisine = 1;
-			break;
+	for(int i = 0; i < map->cells[turn->cellFrom].nbNeighbors; i++){
+		if(map->cells[turn->cellFrom].neighbors[i]->id == turn->cellTo){
+			return 1;
 		}
 	}
-
-	if(!voisine)
-	{
-		return -1;
-	}
-	return 1;
+	return -1;
 }
 
 /*
@@ -80,10 +70,8 @@ void endTurn(int idPlayer, SMap *map)
 	int nbPlayerCell = 0;
 
 	//On génére un tableau contenant les position des cellules dans map->cells
-	for(int i = 0 ; i < map->nbCells ; i++)
-	{
-		if(map->cells[i].owner == idPlayer)
-		{
+	for(int i = 0 ; i < map->nbCells ; i++){
+		if(map->cells[i].owner == idPlayer){
 			playerCell[nbPlayerCell] = i;
 			nbPlayerCell++;
 		}
@@ -93,10 +81,11 @@ void endTurn(int idPlayer, SMap *map)
 	int rand;
 
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé
-	for(int i = 1 ; i <= nbDiceDistributed ; i++)
-	{
+	for(int i = 1 ; i <= nbDiceDistributed ; i++){
 		rand = aleatoire(0, nbPlayerCell-1);
-		map->cells[i].nbDices++;
+		if(map->cells[i].nbDices < 8){
+			map->cells[i].nbDices++;
+		}
 	}
 }
 

@@ -22,21 +22,39 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	int nbPays = map->nbCells;
 	int nbMaxDices = 0;
 	SCell *territoires = map->cells;
+	int modif = 0;
 
 	for(int i = 0; i < nbPays; i ++){
 		if (territoires[i].owner == idPlayer && territoires[i].nbDices > nbMaxDices){
 			nbMaxDices = territoires[i].nbDices;
 			turn->cellFrom = territoires[i].id;
+			modif = 1;
 		}
 	}
+	if(modif == 0){
+		printf("Le joueur a perdu\n");
+		return 0;
+	}
+	modif = 0;
 	SCell **voisins = map->cells[turn->cellFrom].neighbors;
 	int nbVoisins = map->cells[turn->cellFrom].nbNeighbors;
-	int nbMinDices = 10;
+	int nbMinDices = 100000;
+	int amoi = 0;
 	for(int i = 0; i < nbVoisins; i++){
 		if (voisins[i]->owner != idPlayer && voisins[i]->nbDices < nbMinDices){
 			nbMinDices = voisins[i]->nbDices;
-			turn->cellTo = territoires[i].id;
+			turn->cellTo = voisins[i]->id;
+			modif = 1;
 		}
+		if(voisins[i]->owner == idPlayer){
+			amoi++;
+		} else if(modif == 0){
+			printf("%d\n", voisins[i]->nbDices);
+		}
+	}
+	if(modif == 0){
+		printf("nbVoisins : %d/%d\n", amoi, nbVoisins);
+		return 0;
 	}
 	return 1;
 }

@@ -7,7 +7,7 @@
 Fonction vérifiant un tour rendu
 Renvoie 1 si le tour est bon, -1 si il est pas valide
 */
-int verifyTurn(unsigned int idPlayer, STurn *turn, SMap *map)
+int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn)
 {
 	//Verifiez que la cellule de départ est bien au joueur
 	if(map->cells[turn->cellFrom].owner != idPlayer)
@@ -48,7 +48,7 @@ int lancerDe(int nbDe){
 
 /* Fonction qui jour le tour et modifie la map en conséquent */
 
-void moveTurn(STurn *turn, SMap *map)
+void moveTurn(SMap *map, STurn *turn)
 {
 	SCell *cellAttacker = &map->cells[turn->cellFrom];
 	SCell *cellDefender = &map->cells[turn->cellTo];

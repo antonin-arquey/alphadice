@@ -1,47 +1,47 @@
 #pragma once
 
-// Structure définissant l'identification de la stratégie
+// Structure dï¿½finissant l'identification de la stratï¿½gie
 typedef struct
 {
-	char name[30];	// Nom de la stratégie
+	char name[30];	// Nom de la stratï¿½gie
 	char members[6][50];	// Noms des personnes participant au projet.
 } SPlayerInfo;
 
-// Structure définissant les caractéristiques d'une cellule
+// Structure dï¿½finissant les caractï¿½ristiques d'une cellule
 typedef struct SCell
 {
 	int id;	// Id de la cellule
-	int owner;	// Id du joueur qui la possède
-	int nbDices;	// Nombre de dés
+	int owner;	// Id du joueur qui la possï¿½de
+	int nbDices;	// Nombre de dï¿½s
 
 	struct SCell **neighbors;	// Tableau de poiteur vers des cellules voisines
 	int nbNeighbors;	// Nombre de cellules voisines
 } SCell;
 
-// Structure définissant la carte globale du jeu
+// Structure dï¿½finissant la carte globale du jeu
 typedef struct
 {
   SCell *cells;	// Tableau des cellules
   int nbCells;	// Nombre de cellules
-  unsigned int *stack;	// Nombre de dés en réserve par joueur -tableau dim nb joueur)
+  unsigned int *stack;	// Nombre de dï¿½s en rï¿½serve par joueur -tableau dim nb joueur)
 } SMap;
 
-// Structure définissant les paramètres d'un coup joué
+// Structure dï¿½finissant les paramï¿½tres d'un coup jouï¿½
 typedef struct
 {
 	unsigned int cellFrom;
 	unsigned int cellTo;
 } STurn;
 
-// Fonction à appeler au début de chaque partie
-// La stratégie doit compléter la structure SPlayerInfo
+// Fonction ï¿½ appeler au dï¿½but de chaque partie
+// La stratï¿½gie doit complï¿½ter la structure SPlayerInfo
 void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info);
 
-// Fonction à appeler à chaque tour sur la stratégie et tant que le retour de fonction est vrai et qu'il n'y a pas d'erreur.
+// Fonction ï¿½ appeler ï¿½ chaque tour sur la stratï¿½gie et tant que le retour de fonction est vrai et qu'il n'y a pas d'erreur.
 //	* Ne pas oublier pour l'arbitre de dupliquer toute la structure map pour chaque appel !
-//	* En cas d'erreur, rétablir la carte dans l'état initial avant le premier tour du joueur.
-// valeur de retour : booléen : 0 coups terminés, 1 structure turn complétée avec un nouveau coup à jouer.
-int PlayTurn(const SMap *map, STurn *turn);
+//	* En cas d'erreur, rï¿½tablir la carte dans l'ï¿½tat initial avant le premier tour du joueur.
+// valeur de retour : boolï¿½en : 0 coups terminï¿½s, 1 structure turn complï¿½tï¿½e avec un nouveau coup ï¿½ jouer.
+int PlayTurn(int idPlayer, const SMap *map, STurn *turn);
 
-// Fonction à appeler à la fin de chaque partie
+// Fonction ï¿½ appeler ï¿½ la fin de chaque partie
 void EndGame(unsigned int idWinner);

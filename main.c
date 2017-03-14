@@ -5,6 +5,7 @@
 #include "arbitre.h"
 #include "map.h"
 #include "interface.h"
+#include <unistd.h>
 
 int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
@@ -27,11 +28,21 @@ int main(int argc, char* argv[]){
 	displayMap(renderer,matrice_map);
 	SDL_RenderPresent(renderer);
 
+	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	while(windowIsNotClosed()){
-
+		for(int i = 0; i < nbPlayer; i++){
+			printf("Turn to AI %d\n", i);
+			PlayTurn(i, map, turn);
+			if(verifyTurn(i, map, turn) == 1){
+				moveTurn(map, turn);
+			}
+			endTurn(i, map);
+			sleep(1);
+		}
 	}
 
+	free(turn);
 	free(info);
 	/* Ferme le jeu */
 	destroyWindow(window, renderer);

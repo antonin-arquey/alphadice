@@ -92,7 +92,6 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 					paysPlusProche = f;
 				}
 			}
-<<<<<<< HEAD
 			mat_map[j][k] = paysPlusProche;
 		}
 	}
@@ -114,14 +113,6 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 				if (!isVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j-1][k-1]])){
 					addVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j-1][k-1]]);
 				}
-=======
-			map[j][k] = paysPlusProche;
-			tmp = territoires;
-			if(map[j][k] != map[j-1][k]){
-					(tmp + map[j][k])->
-			}else{
-
->>>>>>> 8a56882ce76b76ee054e4fc426a8f782ed746e97
 			}
 		}
 	}

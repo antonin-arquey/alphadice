@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
 	}
 	nbPlayer = atoi(argv[2]);//car retourne le code ascii sans  - '0'
 	nbGame = atoi(argv[1]);
-
+	int matrice_map[800][600];
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
 	InitGame(1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
@@ -22,9 +22,9 @@ int main(int argc, char* argv[]){
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
-	SMap *map = createMap(nbPlayer, renderer);
+	SMap *map = createMap(nbPlayer, renderer,matrice_map);
 	SDL_RenderPresent(renderer);
-	displayMap(renderer, map);
+	displayMap(renderer,matrice_map);
 	SDL_RenderPresent(renderer);
 
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */

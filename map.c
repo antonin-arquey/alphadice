@@ -36,6 +36,7 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 	srand(time(NULL));
 	int size_map_h=800;
 	int size_map_l=600;
+	int border = 50; //bordure pour pas que les territoires sur les bords soient trop petit
 	int nb_pays=aleatoire(30,60);
 	int map[size_map_h][size_map_l];
 	int tabPays[nb_pays][2];
@@ -49,8 +50,8 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 	//génération des centres des pays;
 	for (int j=1;j<nb_pays+1;j++){
 		int i; int k;
-		i = rand()%size_map_h;
-		k = rand()%size_map_l;
+		i = aleatoire(border,size_map_h - border);
+		k = aleatoire(border,size_map_l - border);
 		map[i][k]=j;
 		tabPays[j][0]=i;
 		tabPays[j][1]=k;

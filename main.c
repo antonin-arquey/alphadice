@@ -26,12 +26,13 @@ int main(int argc, char* argv[]){
 	SDL_Renderer* renderer = createRenderer(window);
 	SMap *map = createMap(nbPlayer, renderer,matrice_map);
 	SDL_RenderPresent(renderer);
-	displayMap(renderer,matrice_map);
+	displayMap(renderer,map,matrice_map,NULL);
 	SDL_RenderPresent(renderer);
 
 	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
-	while(windowIsNotClosed()){
+	int cpt=0;
+	while(windowIsNotClosed() || cpt<4){
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
 			PlayTurn(i, map, turn);
@@ -43,9 +44,11 @@ int main(int argc, char* argv[]){
 			else{
 				printf("Tour non validé ! \n");
 			}
+			displayMap(renderer,map,matrice_map,turn);
 			endTurn(i, map);
-			SDL_Delay(100);
+			SDL_Delay(1000);
 		}
+		cpt++;
 	}
 
 

@@ -161,19 +161,29 @@ void addVoisin(SMap *map, int t1, int t2){
 }
 
 // Fonction affichant la carte sur le renderer
-void displayMap(SDL_Renderer* renderer, int mat_map[size_map_h][size_map_l]){
+void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn){
+	int tabColor[8][4]={{242,202,39,1},
+	{44,195,107,1},{236,94,0,1},
+	{231,76,60,1},{102,0,153,1},
+	{44,62,80,1},{52,152,219,1},
+	{163,177,178,1}};
+	//Jaune Vert Orange Rose Violet Bleufoncé Bleuclair
 	for (int j=0;j<size_map_h;j++){
 		for (int k=0;k<size_map_l;k++){
 			//Affichage des bordures
-			if(mat_map[j][k] != mat_map[j-1][k] || mat_map[j][k] != mat_map[j][k-1] || mat_map[j][k] != mat_map[j-1][k-1]){
-				SDL_SetRenderDrawColor(renderer,255,0,0,0);
-				createPoint(renderer,j,k);
+			if (turn != NULL && turn->cellFrom == mat_map[j][k]){
+				printf("cellule attaque\n");
+				SDL_SetRenderDrawColor(renderer,255,255,255,255);
+			}else if (turn != NULL && turn->cellTo == mat_map[j][k]){
+				printf("cellule défense\n");
+				SDL_SetRenderDrawColor(renderer,0,0,0,0);
+			}else if(mat_map[j][k] != mat_map[j-1][k] || mat_map[j][k] != mat_map[j][k-1] || mat_map[j][k] != mat_map[j-1][k-1]){
+				SDL_SetRenderDrawColor(renderer,0,0,0,0);
 			}else{
 			//Affichage des couleurs des territoires
-				//SDL_SetRenderDrawColor(renderer,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25,paysPlusProche*25);
-				SDL_SetRenderDrawColor(renderer,255,255,0,0);
-				createPoint(renderer,j,k);
+				SDL_SetRenderDrawColor(renderer,tabColor[map->cells[mat_map[j][k]].owner][0],tabColor[map->cells[mat_map[j][k]].owner][1],tabColor[map->cells[mat_map[j][k]].owner][2],tabColor[map->cells[mat_map[j][k]].owner][3]);
 			}
+			createPoint(renderer,j,k);
 		}
 	}
 }

@@ -172,10 +172,8 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 		for (int k=0;k<size_map_l;k++){
 			//Affichage des bordures
 			if (turn != NULL && turn->cellFrom == mat_map[j][k]){
-				printf("cellule attaque\n");
 				SDL_SetRenderDrawColor(renderer,255,255,255,255);
 			}else if (turn != NULL && turn->cellTo == mat_map[j][k]){
-				printf("cellule défense\n");
 				SDL_SetRenderDrawColor(renderer,0,0,0,0);
 			}else if(mat_map[j][k] != mat_map[j-1][k] || mat_map[j][k] != mat_map[j][k-1] || mat_map[j][k] != mat_map[j-1][k-1]){
 				SDL_SetRenderDrawColor(renderer,0,0,0,0);

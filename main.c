@@ -30,7 +30,6 @@ int main(int argc, char* argv[]){
 	SDL_RenderPresent(renderer);
 
 	STurn *turn = malloc(sizeof(STurn));
-	SMap mapBis =
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	int cpt=0;
 	while(windowIsNotClosed() || cpt<4){

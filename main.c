@@ -12,9 +12,8 @@ int main(int argc, char* argv[]){
 	if(verifArguments(argc, argv)){
 		return 1;
 	}
-	nbPlayer = *argv[2];
-	nbGame = *argv[1];
-
+	nbPlayer = *argv[2] - '0';//car retourne le code ascii sans  - '0'
+	nbGame = *argv[1] - '0';
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
@@ -29,7 +28,7 @@ int main(int argc, char* argv[]){
 
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	while(windowIsNotClosed()){
-		
+
 	}
 
 	/* Ferme le jeu */

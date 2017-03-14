@@ -9,21 +9,28 @@ int aleatoire(int a, int b){
 
 // Fonction initialisant la carte et l'affichant sur le renderer
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
-	
+	//creation des elements de la map : map et ces territoires
 	int nb_pays = aleatoire(30,60);
 	SMap *map = malloc(sizeof(SMap));
 	SCell *territoires = malloc(sizeof(SCell) * nb_pays);
 
+	//initilialisation des propriétés de la map
 	int reserve[8] = {0,0,0,0,0,0,0,0};
 	map->cells = territoires;
 	map->nbCells = nb_pays;
 	map->stack = reserve;
 
+	//initilialisation des id des cellules de la map
 	SCell *tmp = territoires;
 	for(int i = 0; i < nb_pays; i++){
 		(tmp++)->id = i;
 	}
 
+	//tirages aux sorts des joueurs possédant les territoires
+
+	//repartition des dés des joueurs
+
+	//determination des voisins et leur nombre pour chaque territoires
 
 
 	return map;

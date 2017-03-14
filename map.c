@@ -9,17 +9,28 @@ int aleatoire(int a, int b){
 
 // Fonction initialisant la carte et l'affichant sur le renderer
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer){
+	
+	int nb_pays = aleatoire(30,60);
 	SMap *map = malloc(sizeof(SMap));
-
+	SCell *territoires = malloc(sizeof(SCell) * nb_pays);
 
 	int reserve[8] = {0,0,0,0,0,0,0,0};
-	map->nbCells = aleatoire(30, 60);
+	map->cells = territoires;
+	map->nbCells = nb_pays;
 	map->stack = reserve;
+
+	SCell *tmp = territoires;
+	for(int i = 0; i < nb_pays; i++){
+		(tmp++)->id = i;
+	}
+
+
+
 	return map;
 }
 
 // Fonction affichant la carte sur le renderer
-// Actuellement en test afin d'afficher juste 
+// Actuellement en test afin d'afficher juste
 // des hexagones sur la taille de la map
 void displayMap(SDL_Renderer* renderer, SMap *map2){
 	/*int i=0, j=0, ligne=1;
@@ -31,7 +42,7 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 		if (ligne%2==1){
 			i+=10;
 		}
-		ligne+=1;		
+		ligne+=1;
 	}*/
 
 	srand(time(NULL));
@@ -47,7 +58,7 @@ void displayMap(SDL_Renderer* renderer, SMap *map2){
 			map[j][k]=0;
 		}
 	}
-	
+
 	//génération des centres des pays;
 	for (int j=1;j<nb_pays+1;j++){
 		int i; int k;
@@ -90,4 +101,3 @@ double getDistance(int x1, int y1, int x2, int y2){
 	double d2 = (y2-y1)*(y2-y1);
 	return (d1+d2);
 }
-

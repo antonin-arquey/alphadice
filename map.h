@@ -11,5 +11,5 @@ int aleatoire(int a, int b);
 // des hexagones sur la taille de la map
 void displayMap(SDL_Renderer* renderer, int mat_map[800][600]);
 double getDistance(int x1, int y1, int x2, int y2);
-int isVoisin(SCell c1, SCell c2);
-void addVoisin(SCell c1, SCell c2);
+int isVoisin(SMap *map, int t1, int t2);
+void addVoisin(SMap *map,int tl, int t2);

@@ -1,6 +1,7 @@
 #include "map.h"
 #include "interface.h"
 #include <time.h>
+#include <unistd.h>
 
 //matrice de la map
 int size_map_h=800;
@@ -100,20 +101,21 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 	for (int j=1;j<size_map_h;j++){
 		for (int k=1;k<size_map_l;k++){
 			if (mat_map[j][k] != mat_map[j-1][k]){
-				if (!isVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j-1][k]])){
-					addVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j-1][k]]);
+				if (isVoisin(map,mat_map[j][k],mat_map[j-1][k]) == 0){
+					addVoisin(map,mat_map[j][k],mat_map[j-1][k]);
 				}
 			}
 			if(mat_map[j][k] != mat_map[j][k-1]){
-				if (!isVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j][k-1]])){
-					addVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j][k-1]]);
+				if (isVoisin(map,mat_map[j][k],mat_map[j][k-1]) == 0){
+					addVoisin(map,mat_map[j][k],mat_map[j][k-1]);
 				}
 			}
-			if(mat_map[j][k] != mat_map[j-1][k-1]){
-				if (!isVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j-1][k-1]])){
-					addVoisin(map->cells[mat_map[j][k]],map->cells[mat_map[j-1][k-1]]);
+			/*if(mat_map[j][k] != mat_map[j-1][k-1]){
+				//printf("diff");
+				if (isVoisin(map,mat_map[j][k],mat_map[j][k-1]) == 0){
+					addVoisin(map,mat_map[j][k],mat_map[j-1][k-1]);
 				}
-			}
+			}*/
 		}
 	}
 
@@ -132,25 +134,28 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		{
 			printf("%d ",territoires[i].neighbors[j]->id);
 		}
+		printf("\n");
 	}
 }
 
-int isVoisin(SCell c1, SCell c2){
+int isVoisin(SMap *map, int t1, int t2){
 	//fonction qui regarde si les cellules c1 et c2 sont déjà voisines
 	//renvoie 1 si oui, 0 sinon.
-	for(int i=0;i<c1.nbNeighbors;i++){
-		if(c1.neighbors[i]==&c2){
+	SCell *territoires = map->cells;
+	for(int i=0;i<(territoires[t1].nbNeighbors);i++){
+		if(territoires[t1].neighbors[i]->id == t2)
+		{
 			return 1;
 		}
 	}
 	return 0;
 }
 
-void addVoisin(SCell c1, SCell c2){
-	c1.neighbors[c1.nbNeighbors]=&c2;
-	c1.nbNeighbors++;
-	c2.neighbors[c2.nbNeighbors]=&c1;
-	c2.nbNeighbors++;
+void addVoisin(SMap *map, int t1, int t2){
+	map->cells[t1].neighbors[map->cells[t1].nbNeighbors] = &(map->cells[t2]);
+	map->cells[t1].nbNeighbors++;
+	map->cells[t2].neighbors[map->cells[t2].nbNeighbors] = &(map->cells[t1]);
+	map->cells[t2].nbNeighbors++;
 }
 
 // Fonction affichant la carte sur le renderer

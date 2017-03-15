@@ -186,21 +186,32 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 
 	for(int i = 0 ; i < map->nbCells ; i++)
 	{
+			//Load l'image dans une surface
 			SDL_Surface* image = SDL_LoadBMP("valeur/0.bmp");
 			if(!image)
 			{
 			    printf("Erreur de chargement de l'image : %s",SDL_GetError());
 			    exit(-1);
 			}
-			SDL_Texture* monImage = SDL_CreateTextureFromSurface(renderer,image);  //La texture monImage contient maintenant l'image importée
 
+			//Créer une texture a partir de la surface
+			SDL_Texture* monImage = SDL_CreateTextureFromSurface(renderer,image);
 
+			//Liberer la surface qui ne sert plus
 			SDL_FreeSurface(image);
+
+
 			SDL_Rect position;
+
+
+			//Recuperation de la taille de l'image dans position.w et position.h
+			SDL_QueryTexture(monImage, NULL, NULL, &position.w, &position.h);
+
+			//Position de l'image X Y
 			position.x = tabPays[i][0];
 			position.y = tabPays[i][1];
-
-			SDL_QueryTexture(monImage, NULL, NULL, &position.w, &position.h);
+			
+			//Texture appliqué au renderer
 			SDL_RenderCopy(renderer, monImage, NULL, &position);
 	}
 }

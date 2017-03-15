@@ -196,12 +196,12 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 
 
 			SDL_FreeSurface(image);
-
 			SDL_Rect position;
-			position.x = 100;
-			position.y = 200;
-			/*SDL_QueryTexture(monImage, NULL, NULL, &position.w, &position.h);
-			SDL_RenderCopy(renderer, monImage, NULL, NULL);*/
+			position.x = tabPays[i][0];
+			position.y = tabPays[i][1];
+
+			SDL_QueryTexture(monImage, NULL, NULL, &position.w, &position.h);
+			SDL_RenderCopy(renderer, monImage, NULL, &position);
 	}
 }
 

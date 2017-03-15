@@ -60,7 +60,7 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 }
 
 int combienDeDices(int idPlayer, const SMap *map){
-	int nbdices = 0;
+	int nbDices = 0;
 	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner == idPlayer){
 			nbDices += map->cells[i].nbDices;
@@ -70,7 +70,7 @@ int combienDeDices(int idPlayer, const SMap *map){
 }
 
 int combienDeTerritoires(int idPlayer, const SMap *map){
-	int nbterritoires = 0;
+	int nbTerritoires = 0;
 	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner == idPlayer){
 			nbTerritoires += 1;

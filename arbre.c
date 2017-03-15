@@ -147,9 +147,3 @@ Noeud* GetNextElement(Noeud *noeud){
 	return noeud->suivant;
 }
 */
-Data getData(Noeud *noeud){
-	if(noeud != NULL){
-		return noeud->Value;
-	}
-	return NULL;
-}

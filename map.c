@@ -205,8 +205,8 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 			SDL_QueryTexture(diceTexture, NULL, NULL, &position.w, &position.h);
 
 			//Position de l'image X Y
-			position.x = tabPays[i][0];
-			position.y = tabPays[i][1];
+			position.x = tabPays[i][0] - 10;
+			position.y = tabPays[i][1] - 10;
 			position.w /= 2;
 			position.h /= 2;
 			//Texture appliqué au renderer

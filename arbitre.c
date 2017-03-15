@@ -118,13 +118,13 @@ void endTurn(int idPlayer, SMap *map)
 	}
 
 	int nbDiceDistributed = getDiceToDistribute(idPlayer, map);
-	int rand;
+	int random;
 
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé
 	for(int i = 1 ; i <= nbDiceDistributed ; i++){
-		rand = aleatoire(0, nbPlayerCell-1);
-		if(map->cells[i].nbDices < 8){
-			map->cells[i].nbDices++;
+		random = aleatoire(0, nbPlayerCell-1);
+		if(map->cells[playerCell[random]].nbDices < 8){
+			map->cells[playerCell[random]].nbDices++;
 		}
 	}
 }
@@ -137,7 +137,7 @@ int verifArguments(int argc, char* argv[]){
 		rappelSyntaxe("Mauvais nombre d'arguments\n");
 		return 1;
 	}
-	
+
 	int nbPlayer = (atoi(argv[2]));
 	int nbGames = (atoi(argv[1]));
 

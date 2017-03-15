@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	int cpt=0;
-	while(cpt<25){
+	while(cpt<50){
 		printf("Tour numero : %d\n", cpt);
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
@@ -49,6 +49,7 @@ int main(int argc, char* argv[]){
 					if(verifyTurn(i, map, turn) == 1){
 						printf("Tour validé ! \n");
 						moveTurn(map, turn);
+						//SDL_Delay(500);
 						if(victoire(i, map)){
 							printf("Victoire du joueur %d !!\n", i);
 							return 0;

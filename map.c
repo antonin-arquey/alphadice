@@ -17,7 +17,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 	srand(time(NULL));
 	//creation des elements de la map : map et ces territoires
 	int nb_pays = aleatoire(30,60);
-	int nb_de = (int) (nb_pays * 2)/nbPlayer;
+	int nb_de = (int) (nb_pays * 3)/nbPlayer;
 	SMap *map = malloc(sizeof(SMap));
 	SCell *territoires = malloc(sizeof(SCell) * nb_pays);
 

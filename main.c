@@ -32,26 +32,40 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	int cpt=0;
-	while(cpt<5){
+	int fini = 0;
+	while(cpt<5 && !fini){
 		printf("Tour numero : %d\n", cpt);
-		for(int i = 0; i < nbPlayer; i++){
+		for(int i = 0; i < nbPlayer && !fini; i++){
 			printf("Turn to AI %d\n", i);
-			if(PlayTurn(i, map, turn) == 1){
-				printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
-				if(verifyTurn(i, map, turn) == 1){
-					printf("Tour validé ! \n");
-					moveTurn(map, turn);
+			int IAPlay = 1; //Variable contenant si l'ia veut rejouer ou non
+			while(IAPlay && !fini)
+			{
+				IAPlay = PlayTurn(i, map, turn);
+				if(IAPlay == 1){
+					printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
+					if(verifyTurn(i, map, turn) == 1){
+						printf("Tour validé ! \n");
+						moveTurn(map, turn);
+						if(victoire(i, map))
+						{
+							printf("Victoire du joueur %d !!\n", i);
+							fini = 1;
+						}
+					}
+					else{
+						IAPlay = 0; //Tour non valide l'ia ne peut pas rejouer
+						printf("Tour non validé ! \n");
+					}
+				} else {
+					printf("refus de joué\n");
+					//SDL_Delay(2000);
 				}
-				else{
-					printf("Tour non validé ! \n");
-				}
-			} else {
-				printf("refus de joué\n");
-				//SDL_Delay(2000);
+				displayMap(renderer,map,matrice_map,turn);
+				SDL_RenderPresent(renderer);
 			}
+			endTurn(i, map);
 			displayMap(renderer,map,matrice_map,turn);
 			SDL_RenderPresent(renderer);
-			endTurn(i, map);
 		}
 		cpt++;
 	}

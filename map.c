@@ -73,17 +73,14 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		int i; int k;
 		i = aleatoire(border,size_map_h - border);
 		k = aleatoire(border,size_map_l - border);
-		mat_map[i][k]=j;
-		tabPays[j][0]=i;
-		tabPays[j][1]=k;
+		mat_map[i][k]=j; tabPays[j][0]=i;	tabPays[j][1]=k;
 	}
 	printf("Germe territoire crées\n");
 	//génération des territoires
 	for (int j=0;j<size_map_h;j++){
 		for (int k=0;k<size_map_l;k++){
 			double distance = 10000000;
-			int paysPlusProche;
-			double new_distance;
+			int paysPlusProche;	double new_distance;
 			for (int f=0;f<nb_pays;f++){
 				new_distance = getDistance(tabPays[f][0],tabPays[f][1],j,k);
 				//calcul de la distance
@@ -94,6 +91,22 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 			}
 			mat_map[j][k] = paysPlusProche;
 		}
+	}
+
+	//modification des centres de la table Pays pour afficher les images au centre
+	long compteurX, compteurY, compteur;
+	for(int k = 0; k < nb_pays; k++){
+		compteurX = 0; compteur = 0;
+		compteurY = 0;
+		for(int j = 0; j < size_map_h; j++){
+			for(int i = 0; i < size_map_l; i ++){
+				if(mat_map[j][i] == k){
+					compteurX += j; compteurY += i; compteur += 1;
+				}
+			}
+		}
+		compteurX /= compteur; compteurY /= compteur;
+		tabPays[k][0] = compteurX; tabPays[k][1] = compteurY;
 	}
 
 	//Génération des voisins
@@ -109,12 +122,6 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 					addVoisin(map,mat_map[j][k],mat_map[j][k-1]);
 				}
 			}
-			/*if(mat_map[j][k] != mat_map[j-1][k-1]){
-				//printf("diff");
-				if (isVoisin(map,mat_map[j][k],mat_map[j][k-1]) == 0){
-					addVoisin(map,mat_map[j][k],mat_map[j-1][k-1]);
-				}
-			}*/
 		}
 	}
 
@@ -184,19 +191,15 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 		}
 	}
 
-	for(int i = 0 ; i < map->nbCells ; i++)
-	{
+	for(int i = 0 ; i < map->nbCells ; i++)	{
 			SDL_Texture *diceTexture;
-			if(map->cells[i].nbDices < 9)
-			{
+			if(map->cells[i].nbDices < 9)	{
 				diceTexture = diceTextures[map->cells[i].nbDices];
 			}
 			else{
 				diceTexture = diceTextures[9];
 			}
-
 			SDL_Rect position;
-
 
 			//Recuperation de la taille de l'image dans position.w et position.h
 			SDL_QueryTexture(diceTexture, NULL, NULL, &position.w, &position.h);

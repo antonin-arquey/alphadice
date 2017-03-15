@@ -17,3 +17,5 @@ int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn);
 void endTurn(int idPlayer, SMap *map);
 
 int getDiceToDistribute(int idPlayer, SMap *map);
+
+int victoire(unsigned int idPlayer, SMap *map);

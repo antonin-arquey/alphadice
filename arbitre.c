@@ -117,6 +117,17 @@ int verifArguments(int argc, char* argv[]){
 	return 0;
 }
 
+int victoire(unsigned int idPlayer, SMap *map)
+{
+	for(int i = 0 ; i < map->nbCells ; i++)
+	{
+		if(map->cells[i].id != idPlayer)
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
 // Affichage des régles en cas de problème de paramètre au lancement
 void rappelSyntaxe(char* affichage){
 	printf("%s",affichage);

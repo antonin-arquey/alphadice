@@ -19,6 +19,25 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 }
 
 int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
+	int diff = -10;
+	for(int i = 0; i< map->nbCells; i++){
+		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
+			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
+				if(map->cells[i].neighbors[j]->owner != idPlayer && (map->cells[i].nbDices - map->cells[i].neighbors[j]->nbDices) > diff){
+					diff = map->cells[i].nbDices - map->cells[i].neighbors[j]->nbDices;
+					turn->cellFrom = map->cells[i].id;
+					turn->cellTo = map->cells[i].neighbors[j]->id;
+				}
+			}
+		}
+	}
+	if(diff != -10){
+		return 1;
+	}
+	return 0;
+}
+
+int PlayTurnBis(int idPlayer, const SMap *map, STurn *turn){
 	int nbPays = map->nbCells;
 	int nbMaxDices = 0;
 	SCell *territoires = map->cells;

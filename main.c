@@ -40,26 +40,26 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	int cpt=0;
-	while(cpt<20){
+	while(cpt<50){
 		printf("Tour numero : %d\n", cpt);
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
 			while(PlayTurn(i, map, turn) == 1){
-					printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
+					//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 					if(verifyTurn(i, map, turn) == 1){
-						printf("Tour validé ! \n");
+						//printf("Tour validé ! \n");
 						moveTurn(map, turn);
 						//SDL_Delay(500);
-						if(victoire(i, map)){
-							printf("Victoire du joueur %d !!\n", i);
-							return 0;
-						}
 					}
 					else{
 						printf("Tour non validé ! \n");
 					}
 				displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 				SDL_RenderPresent(renderer);
+			}
+			if(victoire(i, map)){
+				printf("Victoire du joueur %d !!\n", i);
+				return 0;
 			}
 			endTurn(i, map);
 			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);

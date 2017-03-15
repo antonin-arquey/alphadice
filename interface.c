@@ -25,7 +25,7 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	int modif = 0;
 
 	for(int i = 0; i < nbPays; i ++){
-		if (territoires[i].owner == idPlayer && territoires[i].nbDices > nbMaxDices){
+		if (territoires[i].owner == idPlayer && territoires[i].nbDices > nbMaxDices && territoires[i].nbDices > 1){
 			nbMaxDices = territoires[i].nbDices;
 			turn->cellFrom = territoires[i].id;
 			modif = 1;

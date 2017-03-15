@@ -38,19 +38,19 @@ int lancerDe(int nbDe){
 
 /* Fonction qui jour le tour et modifie la map en conséquent */
 
-void moveTurn(SMap *map, STurn *turn)
-{
+void moveTurn(SMap *map, STurn *turn){
 	SCell *cellAttacker = &map->cells[turn->cellFrom];
 	SCell *cellDefender = &map->cells[turn->cellTo];
 	int sommeAttacker = lancerDe(cellAttacker->nbDices);
 	int sommeDefender = lancerDe(cellDefender->nbDices);
-
+	printf("%d vs %d\n", sommeAttacker, sommeDefender);
 	if(sommeAttacker > sommeDefender){
 		cellDefender->owner = cellAttacker->owner;
 		cellDefender->nbDices = cellAttacker->nbDices - 1;
 	}
-
+	printf("nb dés : %d\n", map->cells[turn->cellFrom].nbDices);
 	cellAttacker->nbDices = 1;
+	printf("nb dés : %d\n", map->cells[turn->cellFrom].nbDices);
 }
 
 /*
@@ -117,12 +117,9 @@ int verifArguments(int argc, char* argv[]){
 	return 0;
 }
 
-int victoire(unsigned int idPlayer, SMap *map)
-{
-	for(int i = 0 ; i < map->nbCells ; i++)
-	{
-		if(map->cells[i].id != idPlayer)
-		{
+int victoire(unsigned int idPlayer, SMap *map){
+	for(int i = 0 ; i < map->nbCells ; i++)	{
+		if(map->cells[i].id != idPlayer){
 			return 0;
 		}
 	}

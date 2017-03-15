@@ -32,34 +32,24 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	int cpt=0;
-	int fini = 0;
-	while(cpt<5 && !fini){
+	while(cpt<25){
 		printf("Tour numero : %d\n", cpt);
-		for(int i = 0; i < nbPlayer && !fini; i++){
+		for(int i = 0; i < nbPlayer; i++){
 			printf("Turn to AI %d\n", i);
-			int IAPlay = 1; //Variable contenant si l'ia veut rejouer ou non
-			while(IAPlay && !fini)
-			{
-				IAPlay = PlayTurn(i, map, turn);
-				if(IAPlay == 1){
+			while(PlayTurn(i, map, turn) == 1){
 					printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 					if(verifyTurn(i, map, turn) == 1){
 						printf("Tour validé ! \n");
 						moveTurn(map, turn);
-						if(victoire(i, map))
-						{
+						//SDL_Delay(1000);
+						if(victoire(i, map)){
 							printf("Victoire du joueur %d !!\n", i);
-							fini = 1;
+							return 0;
 						}
 					}
 					else{
-						IAPlay = 0; //Tour non valide l'ia ne peut pas rejouer
 						printf("Tour non validé ! \n");
 					}
-				} else {
-					printf("refus de joué\n");
-					//SDL_Delay(2000);
-				}
 				displayMap(renderer,map,matrice_map,turn);
 				SDL_RenderPresent(renderer);
 			}

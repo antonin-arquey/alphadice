@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
 	if(verifArguments(argc, argv)){
 		return 1;
 	}
-	nbPlayer = atoi(argv[2]);//car retourne le code ascii sans  - '0'
+	nbPlayer = atoi(argv[2]);
 	nbGame = atoi(argv[1]);
 	int matrice_map[800][600];
 	int tab_pays[80][2];
@@ -42,7 +42,6 @@ int main(int argc, char* argv[]){
 					if(verifyTurn(i, map, turn) == 1){
 						printf("Tour validé ! \n");
 						moveTurn(map, turn);
-						//SDL_Delay(1000);
 						if(victoire(i, map)){
 							printf("Victoire du joueur %d !!\n", i);
 							return 0;
@@ -61,10 +60,10 @@ int main(int argc, char* argv[]){
 		cpt++;
 	}
 
-
 	free(turn);
 	free(map);
 	free(info);
+	
 	/* Ferme le jeu */
 	destroyWindow(window, renderer);
 	return 0;

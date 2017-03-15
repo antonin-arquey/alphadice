@@ -160,7 +160,7 @@ void addVoisin(SMap *map, int t1, int t2){
 }
 
 // Fonction affichant la carte sur le renderer
-void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2]){
+void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2], SDL_Texture *diceTextures[]){
 	int tabColor[8][4]={{242,202,39,1},
 	{44,195,107,1},{236,94,0,1},
 	{231,76,60,1},{102,0,153,1},
@@ -186,33 +186,28 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 
 	for(int i = 0 ; i < map->nbCells ; i++)
 	{
-			//Load l'image dans une surface
-			SDL_Surface* image = SDL_LoadBMP("valeur/0.bmp");
-			if(!image)
+			SDL_Texture *diceTexture;
+			if(map->cells[i].nbDices < 9)
 			{
-			    printf("Erreur de chargement de l'image : %s",SDL_GetError());
-			    exit(-1);
+				diceTexture = diceTextures[map->cells[i].nbDices];
 			}
-
-			//Créer une texture a partir de la surface
-			SDL_Texture* monImage = SDL_CreateTextureFromSurface(renderer,image);
-
-			//Liberer la surface qui ne sert plus
-			SDL_FreeSurface(image);
-
+			else{
+				diceTexture = diceTextures[9];
+			}
 
 			SDL_Rect position;
 
 
 			//Recuperation de la taille de l'image dans position.w et position.h
-			SDL_QueryTexture(monImage, NULL, NULL, &position.w, &position.h);
+			SDL_QueryTexture(diceTexture, NULL, NULL, &position.w, &position.h);
 
 			//Position de l'image X Y
 			position.x = tabPays[i][0];
 			position.y = tabPays[i][1];
-			
+			position.w /= 2;
+			position.h /= 2;
 			//Texture appliqué au renderer
-			SDL_RenderCopy(renderer, monImage, NULL, &position);
+			SDL_RenderCopy(renderer, diceTexture, NULL, &position);
 	}
 }
 
@@ -228,4 +223,35 @@ double getDistance(int x1, int y1, int x2, int y2){
 	/*double d1 = (x2-x1)*(x2-x1);
 	double d2 = (y2-y1)*(y2-y1);*/
 	return (d1+d2);
+}
+
+void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[])
+{
+	char filename[20] = "valeur/0.bmp";
+	for(int i = 0 ; i < 9 ; i++)
+	{
+		char test = i + '0' ;
+		printf("char : %c\n", test);
+		printf("%s\n", filename);
+		printf("%c\n", filename[7]);
+		filename[7] = test;
+		printf("%s\n", filename);
+		SDL_Surface* image = SDL_LoadBMP(filename);
+		if(!image)
+		{
+				printf("Erreur de chargement de l'image : %s",SDL_GetError());
+				exit(-1);
+		}
+
+		diceTextures[i] = SDL_CreateTextureFromSurface(renderer,image);
+		SDL_FreeSurface(image);
+	}
+}
+
+void freeDiceTextures(SDL_Texture *diceTextures[])
+{
+	for(int i=0 ; i < 10; i++)
+	{
+		SDL_DestroyTexture(diceTextures[i]);
+	}
 }

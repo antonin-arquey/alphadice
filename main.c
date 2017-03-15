@@ -18,6 +18,9 @@ int main(int argc, char* argv[]){
 	nbGame = atoi(argv[1]);
 	int matrice_map[800][600];
 	int tab_pays[80][2];
+
+
+
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
 	InitGame(1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
@@ -25,9 +28,13 @@ int main(int argc, char* argv[]){
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
+
+	SDL_Texture *diceTextures[10];
+	loadDiceTextures(renderer, diceTextures);
+
 	SMap *map = createMap(nbPlayer, renderer,matrice_map, tab_pays);
 	SDL_RenderPresent(renderer);
-	displayMap(renderer,map,matrice_map,NULL, tab_pays);
+	displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
 
 	STurn *turn = malloc(sizeof(STurn));
@@ -50,20 +57,21 @@ int main(int argc, char* argv[]){
 					else{
 						printf("Tour non validé ! \n");
 					}
-				displayMap(renderer,map,matrice_map,turn, tab_pays);
+				displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 				SDL_RenderPresent(renderer);
 			}
 			endTurn(i, map);
-			displayMap(renderer,map,matrice_map,turn, tab_pays);
+			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 			SDL_RenderPresent(renderer);
 		}
 		cpt++;
 	}
 
+	freeDiceTextures(diceTextures);
 	free(turn);
 	free(map);
 	free(info);
-	
+
 	/* Ferme le jeu */
 	destroyWindow(window, renderer);
 	return 0;

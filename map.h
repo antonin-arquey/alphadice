@@ -9,7 +9,11 @@ int aleatoire(int a, int b);
 // Fonction affichant la carte sur le renderer
 // Actuellement en test afin d'afficher juste
 // des hexagones sur la taille de la map
-void displayMap(SDL_Renderer* renderer, SMap *map, int mat_map[800][600], STurn* turn, int tabPays[][2]);
+void displayMap(SDL_Renderer* renderer, SMap *map, int mat_map[800][600], STurn* turn, int tabPays[][2], SDL_Texture *diceTextures[]);
 double getDistance(int x1, int y1, int x2, int y2);
 int isVoisin(SMap *map, int t1, int t2);
 void addVoisin(SMap *map,int tl, int t2);
+
+//Fonction pour load les textures des chiffres et les free
+void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]);
+void freeDiceTextures(SDL_Texture *diceTextures[]);

@@ -127,11 +127,13 @@ void endTurn(int idPlayer, SMap *map)
 // Verifie les paramètres mis par l'utilisateur au lancement du
 // programme.
 int verifArguments(int argc, char* argv[]){
+	int nbPlayer = (atoi(argv[2]));
+	int nbGames = (atoi(argv[1]));
 	if(argc<3){
 		rappelSyntaxe("Mauvais nombre d'arguments\n");
 		return 1;
 	}
-	if(((*argv[1]<48)||(*argv[1]>57))||((*argv[2]<48)||(*argv[2]>57))){
+	if(((nbGames<1)||(nbGames>9))||((nbPlayer<2)||(nbPlayer>8))){
 		rappelSyntaxe("Mauvais paramètres\n");
 		return 1;
 	}

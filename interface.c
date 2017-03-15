@@ -58,3 +58,27 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	}
 	return 1;
 }
+
+int combienDeDices(int idPlayer, const SMap *map){
+	int nbdices = 0;
+	for(int i = 0; i < map->nbCells; i++){
+		if(map->cells[i].owner == idPlayer){
+			nbDices += map->cells[i].nbDices;
+		}
+	}
+	return nbDices;
+}
+
+int combienDeTerritoires(int idPlayer, const SMap *map){
+	int nbterritoires = 0;
+	for(int i = 0; i < map->nbCells; i++){
+		if(map->cells[i].owner == idPlayer){
+			nbTerritoires += 1;
+		}
+	}
+	return nbTerritoires;
+}
+
+int combienDeReserves(int idPlayer, const SMap *map){
+	return map->stack[idPlayer];
+}

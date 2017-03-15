@@ -57,6 +57,10 @@ void moveTurn(SMap *map, STurn *turn)
 Trouve le plus grand nombre de territoire connexe appartenant au joueur passé en paramètre
 */
 int getDiceToDistribute(int idPlayer, SMap *map){
+	/*colorier x avec i
+	pour tout sommet y successeur de x
+	  si y n'est pas colorié faire CC_sommet(G,y,i)*/
+
 	int nbDices = 0;
 	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner == idPlayer){

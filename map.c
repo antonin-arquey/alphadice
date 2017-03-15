@@ -17,7 +17,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 	srand(time(NULL));
 	//creation des elements de la map : map et ces territoires
 	int nb_pays = aleatoire(30,60);
-	int nb_de = (int) (nb_pays * 3)/nbPlayer;
+	int nb_de = (int) (nb_pays * 2)/nbPlayer;
 	SMap *map = malloc(sizeof(SMap));
 	SCell *territoires = malloc(sizeof(SCell) * nb_pays);
 
@@ -197,7 +197,11 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 
 			SDL_FreeSurface(image);
 
-			SDL_RenderCopy(renderer, monImage, NULL, NULL);
+			SDL_Rect position;
+			position.x = 100;
+			position.y = 200;
+			/*SDL_QueryTexture(monImage, NULL, NULL, &position.w, &position.h);
+			SDL_RenderCopy(renderer, monImage, NULL, NULL);*/
 	}
 }
 

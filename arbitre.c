@@ -65,7 +65,7 @@ int getDiceToDistribute(int idPlayer, SMap *map){
 	/*colorier x avec i
 	pour tout sommet y successeur de x
 	  si y n'est pas colorié faire CC_sommet(G,y,i)*/
-	  
+
 	// SCell* tabCell[map->nbCells];
 	// SCell* tabVoisins[map->nbCells];
 	// int i = 0, y = 0, j = 0;
@@ -81,7 +81,7 @@ int getDiceToDistribute(int idPlayer, SMap *map){
 			// cellActive = tabCell[i];
 			// for(;j<cellActive->nbNeighbors;j++){
 				// if(cellActive->neighbors[j]->owner==idPlayer){
-					// tabCell = 
+					// tabCell =
 				// }
 			// }
 			// //vérifier ses voisins
@@ -132,12 +132,15 @@ void endTurn(int idPlayer, SMap *map)
 // Verifie les paramètres mis par l'utilisateur au lancement du
 // programme.
 int verifArguments(int argc, char* argv[]){
-	int nbPlayer = (atoi(argv[2]));
-	int nbGames = (atoi(argv[1]));
+
 	if(argc<3){
 		rappelSyntaxe("Mauvais nombre d'arguments\n");
 		return 1;
 	}
+	
+	int nbPlayer = (atoi(argv[2]));
+	int nbGames = (atoi(argv[1]));
+
 	if(((nbGames<1)||(nbGames>9))||((nbPlayer<2)||(nbPlayer>8))){
 		rappelSyntaxe("Mauvais paramètres\n");
 		return 1;

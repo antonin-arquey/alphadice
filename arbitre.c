@@ -15,6 +15,11 @@ int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn)
 		return -1;
 	}
 
+	if(map->cells[turn->cellFrom].nbDices <= 1)
+	{
+		return -1;
+	}
+
 	//Verifier que la cellule de départ et d'arrivée sont adjacentes
 	for(int i = 0; i < map->cells[turn->cellFrom].nbNeighbors; i++){
 		if(map->cells[turn->cellFrom].neighbors[i]->id == turn->cellTo){

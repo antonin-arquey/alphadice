@@ -17,6 +17,7 @@ int main(int argc, char* argv[]){
 	nbPlayer = atoi(argv[2]);//car retourne le code ascii sans  - '0'
 	nbGame = atoi(argv[1]);
 	int matrice_map[800][600];
+	int tab_pays[80][2];
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
 	InitGame(1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
@@ -24,9 +25,9 @@ int main(int argc, char* argv[]){
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
-	SMap *map = createMap(nbPlayer, renderer,matrice_map);
+	SMap *map = createMap(nbPlayer, renderer,matrice_map, tab_pays);
 	SDL_RenderPresent(renderer);
-	displayMap(renderer,map,matrice_map,NULL);
+	displayMap(renderer,map,matrice_map,NULL, tab_pays);
 	SDL_RenderPresent(renderer);
 
 	STurn *turn = malloc(sizeof(STurn));
@@ -50,11 +51,11 @@ int main(int argc, char* argv[]){
 					else{
 						printf("Tour non validé ! \n");
 					}
-				displayMap(renderer,map,matrice_map,turn);
+				displayMap(renderer,map,matrice_map,turn, tab_pays);
 				SDL_RenderPresent(renderer);
 			}
 			endTurn(i, map);
-			displayMap(renderer,map,matrice_map,turn);
+			displayMap(renderer,map,matrice_map,turn, tab_pays);
 			SDL_RenderPresent(renderer);
 		}
 		cpt++;

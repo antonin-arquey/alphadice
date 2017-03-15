@@ -13,7 +13,7 @@ int aleatoire(int a, int b){
 }
 
 // Fonction initialisant la carte et l'affichant sur le renderer
-SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][size_map_l]){
+SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][size_map_l], int tabPays[][2]){
 	srand(time(NULL));
 	//creation des elements de la map : map et ces territoires
 	int nb_pays = aleatoire(30,60);
@@ -62,7 +62,6 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 
 	/*Initialisation graphique de la map*/
 	int border = 25; //bordure pour que les centres des territoires ne soient pas trop sur les bords.
-	int tabPays[nb_pays][2];
 	for (int j=0;j<size_map_h;j++){
 		for (int k=0;k<size_map_l;k++){
 			mat_map[j][k]=-1;
@@ -161,7 +160,7 @@ void addVoisin(SMap *map, int t1, int t2){
 }
 
 // Fonction affichant la carte sur le renderer
-void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn){
+void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2]){
 	int tabColor[8][4]={{242,202,39,1},
 	{44,195,107,1},{236,94,0,1},
 	{231,76,60,1},{102,0,153,1},
@@ -183,6 +182,22 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 			}
 			createPoint(renderer,j,k);
 		}
+	}
+
+	for(int i = 0 ; i < map->nbCells ; i++)
+	{
+			SDL_Surface* image = SDL_LoadBMP("valeur/0.bmp");
+			if(!image)
+			{
+			    printf("Erreur de chargement de l'image : %s",SDL_GetError());
+			    exit(-1);
+			}
+			SDL_Texture* monImage = SDL_CreateTextureFromSurface(renderer,image);  //La texture monImage contient maintenant l'image importée
+
+
+			SDL_FreeSurface(image);
+
+			SDL_RenderCopy(renderer, monImage, NULL, NULL);
 	}
 }
 

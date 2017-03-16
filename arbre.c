@@ -3,7 +3,7 @@
 #include "arbre.h"
 
 
-SArbre* CreateArbre(int taille){
+SArbre* createArbre(SMap *map, int taille){
 	SArbre *arbre = malloc(sizeof(Noeud));
 	Noeud *newNoeud = malloc(sizeof(Noeud));
 
@@ -11,8 +11,9 @@ SArbre* CreateArbre(int taille){
 
 	newNoeud->nbFils = taille;
 	newNoeud->fils = listeFils;
-	newNoeud->map = NULL;
+	newNoeud->map = map;
 	newNoeud->turn = NULL;
+	newNoeud->proba = 1;
 
 	arbre->head = newNoeud;
 	return arbre;
@@ -22,11 +23,11 @@ Noeud* getFils(Noeud *noeud, int numero){
 	return (noeud->fils) + numero;
 }
 
-void DeleteArbre(SArbre *arbre){
+void deleteArbre(SArbre *arbre){
 	free(arbre);
 }
 
-void AddElement(Noeud *noeud, SMap **map, STurn **turn, int nbElement){
+void addElement(Noeud *noeud, SMap **map, STurn **turn, double tabProba[], int nbElement){
 	Noeud *newNoeuds = malloc(sizeof(Noeud)*nbElement);
 	noeud->fils = newNoeuds;
 	noeud->nbFils = nbElement;
@@ -34,6 +35,7 @@ void AddElement(Noeud *noeud, SMap **map, STurn **turn, int nbElement){
 	for(int i = 0; i < nbElement; i++){
 		newNoeuds[i].map = map[i];
 		newNoeuds[i].turn = turn[i];
+		newNoeuds[i].proba = tabProba[i];
 	}
 }
 

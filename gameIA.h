@@ -1,4 +1,6 @@
 #include "interface.h"
 
 
-int turnAI(int idPlayer, const SMap *map, STurn *turn);
+int turnAI(int idPlayer, SMap *map, STurn *turn);
+void moveTurnWin(SMap *map, STurn *turn);
+void moveTurnFail(SMap *map, STurn *turn);

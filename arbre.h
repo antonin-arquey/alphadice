@@ -4,6 +4,7 @@
 typedef struct Noeud{
 	SMap *map;
   STurn *turn;
+  double proba;
 	struct Noeud *fils;
 	int nbFils;
 }Noeud;
@@ -12,9 +13,9 @@ typedef struct{
 	Noeud *head;
 }SArbre;
 
-SArbre *CreateArbre(int taille);
-void DeleteArbre(SArbre *arbre);
-void AddElement(Noeud *noeud, SMap **map, STurn **turn, int nbElement);
+SArbre *createArbre(SMap *map, int taille);
+void deleteArbre(SArbre *arbre);
+void addElement(Noeud *noeud, SMap **map, STurn **turn, double proba[], int nbElement);
 
 Noeud* getFils(Noeud *noeud, int numero);
 void creation(SArbre *arbre, int niveau);

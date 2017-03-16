@@ -19,7 +19,7 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 }
 
 int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
-	int diff = -10;
+	int diff = 0;
 	int compteur = 0;
 	for(int i = 0; i< map->nbCells; i++){
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
@@ -30,13 +30,13 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 					turn->cellTo = map->cells[i].neighbors[j]->id;
 					compteur += 1;
 				} else if(map->cells[i].neighbors[j]->owner != idPlayer){
-					compteur += 1;
+					//compteur += 1;
 				}
 			}
 		}
 	}
 	printf("il y a %d possibilitées\n", compteur);
-	if(diff != -10){
+	if(diff != 0){
 		return 1;
 	}
 	return 0;

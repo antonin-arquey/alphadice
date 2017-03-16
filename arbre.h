@@ -1,17 +1,26 @@
-#ifndef _ARBRE_H
-#define _ARBRE_H
+#include "interface.h"
+#pragma once
 
-typedef int Data;
-typedef struct Noeud Noeud;
-typedef struct SArbre SArbre;
+typedef struct Noeud{
+	SMap *map;
+  STurn *turn;
+	struct Noeud *fils;
+	int nbFils;
+}Noeud;
 
-SArbre* CreateArbre(int taille);
+typedef struct{
+	Noeud *head;
+}SArbre;
+
+SArbre *CreateArbre(int taille);
 void DeleteArbre(SArbre *arbre);
-void AddElement(Noeud *noeud, Data *elem, int nbElement);
+void AddElement(Noeud *noeud, SMap **map, STurn **turn, int nbElement);
 
-Noeud* headOfArbre(SArbre *arbre);
 Noeud* getFils(Noeud *noeud, int numero);
 void creation(SArbre *arbre, int niveau);
+
+
+
 /*Noeud* AddElementBegin(SArbre *arbre,Data elem);
 Noeud* AddElementEnd(SArbre *arbre,Data elem);
 Noeud* AddElementAfter(SArbre *arbre,Noeud *noeud,Data elem);
@@ -21,6 +30,4 @@ Noeud* GetFirstElement(SArbre *arbre);
 Noeud* GetLastElement(SArbre *arbre);
 Noeud* GetPrevElement(Noeud *noeud);
 Noeud* GetNextElement(Noeud *noeud);*/
-Data getData(Noeud *noeud);
-
-#endif
+//Data getData(Noeud *noeud);

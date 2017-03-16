@@ -3,16 +3,6 @@
 #include "arbre.h"
 
 
-struct Noeud{
-	Data Value;
-	Noeud *Fils;
-	int nbFils;
-};
-
-struct SArbre{
-	Noeud *Head;
-};
-
 SArbre* CreateArbre(int taille){
 	SArbre *arbre = malloc(sizeof(Noeud));
 	Noeud *newNoeud = malloc(sizeof(Noeud));
@@ -20,39 +10,34 @@ SArbre* CreateArbre(int taille){
 	Noeud listeFils[taille];
 
 	newNoeud->nbFils = taille;
-	newNoeud->Fils = listeFils;
-	newNoeud->Value = 12;
+	newNoeud->fils = listeFils;
+	newNoeud->map = NULL;
+	newNoeud->turn = NULL;
 
-	arbre->Head = newNoeud;
+	arbre->head = newNoeud;
 	return arbre;
 }
 
-Noeud* headOfArbre(SArbre *arbre){
-	return arbre->Head;
-}
-
 Noeud* getFils(Noeud *noeud, int numero){
-	return (noeud->Fils) + numero;
+	return (noeud->fils) + numero;
 }
 
 void DeleteArbre(SArbre *arbre){
 	free(arbre);
 }
 
-
-void AddElement(Noeud *noeud, Data *elem, int nbElement){
+void AddElement(Noeud *noeud, SMap **map, STurn **turn, int nbElement){
 	Noeud *newNoeuds = malloc(sizeof(Noeud)*nbElement);
-	noeud->Fils = newNoeuds;
+	noeud->fils = newNoeuds;
 	noeud->nbFils = nbElement;
 
 	for(int i = 0; i < nbElement; i++){
-		newNoeuds->Value = *elem;
-		newNoeuds++;
-		elem++;
+		newNoeuds[i].map = map[i];
+		newNoeuds[i].turn = turn[i];
 	}
 }
 
-int sub(Noeud *noeud, int niv, int tab[],int taille){
+/*int sub(Noeud *noeud, int niv, SMap **map, int taille){
 	//printf("%d\n",niv);
 	if (niv == 0){
 		return 0;
@@ -61,18 +46,18 @@ int sub(Noeud *noeud, int niv, int tab[],int taille){
 	Noeud *fils;
 	for(int i = 0; i < taille; i++){
 		fils = getFils(noeud,i);
-		AddElement(fils,tab,taille);
-		sub(fils,niv,tab,taille);
+		AddElement(fils,map,taille);
+		sub(fils,niv,map,taille);
 	}
 	return 1;
 }
 
 void creation(SArbre *arbre, int niveau){
-	int tab[10] = {45,2};
-	Noeud *head = headOfArbre(arbre);
-	AddElement(head,tab,2);
-	sub(head,--niveau,tab,2);
-}
+	SMap **map = malloc(sizeof(SMap) * 2);
+	Noeud *head = arbre->head;
+	AddElement(head,map,2);
+	sub(head,--niveau,map,2);
+}*/
 /*
 Noeud* AddElementEnd(SArbre *arbre,Data elem){
 	Noeud *newNoeud = malloc(sizeof(elem));

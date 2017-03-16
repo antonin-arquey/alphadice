@@ -43,8 +43,10 @@ int main(int argc, char* argv[]){
 	while(cpt<50){
 		printf("Tour numero : %d\n", cpt);
 		for(int i = 0; i < nbPlayer; i++){
+			printf("Copie de la carte\n");
+			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn(i, map, turn) == 1){
+			while(PlayTurn(i, mapCopy, turn) == 1){
 					//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 					if(verifyTurn(i, map, turn) == 1){
 						//printf("Tour validé ! \n");
@@ -54,6 +56,8 @@ int main(int argc, char* argv[]){
 					else{
 						printf("Tour non validé ! \n");
 					}
+				freeMap(mapCopy);
+				mapCopy = deepCopy(map);
 				displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 				SDL_RenderPresent(renderer);
 			}
@@ -61,6 +65,7 @@ int main(int argc, char* argv[]){
 				printf("Victoire du joueur %d !!\n", i);
 				return 0;
 			}
+			freeMap(mapCopy);
 			endTurn(i, map);
 			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 			SDL_RenderPresent(renderer);
@@ -70,7 +75,7 @@ int main(int argc, char* argv[]){
 
 	freeDiceTextures(diceTextures);
 	free(turn);
-	free(map);
+	freeMap(map);
 	free(info);
 
 	/* Ferme le jeu */

@@ -153,6 +153,10 @@ int verifArguments(int argc, char* argv[]){
 	return 0;
 }
 
+/* Renvoie 1 si le joueur correspondant a l'id passé en parametres a gagné
+	0 sinon
+*/
+
 int victoire(unsigned int idPlayer, SMap *map){
 	for(int i = 0; i < map->nbCells; i++)	{
 		if(map->cells[i].owner != idPlayer){
@@ -161,6 +165,63 @@ int victoire(unsigned int idPlayer, SMap *map){
 	}
 	return 1;
 }
+
+/*
+	Fonction permettant de renvoyer une copie profonde de la map
+*/
+SMap* deepCopy(SMap *map)
+{
+	SMap* mapCopy = malloc(sizeof(SMap));
+
+	if(mapCopy == NULL)
+		exit(-1);
+
+	mapCopy->nbCells = map->nbCells;
+	mapCopy->cells = malloc(mapCopy->nbCells * sizeof(SCell));
+
+	if(mapCopy->cells == NULL)
+		exit(-1);
+
+	for(int i=0 ; i < mapCopy->nbCells; i++)
+	{
+		mapCopy->cells[i].id = map->cells[i].id;
+		mapCopy->cells[i].owner = map->cells[i].owner;
+		mapCopy->cells[i].nbDices = map->cells[i].nbDices;
+		mapCopy->cells[i].nbNeighbors = map->cells[i].nbNeighbors;
+		mapCopy->cells[i].neighbors = malloc(mapCopy->cells[i].nbNeighbors * sizeof(SCell*));
+
+		if(mapCopy->cells[i].neighbors == NULL)
+			exit(-1);
+	}
+
+	for(int i=0 ; i < mapCopy->nbCells; i++)
+	{
+		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++)
+		{
+			int idToAdd = map->cells[i].neighbors[j]->id;
+			mapCopy->cells[i].neighbors[j] = &(mapCopy->cells[idToAdd]);
+		}
+	}
+
+	return mapCopy;
+}
+
+/*
+	Libere proprement la mémoire occupé par la map
+*/
+void freeMap(SMap *map)
+{
+	if(map != NULL)
+	{
+		for(int i=0 ; i  < map->nbCells ; i++)
+		{
+			free(map->cells[i].neighbors);
+		}
+		free(map->cells);
+		free(map);
+	}
+}
+
 // Affichage des régles en cas de problème de paramètre au lancement
 void rappelSyntaxe(char* affichage){
 	printf("%s",affichage);

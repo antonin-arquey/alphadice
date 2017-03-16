@@ -18,30 +18,30 @@ typedef struct SCell
 	int nbNeighbors;	// Nombre de cellules voisines
 } SCell;
 
-// Structure d�finissant la carte globale du jeu
+// Structure definissant la carte globale du jeu
 typedef struct
 {
   SCell *cells;	// Tableau des cellules
   int nbCells;	// Nombre de cellules
-  unsigned int *stack;	// Nombre de d�s en r�serve par joueur -tableau dim nb joueur)
+  unsigned int *stack;	// Nombre de des en reserve par joueur -tableau dim nb joueur)
 } SMap;
 
-// Structure d�finissant les param�tres d'un coup jou�
+// Structure definissant les parametres d'un coup joue
 typedef struct
 {
 	unsigned int cellFrom;
 	unsigned int cellTo;
 } STurn;
 
-// Fonction � appeler au d�but de chaque partie
-// La strat�gie doit compl�ter la structure SPlayerInfo
+// Fonction a appeler au debut de chaque partie
+// La strategie doit completer la structure SPlayerInfo
 void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info);
 
-// Fonction � appeler � chaque tour sur la strat�gie et tant que le retour de fonction est vrai et qu'il n'y a pas d'erreur.
+// Fonction a appeler a chaque tour sur la strategie et tant que le retour de fonction est vrai et qu'il n'y a pas d'erreur.
 //	* Ne pas oublier pour l'arbitre de dupliquer toute la structure map pour chaque appel !
-//	* En cas d'erreur, r�tablir la carte dans l'�tat initial avant le premier tour du joueur.
-// valeur de retour : bool�en : 0 coups termin�s, 1 structure turn compl�t�e avec un nouveau coup � jouer.
+//	* En cas d'erreur, retablir la carte dans l'etat initial avant le premier tour du joueur.
+// valeur de retour : booleen : 0 coups termines, 1 structure turn completee avec un nouveau coup a jouer.
 int PlayTurn(int idPlayer, const SMap *map, STurn *turn);
 
-// Fonction � appeler � la fin de chaque partie
+// Fonction a appeler a la fin de chaque partie
 void EndGame(unsigned int idWinner);

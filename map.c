@@ -233,12 +233,8 @@ void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[])
 	char filename[20] = "valeur/0.bmp";
 	for(int i = 0 ; i < 9 ; i++)
 	{
-		char test = i + '0' ;
-		printf("char : %c\n", test);
-		printf("%s\n", filename);
-		printf("%c\n", filename[7]);
-		filename[7] = test;
-		printf("%s\n", filename);
+		char remp = i + '0' ;
+		filename[7] = remp;
 		SDL_Surface* image = SDL_LoadBMP(filename);
 		SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 255, 255, 255));
 		if(!image)

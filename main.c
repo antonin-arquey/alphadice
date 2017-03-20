@@ -4,9 +4,9 @@
 #include "renderer.h"
 #include "arbitre.h"
 #include "map.h"
-#include "interface.h"
 #include "gameIA.h"
 #include <unistd.h>
+#include <dlfcn.h>
 
 
 int main(int argc, char* argv[]){
@@ -17,9 +17,39 @@ int main(int argc, char* argv[]){
 	}
 	nbPlayer = atoi(argv[2]);
 	nbGame = atoi(argv[1]);
+
+	/* Chargement de la librairie dynamique */
+
+	void *lib;
+	typedef int (*playT)(int, const SMap*, STurn*);
+	typedef void (*initG)(unsigned int, unsigned int, SPlayerInfo*);
+	playT PlayTurn;
+	initG InitGame;
+
+	if((lib = dlopen(argv[3], RTLD_LAZY))==NULL)
+	{
+		fprintf(stderr, "Erreur d'ouverture de la librairie %s\n", argv[3]);
+		fprintf(stderr, "%s\n", dlerror());
+		return 1;
+	}
+
+	if((PlayTurn = (playT) dlsym(lib, "PlayTurn")) == NULL)
+	{
+		fprintf(stderr, "Erreur de chargement de la fonction PlayTurn\n");
+		return 1;
+	}
+
+	if((InitGame = (initG) dlsym(lib, "InitGame")) == NULL)
+	{
+		fprintf(stderr, "Erreur de chargement de la fonction InitGame\n");
+		return 1;
+	}
+
+
+	/* Fin chargement librarie dynamique */
+
 	int matrice_map[800][600];
 	int tab_pays[80][2];
-
 
 
 	/*Initialisation du jeu */
@@ -81,5 +111,6 @@ int main(int argc, char* argv[]){
 
 	/* Ferme le jeu */
 	destroyWindow(window, renderer);
+	dlclose(lib);
 	return 0;
 }

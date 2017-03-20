@@ -20,26 +20,33 @@ double tabProba[8][8] = {{0.416652, 0.092621, 0.011578, 0.000773, 0.000021, 0, 	
 												 {1,				0.999801, 0.994674, 0.961525, 0.862370, 0.685111, 0.469154, 0.274377},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
-int turnAI(int idPlayer, SMap *map, STurn *turn){
+int turnIA(int idPlayer, SMap *map, STurn *turn){
 	int compteur = 0;
 	STurn **turns = malloc(sizeof(STurn) * 200);
 	SMap **maps = malloc(sizeof(SMap) * 200);
 	double proba[200];
-
+	printf("ok\n");
 	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner = idPlayer){
 			for(int y = 0; y < map->cells[i].nbNeighbors; y++){
 				if(map->cells[i].neighbors[y]->owner != idPlayer){
+					printf("ok if %d\n", map->cells[i].id);
 					turns[compteur]->cellFrom = map->cells[i].id;
+					printf("turns1\n");
 					turns[compteur]->cellTo = map->cells[i].neighbors[y]->id;
+					printf("turn2\n");
 					proba[compteur] = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[y]->nbDices];
+					printf("proba\n");
 					maps[compteur] = deepCopy(map);
+					printf("copy\n");
 					moveTurnFail(maps[compteur], turns[compteur]);
+					printf("fail\n");
 					++compteur;
 					proba[compteur] = 1 - proba[compteur - 1];
 					maps[compteur] = deepCopy(map);
 					moveTurnWin(maps[compteur], turns[compteur]);
 					++compteur;
+					printf("ok for\n");
 				}
 			}
 		}
@@ -47,13 +54,61 @@ int turnAI(int idPlayer, SMap *map, STurn *turn){
 	compteur--;
 	SArbre *arbre;
 	arbre = createArbre(map, compteur);
+	printf("cration\n");
 	addElement(arbre->head, maps, turns, proba, compteur);
-	free(arbre);
-	free(turns);
-	free(maps);
-	return 1;
+	printf("ajout\n");
+	if(bestMove(idPlayer, arbre, turn)){
+		return 1;
+	}
+
+	//free(arbre);
+	//free(turns);
+	//free(maps);
+	return 0;
 }
 
+int bestMove(int idPlayer, SArbre *arbre, STurn *turn){
+	int bouge = 0;
+	double valHead = mapEvaluation(idPlayer, arbre->head->map);
+	double valMax = valHead;
+	double val;
+	for(int i = 0; i < arbre->head->nbFils; i++){
+		val = arbre->head->fils[i].proba * mapEvaluation(idPlayer, arbre->head->fils[i].map) + arbre->head->fils[i+1].proba * mapEvaluation(idPlayer, arbre->head->fils[i+1].map);
+		if (val > valMax){
+			valMax = val;
+			turn = arbre->head->fils[i].turn;
+			bouge = 1;
+		}
+	}
+	return bouge;
+}
+
+int mapEvaluation(int idPlayer, SMap *map){
+	int alpha = 1; int beta = 1;
+	int value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);
+
+	return value;
+}
+
+int getAmountOfDices(int idPlayer, SMap *map){
+	int nbDices = 0;
+	for(int i = 0; i < map->nbCells; i++){
+		if(map->cells[i].owner == idPlayer){
+			nbDices += map->cells[i].nbDices;
+		}
+	}
+	return nbDices;
+}
+
+int getDicesToDistribute(int idPlayer, SMap *map){
+	int nbDices = 0;
+	for(int i = 0; i < map->nbCells; i++){
+		if(map->cells[i].owner == idPlayer){
+			nbDices += 1;
+		}
+	}
+	return nbDices;
+}
 
 void moveTurnFail(SMap *map, STurn *turn){
 	map->cells[turn->cellFrom].nbDices = 1;

@@ -169,8 +169,7 @@ int victoire(unsigned int idPlayer, SMap *map){
 /*
 	Fonction permettant de renvoyer une copie profonde de la map
 */
-SMap* deepCopy(SMap *map)
-{
+SMap* deepCopy(SMap *map){
 	SMap* mapCopy = malloc(sizeof(SMap));
 
 	if(mapCopy == NULL)
@@ -182,8 +181,7 @@ SMap* deepCopy(SMap *map)
 	if(mapCopy->cells == NULL)
 		exit(-1);
 
-	for(int i=0 ; i < mapCopy->nbCells; i++)
-	{
+	for(int i=0 ; i < mapCopy->nbCells; i++){
 		mapCopy->cells[i].id = map->cells[i].id;
 		mapCopy->cells[i].owner = map->cells[i].owner;
 		mapCopy->cells[i].nbDices = map->cells[i].nbDices;
@@ -194,27 +192,21 @@ SMap* deepCopy(SMap *map)
 			exit(-1);
 	}
 
-	for(int i=0 ; i < mapCopy->nbCells; i++)
-	{
-		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++)
-		{
+	for(int i=0 ; i < mapCopy->nbCells; i++){
+		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++){
 			int idToAdd = map->cells[i].neighbors[j]->id;
 			mapCopy->cells[i].neighbors[j] = &(mapCopy->cells[idToAdd]);
 		}
 	}
-
 	return mapCopy;
 }
 
 /*
 	Libere proprement la mémoire occupé par la map
 */
-void freeMap(SMap *map)
-{
-	if(map != NULL)
-	{
-		for(int i=0 ; i  < map->nbCells ; i++)
-		{
+void freeMap(SMap *map){
+	if(map != NULL){
+		for(int i=0 ; i  < map->nbCells ; i++){
 			free(map->cells[i].neighbors);
 		}
 		free(map->cells);

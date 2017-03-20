@@ -5,6 +5,7 @@
 #include "arbitre.h"
 #include "map.h"
 #include "interface.h"
+#include "gameIA.h"
 #include <unistd.h>
 
 
@@ -46,7 +47,7 @@ int main(int argc, char* argv[]){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn(i, mapCopy, turn) == 1){
+			while(PlayTurn(i, mapCopy, turn) == 1){//PlayTurn
 					//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 					if(verifyTurn(i, map, turn) == 1){
 						//printf("Tour validé ! \n");

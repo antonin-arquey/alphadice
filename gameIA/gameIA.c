@@ -1,7 +1,6 @@
 #include "gameIA.h"
 #include "arbre.h"
 #include "interface.h"
-#include "arbitre.h"//pour utiliser les fonction que Antonin à deja codées
 #include <stdlib.h>
 #include <stdio.h>
 

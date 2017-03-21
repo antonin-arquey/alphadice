@@ -19,11 +19,11 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 	}
 }
 
-int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
+int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
   return turnIA(idPlayer, map, turn);
 }
 
-int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
+int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	int diff = 0;
 	int compteur = 0;
 	for(int i = 0; i< map->nbCells; i++){

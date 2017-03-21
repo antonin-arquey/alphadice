@@ -10,10 +10,4 @@ AlphaDice: $(OBJ)
 	gcc -g -std=c99 -o $@ $^ $(CFLAGS) -ldl
 
 clean:
-	rm -rf AlphaDice interface.o interface.so
-
-interface.so: interface.o
-	gcc -shared -o interface.so interface.o && rm -rf interface.o
-
-interface.o: interface.h interface.c 
-	gcc -fPIC -c interface.c -std=c99
+	rm -rf AlphaDice interface.o

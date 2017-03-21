@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <dlfcn.h>
 #include "libLoader.h"
+#include "interface.h"
 
-void** loadLib(int nbLib, char* lib1, char* lib2, initG initTab[], playT *playTab[])
+void** loadLib(int nbLib, char *lib1, char *lib2, initG initTab[], playT playTab[])
 {
   if(nbLib < 1 || nbLib > 2)
   {
@@ -12,7 +14,7 @@ void** loadLib(int nbLib, char* lib1, char* lib2, initG initTab[], playT *playTa
 
   void **libs = malloc(nbLib * sizeof(void*));
 
-  if(lib1 == NULL || (lib[0] = dlopen(lib1, RTLD_LAZY))==NULL)
+  if(lib1 == NULL || (libs[0] = dlopen(lib1, RTLD_LAZY))==NULL)
   {
   	fprintf(stderr, "Erreur d'ouverture de la librairie %s\n", lib1);
   	fprintf(stderr, "%s\n", dlerror());
@@ -21,7 +23,7 @@ void** loadLib(int nbLib, char* lib1, char* lib2, initG initTab[], playT *playTa
 
   if(nbLib > 1)
   {
-    if(lib1 == NULL || (lib[1] = dlopen(lib2, RTLD_LAZY))==NULL)
+    if(lib1 == NULL || (libs[1] = dlopen(lib2, RTLD_LAZY))==NULL)
     {
     	fprintf(stderr, "Erreur d'ouverture de la librairie %s\n", lib2);
     	fprintf(stderr, "%s\n", dlerror());
@@ -31,18 +33,18 @@ void** loadLib(int nbLib, char* lib1, char* lib2, initG initTab[], playT *playTa
 
   for(int i = 0 ; i < nbLib ; i++)
   {
-    if((initTab[i] = (initG) dlsym(lib[i], "InitGame")) == NULL)
+    if((initTab[i] = (initG) dlsym(libs[i], "InitGame")) == NULL)
     {
       fprintf(stderr, "Erreur de chargement de la fonction InitGame\n");
       fprintf(stderr, "%s\n", dlerror());
-      return 1;
+      exit(-1);
     }
 
-    if((playTab[i] = (playT) dlsym(lib[i], "PlayTurn")) == NULL)
+    if((playTab[i] = (playT) dlsym(libs[i], "PlayTurn")) == NULL)
   	{
   		fprintf(stderr, "Erreur de chargement de la fonction PlayTurn\n");
   		fprintf(stderr, "%s\n", dlerror());
-  		return 1;
+  		exit(-1);
   	}
   }
 

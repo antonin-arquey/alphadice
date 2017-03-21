@@ -7,8 +7,6 @@
 #include "gameIA.h"
 #include "libLoader.h"
 #include <unistd.h>
-#include <dlfcn.h>
-
 
 int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
@@ -25,7 +23,7 @@ int main(int argc, char* argv[]){
 	playT PlayTurn[nbLib];
 	initG InitGame[nbLib];
 
-	libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn)
+	libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn);
 
 
 	/* Fin chargement librarie dynamique */

@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS= `sdl2-config --cflags --libs`
-DEPS = window.h renderer.h map.h arbitre.h arbre.h gameIA.h
-OBJ = window.c main.c renderer.c map.c arbitre.c arbre.c gameIA.c interface.so
+DEPS = window.h renderer.h map.h arbitre.h arbre.h gameIA.h libLoader.h
+OBJ = window.c main.c renderer.c map.c arbitre.c arbre.c gameIA.c libLoader.c
 
 %.o: %.c $(DEPS)
 	$(CC) -std=c99 -c -o $@ $< $(CFLAGS) -lm

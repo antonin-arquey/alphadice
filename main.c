@@ -11,22 +11,29 @@
 int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
 	int nbPlayer, nbGame;
-	if(verifArguments(argc, argv)){
+	int nbLib = 0;
+	if(verifArguments(argc, argv, &nbLib)){
 		return 1;
 	}
 	nbPlayer = atoi(argv[2]);
 	nbGame = atoi(argv[1]);
 
 	/* Chargement de la librairie dynamique */
-	int nbLib = 1; //Il faudrait rentrer ce parametre en fonction des arguments
-	void **libs;
-	playT PlayTurn[nbLib];
-	initG InitGame[nbLib];
+	if(nbLib > 0)
+	{
+		void **libs;
+		playT PlayTurn[nbLib];
+		initG InitGame[nbLib];
 
-	libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn);
-
-
-	/* Fin chargement librarie dynamique */
+		if(nbLib == 1) //Si une seule librairie
+		{
+			libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn);
+		}
+		else //Si deux libraries
+		{
+			libs = loadLib(nbLib, argv[3], argv[4], InitGame, PlayTurn);
+		}
+	}
 
 	int matrice_map[800][600];
 	int tab_pays[80][2];

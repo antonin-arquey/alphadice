@@ -3,7 +3,7 @@
 
 // Verifie les paramètres mis par l'utilisateur au lancement du
 // programme.
-int verifArguments(int argc, char* argv[]);
+int verifArguments(int argc, char* argv[], int *nbLib);
 
 // Affichage des régles en cas de problème de paramètre au lancement
 void rappelSyntaxe(char* affichage);

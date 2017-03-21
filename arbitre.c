@@ -130,10 +130,10 @@ void endTurn(int idPlayer, SMap *map)
 }
 
 // Verifie les paramètres mis par l'utilisateur au lancement du
-// programme.
-int verifArguments(int argc, char* argv[]){
+// programme. Modifie la valeur du pointeur nbLib passé en parametre pour matcher le nombre de lib
+int verifArguments(int argc, char* argv[], int *nbLib){
 
-	if(argc<3){
+	if(argc<3 || argc>5){
 		rappelSyntaxe("Mauvais nombre d'arguments\n");
 		return 1;
 	}
@@ -145,11 +145,13 @@ int verifArguments(int argc, char* argv[]){
 		rappelSyntaxe("Mauvais paramètres\n");
 		return 1;
 	}
-	if(argc>3){
-		if(argc-3>atoi(argv[2])){
-			rappelSyntaxe("Trop de paramètres par rapport au nombre de joueurs\n");
-		}
+	if(argc >= 4){
+		*nbLib++;
 	}
+	if(argc == 5){
+		*nbLib++;
+	}
+
 	return 0;
 }
 

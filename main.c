@@ -5,6 +5,7 @@
 #include "arbitre.h"
 #include "map.h"
 #include "gameIA.h"
+#include "libLoader.h"
 #include <unistd.h>
 #include <dlfcn.h>
 
@@ -19,31 +20,12 @@ int main(int argc, char* argv[]){
 	nbGame = atoi(argv[1]);
 
 	/* Chargement de la librairie dynamique */
+	int nbLib = 1; //Il faudrait rentrer ce parametre en fonction des arguments
+	void **libs;
+	playT PlayTurn[nbLib];
+	initG InitGame[nbLib];
 
-	void *lib;
-	typedef int (*playT)(int, const SMap*, STurn*);
-	typedef void (*initG)(unsigned int, unsigned int, SPlayerInfo*);
-	playT PlayTurn;
-	initG InitGame;
-
-	if((lib = dlopen(argv[3], RTLD_LAZY))==NULL)
-	{
-		fprintf(stderr, "Erreur d'ouverture de la librairie %s\n", argv[3]);
-		fprintf(stderr, "%s\n", dlerror());
-		return 1;
-	}
-
-	if((PlayTurn = (playT) dlsym(lib, "PlayTurn")) == NULL)
-	{
-		fprintf(stderr, "Erreur de chargement de la fonction PlayTurn\n");
-		return 1;
-	}
-
-	if((InitGame = (initG) dlsym(lib, "InitGame")) == NULL)
-	{
-		fprintf(stderr, "Erreur de chargement de la fonction InitGame\n");
-		return 1;
-	}
+	libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn)
 
 
 	/* Fin chargement librarie dynamique */
@@ -54,7 +36,7 @@ int main(int argc, char* argv[]){
 
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
-	InitGame(1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
+	InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
 
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
@@ -71,13 +53,13 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
 	int cpt=0;
-	while(cpt<50){
+	while(cpt<50 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
 		for(int i = 0; i < nbPlayer; i++){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn(i, mapCopy, turn) == 1){//PlayTurn
+			while(PlayTurn[0](i, mapCopy, turn) == 1){//PlayTurn
 					//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 					if(verifyTurn(i, map, turn) == 1){
 						//printf("Tour validé ! \n");
@@ -111,6 +93,6 @@ int main(int argc, char* argv[]){
 
 	/* Ferme le jeu */
 	destroyWindow(window, renderer);
-	dlclose(lib);
+	freeLib(libs, nbLib);
 	return 0;
 }

@@ -9,3 +9,4 @@ int getDicesToDistribute(int idPlayer, SMap *map);
 int getAmountOfDices(int idPlayer, SMap *map);
 int mapEvaluation(int idPlayer, SMap *map);
 int bestMove(int idPlayer, SArbre *arbre, STurn *turn);
+SMap* deepCopy(const SMap *map);

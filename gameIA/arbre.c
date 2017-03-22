@@ -3,17 +3,17 @@
 #include "arbre.h"
 
 
-SArbre* createArbre(SMap *map, int taille){
-	SArbre *arbre = malloc(sizeof(Noeud));
+SArbre* createArbre(SMap *map){
+	SArbre *arbre = malloc(sizeof(SArbre));
 	Noeud *newNoeud = malloc(sizeof(Noeud));
 
 	Noeud listeFils[taille];
 
-	newNoeud->nbFils = taille;
-	newNoeud->fils = listeFils;
+	newNoeud->nbFils = 0;
+	newNoeud->fils = NULL;
 	newNoeud->map = map;
 	newNoeud->turn = NULL;
-	newNoeud->proba = 1;
+	newNoeud->proba = 0;
 
 	arbre->head = newNoeud;
 	return arbre;

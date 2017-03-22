@@ -24,37 +24,23 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 	STurn **turns = malloc(sizeof(STurn) * 200);
 	SMap **maps = malloc(sizeof(SMap) * 200);
 	double proba[200];
-	printf("ok\n");
+
+	SArbre *arbre = createArbre(deepcopy(map));
 	for(int i = 0; i < map->nbCells; i++){
-		if(map->cells[i].owner = idPlayer){
+		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
 			for(int y = 0; y < map->cells[i].nbNeighbors; y++){
 				if(map->cells[i].neighbors[y]->owner != idPlayer){
-					printf("ok if %d\n", map->cells[i].id);
-					turns[compteur]->cellFrom = map->cells[i].id;
-					printf("turns1\n");
-					turns[compteur]->cellTo = map->cells[i].neighbors[y]->id;
-					printf("turn2\n");
-					proba[compteur] = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[y]->nbDices];
-					printf("proba\n");
-					//maps[compteur] = deepCopy(map);
-					printf("copy\n");
-					moveTurnFail(maps[compteur], turns[compteur]);
-					printf("fail\n");
-					++compteur;
-					proba[compteur] = 1 - proba[compteur - 1];
-					//maps[compteur] = deepCopy(map);
-					moveTurnWin(maps[compteur], turns[compteur]);
-					++compteur;
-					printf("ok for\n");
+					addChanceNode(arbre, map);
 				}
 			}
 		}
 	}
+	return 0;
 	compteur--;
 	SArbre *arbre;
-	//arbre = createArbre(map, compteur);
-	printf("cration\n");
-	//addElement(arbre->head, maps, turns, proba, compteur);
+	arbre = createArbre(deepCopy(map), compteur);
+	printf("creation\n");
+	addElement(arbre->head, maps, turns, proba, compteur);
 	printf("ajout\n");
 	if(bestMove(idPlayer, arbre, turn)){
 		return 1;
@@ -119,4 +105,36 @@ void moveTurnWin(SMap *map, STurn *turn){
 	cellDefender->owner = cellAttacker->owner;
 	cellDefender->nbDices = cellAttacker->nbDices - 1;
 	cellAttacker->nbDices = 1;
+}
+
+SMap* deepCopy(const SMap *map){
+	SMap* mapCopy = malloc(sizeof(SMap));
+
+	if(mapCopy == NULL)
+		exit(-1);
+
+	mapCopy->nbCells = map->nbCells;
+	mapCopy->cells = malloc(mapCopy->nbCells * sizeof(SCell));
+
+	if(mapCopy->cells == NULL)
+		exit(-1);
+
+	for(int i=0 ; i < mapCopy->nbCells; i++){
+		mapCopy->cells[i].id = map->cells[i].id;
+		mapCopy->cells[i].owner = map->cells[i].owner;
+		mapCopy->cells[i].nbDices = map->cells[i].nbDices;
+		mapCopy->cells[i].nbNeighbors = map->cells[i].nbNeighbors;
+		mapCopy->cells[i].neighbors = malloc(mapCopy->cells[i].nbNeighbors * sizeof(SCell*));
+
+		if(mapCopy->cells[i].neighbors == NULL)
+			exit(-1);
+	}
+
+	for(int i=0 ; i < mapCopy->nbCells; i++){
+		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++){
+			int idToAdd = map->cells[i].neighbors[j]->id;
+			mapCopy->cells[i].neighbors[j] = &(mapCopy->cells[idToAdd]);
+		}
+	}
+	return mapCopy;
 }

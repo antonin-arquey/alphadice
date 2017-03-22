@@ -66,31 +66,52 @@ int getDiceToDistribute(int idPlayer, SMap *map){
 	pour tout sommet y successeur de x
 	  si y n'est pas colorié faire CC_sommet(G,y,i)*/
 
-	// SCell* tabCell[map->nbCells];
-	// SCell* tabVoisins[map->nbCells];
-	// int i = 0, y = 0, j = 0;
-	// SCell* cellActive;
-	// for(;i<nbCells;i++){
-		// if (map->cells[i]->owner == idPlayer){
-			// tabCell[y]=map->cells[i];
-			// y++;
-		// }
-	// }
-	// for(i = 0; i<y; i++){
-		// if(tabCell[i]!=NULL){
-			// cellActive = tabCell[i];
-			// for(;j<cellActive->nbNeighbors;j++){
-				// if(cellActive->neighbors[j]->owner==idPlayer){
-					// tabCell =
-				// }
-			// }
-			// //vérifier ses voisins
-			// //Remplir un tableau des voisins du même joueur
-			// //Retirer ces voisins de tabCell
-			// //Regarder les voisins de chaque voisins
-			// //a chaque récursion augmenter de 1 et retirer les cellules de la liste
-		// }
-	// }
+	SCell* tabCellOwner[map->nbCells];
+	SCell* tabVoisins[map->nbCells];
+	int i = 0, y = 0, j = 0, z = 0, count = 0, x = 0, bestCount = 0, n = 0;
+	SCell* cellActive;
+	//Rempli le tableau de toutes les cellules du joueur
+	for(;i<nbCells;i++){
+		if (map->cells[i]->owner == idPlayer){
+			tabCellOwner[y]=map->cells[i];
+			y++;
+		}
+	}
+
+	//Boucle sur la taille du tableau des cellules du joueur
+	for(i = 0; i<y; i++){
+		//Si la cellule existe (Et non écrasée plus tard)
+		if(tabCellOwner[i]!=NULL){
+			cellActive = tabCellOwner[i];
+			//Pour chaque voisin de la cellule actuelle
+			for(;j<cellActive->nbNeighbors;j++){
+				//Si le voisin actuel est au même joueur
+				if(cellActive->neighbors[j]->owner==idPlayer){
+					//On cherche cette cellule dans le tableau des cellules du joueur pour la supprimer comme on va
+					//vérifier plus tard ses voisins par récursivité plus en utilisant le tableau tabVoisins.
+					for(; z < y; y++){
+						if(tabCellOwner[z]==cellActive->neighbors){
+							tabCellOwner[z] = NULL;
+							tabVoisins[x] = cellActive->neighbors[j];
+							x++;
+							count += 1;
+						}
+					}
+				}
+			}
+		}
+		//On met à jour le count avec les recursions sur le tableau des voisins
+		count += recurGetDiceToDistribute(tabCellOwner, tabVoisins);
+		if (bestCount < count){
+			bestCount = count;
+		}
+		// On remet à 0 le tableau des voisins pour le prochain territoire
+		for(;n<x;n++){
+			tabVoisins[n] == NULL;
+		}
+
+	}
+	return bestCount;
 
 	int nbDices = 0;
 	for(int i = 0; i < map->nbCells; i++){
@@ -99,6 +120,11 @@ int getDiceToDistribute(int idPlayer, SMap *map){
 		}
 	}
 	return nbDices;
+}
+
+int recurGetDiceToDistribute(Scell* tabCellOwner, Scell*  tabVoisins){
+	int count = 0;
+	return count;
 }
 
 /*

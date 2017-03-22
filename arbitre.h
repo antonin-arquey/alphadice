@@ -21,6 +21,8 @@ void endTurn(int idPlayer, SMap *map);
 
 int getDiceToDistribute(int idPlayer, SMap *map);
 
+int recurGetDiceToDistribute(Scell* tabCellOwner, Scell*  tabVoisins);
+
 int victoire(unsigned int idPlayer, SMap *map);
 
 void freeMap(SMap *map);

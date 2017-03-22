@@ -19,11 +19,11 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 	}
 }
 
-int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
+int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
   return turnIA(idPlayer, map, turn);
 }
 
-int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
+int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	int diff = 0;
 	int compteur = 0;
 	for(int i = 0; i< map->nbCells; i++){
@@ -35,7 +35,7 @@ int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
 					turn->cellTo = map->cells[i].neighbors[j]->id;
 					compteur += 1;
 				} else if(map->cells[i].neighbors[j]->owner != idPlayer){
-					//compteur += 1;
+					compteur += 1;
 				}
 			}
 		}
@@ -45,47 +45,6 @@ int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
 		return 1;
 	}
 	return 0;
-}
-
-int PlayTurnFirst(int idPlayer, const SMap *map, STurn *turn){
-	int nbPays = map->nbCells;
-	int nbMaxDices = 0;
-	SCell *territoires = map->cells;
-	int modif = 0;
-
-	for(int i = 0; i < nbPays; i ++){
-		if (territoires[i].owner == idPlayer && territoires[i].nbDices > nbMaxDices && territoires[i].nbDices > 1){
-			nbMaxDices = territoires[i].nbDices;
-			turn->cellFrom = territoires[i].id;
-			modif = 1;
-		}
-	}
-	if(modif == 0){
-		printf("Le joueur a perdu\n");
-		return 0;
-	}
-	modif = 0;
-	SCell **voisins = map->cells[turn->cellFrom].neighbors;
-	int nbVoisins = map->cells[turn->cellFrom].nbNeighbors;
-	int nbMinDices = 10;
-	int amoi = 0;
-	for(int i = 0; i < nbVoisins; i++){
-		if (voisins[i]->owner != idPlayer && voisins[i]->nbDices < nbMinDices){
-			nbMinDices = voisins[i]->nbDices;
-			turn->cellTo = voisins[i]->id;
-			modif = 1;
-		}
-		if(voisins[i]->owner == idPlayer){
-			amoi++;
-		} else if(modif == 0){
-			printf("%d\n", voisins[i]->nbDices);
-		}
-	}
-	if(modif == 0){
-		printf("nbVoisins : %d/%d\n", amoi, nbVoisins);
-		return 0;
-	}
-	return 1;
 }
 
 int combienDeDices(int idPlayer, const SMap *map){

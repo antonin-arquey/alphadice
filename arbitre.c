@@ -172,7 +172,6 @@ int verifArguments(int argc, char* argv[], int *nbLib){
 	if(argc == 5){
 		*nbLib++;
 	}
-
 	return 0;
 }
 
@@ -242,6 +241,6 @@ void rappelSyntaxe(char* affichage){
 	printf("%s",affichage);
 	printf("Parametre 1 : Nombre de parties souhaitees (max 9)\n");
 	printf("Parametre 2 : Nombre de joueurs souhaites (max 8)\n");
-	printf("Parametre 3 et + : Fichiers d'IA a utiliser (Optionnel)\n");
+	printf("Parametre 3 et + : Fichiers d'IA a utiliser (max 2)\n");
 	printf("Exemple : ./AlphaDice 2 6\n");
 }

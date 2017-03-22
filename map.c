@@ -55,9 +55,9 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 	}
 
 	//affichage pour voir s'il reste des dés
-	for(int i = 0; i < nbPlayer; i++){
+	/*for(int i = 0; i < nbPlayer; i++){
 		printf("Il reste %d dés pour le joueur %d\n", deJoueur[i], i);
-	}
+	}*/
 
 
 	/*Initialisation graphique de la map*/
@@ -75,7 +75,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		k = aleatoire(border,size_map_l - border);
 		mat_map[i][k]=j; tabPays[j][0]=i;	tabPays[j][1]=k;
 	}
-	printf("Germe territoire crées\n");
+	//printf("Germe territoire crées\n");
 	//génération des territoires
 	for (int j=0;j<size_map_h;j++){
 		for (int k=0;k<size_map_l;k++){
@@ -125,14 +125,14 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		}
 	}
 
-	for (int j=0;j<size_map_h/20;j++){
+	/*for (int j=0;j<size_map_h/20;j++){
 		for (int k=0;k<size_map_l/20;k++){
 			printf("%d ",mat_map[j][k]);
 		}
 		printf("\n");
-	}
+	}*/
 
-	for(int i = 0; i < nb_pays; i++){
+	/*for(int i = 0; i < nb_pays; i++){
 		printf("Territoire id = %d\n",territoires[i].id);
 		printf("nbVoisins = %d\n",territoires[i].nbNeighbors);
 		printf("Voisins :\n");
@@ -141,7 +141,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 			printf("%d ",territoires[i].neighbors[j]->id);
 		}
 		printf("\n");
-	}
+	}*/
 
 	return map;
 }
@@ -217,28 +217,23 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 double getDistance(int x1, int y1, int x2, int y2){
 	double d1 = (x2-x1);
 	double d2 = (y2-y1);
-	if (d1 < 0){
-		d1 = -1*d1;
-	}
-	if(d2< 0){
-		d2 = -1 * d2;
-	}
-	/*double d1 = (x2-x1)*(x2-x1);
-	double d2 = (y2-y1)*(y2-y1);*/
+	if (d1 < 0)
+		d1 = -d1;
+
+	if(d2 < 0)
+		d2 = -d2;
+
 	return (d1+d2);
 }
 
-void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[])
-{
+void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]){
 	char filename[20] = "valeur/0.bmp";
-	for(int i = 0 ; i < 9 ; i++)
-	{
+	for(int i = 0 ; i < 9 ; i++)	{
 		char remp = i + '0' ;
 		filename[7] = remp;
 		SDL_Surface* image = SDL_LoadBMP(filename);
 		SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 255, 255, 255));
-		if(!image)
-		{
+		if(!image) {
 				printf("Erreur de chargement de l'image : %s",SDL_GetError());
 				exit(-1);
 		}
@@ -248,10 +243,8 @@ void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[])
 	}
 }
 
-void freeDiceTextures(SDL_Texture *diceTextures[])
-{
-	for(int i=0 ; i < 10; i++)
-	{
+void freeDiceTextures(SDL_Texture *diceTextures[]){
+	for(int i=0 ; i < 10; i++)	{
 		SDL_DestroyTexture(diceTextures[i]);
 	}
 }

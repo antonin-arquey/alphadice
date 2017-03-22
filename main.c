@@ -12,37 +12,35 @@ int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
 	int nbPlayer, nbGame;
 	int nbLib = 0;
+	int matrice_map[800][600];
+	int tab_pays[80][2];
+
 	if(verifArguments(argc, argv, &nbLib)){
 		return 1;
 	}
+	printf("combien de lib ? %d\n", nbLib);
+	nbLib = 1;
 	nbPlayer = atoi(argv[2]);
 	nbGame = atoi(argv[1]);
-	void **libs;
 
+	void **libs;
 	playT PlayTurn[nbLib];
 	initG InitGame[nbLib];
 	// Chargement de la librairie dynamique
-	if(nbLib > 0)
+
+	if(nbLib == 1) //Si une seule librairie
 	{
-
-
-		if(nbLib == 1) //Si une seule librairie
-		{
-			libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn);
-		}
-		else //Si deux libraries
-		{
-			libs = loadLib(nbLib, argv[3], argv[4], InitGame, PlayTurn);
-		}
+		libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn);
 	}
-
-	int matrice_map[800][600];
-	int tab_pays[80][2];
+	else if(nbLib == 2)//Si deux libraries
+	{
+		libs = loadLib(nbLib, argv[3], argv[4], InitGame, PlayTurn);
+	}
 
 
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
-	//InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
+	InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
 
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
@@ -73,10 +71,10 @@ int main(int argc, char* argv[]){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn[i](i, mapCopy, turn) == 1){//PlayTurn
-					//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
-					if(verifyTurn(i, map, turn) == 1){
-						//printf("Tour validé ! \n");
+			while(PlayTurn[i](i, mapCopy, turn)){//PlayTurn
+					printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
+					if(verifyTurn(i, map, turn)){
+						printf("Tour validé ! \n");
 						moveTurn(map, turn);
 						//SDL_Delay(500);
 					}

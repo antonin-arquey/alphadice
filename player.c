@@ -1,4 +1,6 @@
 #include "player.h"
+#include "interface.h"
+#include "map.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
@@ -22,4 +24,33 @@ Coord waitMouseEvent()
       }
     }
   }
+}
+
+int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_Texture *diceTextures[], SDL_Renderer* renderer, int tab_pays[][2]){
+  Coord c;
+  turn->cellFrom = -1;
+  turn->cellTo = -1;
+  displayMap(renderer,map,mat_map,NULL, tab_pays, diceTextures);
+	SDL_RenderPresent(renderer);
+  do {
+    c = waitMouseEvent();
+    turn->cellFrom = mat_map[c.x][c.y];
+    printf("essaye encore %d %d\n", turn->cellFrom, map->cells[turn->cellFrom].owner);
+  } while(map->cells[turn->cellFrom].owner != idPlayer);
+
+  displayMap(renderer,map,mat_map,NULL, tab_pays, diceTextures);
+	SDL_RenderPresent(renderer);
+
+  c = waitMouseEvent();
+  turn->cellTo = mat_map[c.x][c.y];
+
+  displayMap(renderer,map,mat_map,NULL, tab_pays, diceTextures);
+	SDL_RenderPresent(renderer);
+
+  if(map->cells[turn->cellTo].owner == idPlayer){
+    printf("passe\n");
+    return 0;
+  }
+  printf("joue\n");
+  return 1;
 }

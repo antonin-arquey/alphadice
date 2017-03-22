@@ -15,6 +15,7 @@ int lancerDe(int nbDe);
 
 void moveTurn(SMap *map, STurn *turn);
 
+void verify(unsigned int idPlayer, SMap *map, STurn *turn);
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn);
 
 void endTurn(int idPlayer, SMap *map);

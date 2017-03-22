@@ -53,13 +53,13 @@ int main(int argc, char* argv[]){
 	SDL_RenderPresent(renderer);
 	displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
-	/*
-	while(1)
+
+	/*while(1)
 	{
-		Coord c = waitEvent();
+		Coord c = waitMouseEvent();
 		printf("%d / %d\n", c.x, c.y);
-	}
-	*/
+	}**/
+
 
 
 	STurn *turn = malloc(sizeof(STurn));
@@ -67,20 +67,19 @@ int main(int argc, char* argv[]){
 	int cpt=0;
 	while(cpt<50 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
-		for(int i = 0; i < nbPlayer; i++){
+    while(PlayerTurn(1, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
+      verify(1, map, turn);
+			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
+			SDL_RenderPresent(renderer);
+    }
+    endTurn(0, map);
+		for(int i = 1; i < nbPlayer; i++){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn[i](i, mapCopy, turn)){//PlayTurn
-					printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
-					if(verifyTurn(i, map, turn)){
-						printf("Tour validé ! \n");
-						moveTurn(map, turn);
-						//SDL_Delay(500);
-					}
-					else{
-						printf("Tour non validé ! \n");
-					}
+			while(PlayTurn[0](i, mapCopy, turn)){//PlayTurn
+				printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
+				verify(i, map, turn);
 				freeMap(mapCopy);
 				mapCopy = deepCopy(map);
 				displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);

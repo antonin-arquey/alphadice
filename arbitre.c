@@ -7,6 +7,16 @@
 Fonction vérifiant un tour rendu
 Renvoie 1 si le tour est bon, -1 si il est pas valide
 */
+void verify(unsigned int i, SMap *map,STurn *turn){
+	if(verifyTurn(i, map, turn)){
+		printf("Tour validé ! \n");
+		moveTurn(map, turn);
+		//SDL_Delay(500);
+	}
+	else{
+		printf("Tour non validé ! \n");
+	}
+}
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn)
 {
 	//Verifiez que la cellule de départ est bien au joueur

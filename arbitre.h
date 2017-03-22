@@ -1,3 +1,6 @@
+#ifndef ARBITRE_H
+  #define ARBITRE_H
+
 #include "interface.h"
 
 
@@ -23,3 +26,5 @@ int victoire(unsigned int idPlayer, SMap *map);
 void freeMap(SMap *map);
 
 SMap* deepCopy(SMap *map);
+
+#endif

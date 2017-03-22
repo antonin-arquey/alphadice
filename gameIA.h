@@ -1,3 +1,5 @@
+#ifndef GAMEIA_H
+  #define GAMEIA_H
 #include "interface.h"
 #include "arbre.h"
 
@@ -9,3 +11,5 @@ int getDicesToDistribute(int idPlayer, SMap *map);
 int getAmountOfDices(int idPlayer, SMap *map);
 int mapEvaluation(int idPlayer, SMap *map);
 int bestMove(int idPlayer, SArbre *arbre, STurn *turn);
+
+#endif

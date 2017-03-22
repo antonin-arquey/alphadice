@@ -64,7 +64,7 @@ int main(int argc, char* argv[]){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn[0](i, mapCopy, turn) == 1){//PlayTurn
+			while(PlayTurn[i%2](i, mapCopy, turn) == 1){//PlayTurn
 					//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 					if(verifyTurn(i, map, turn) == 1){
 						//printf("Tour validé ! \n");

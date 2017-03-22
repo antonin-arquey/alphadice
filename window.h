@@ -1,3 +1,5 @@
+#ifndef WINDOW_H
+  #define WINDOW_H
 //Using SDL and standard IO
 #include <stdio.h>
 #include <stdbool.h>
@@ -11,3 +13,5 @@ void destroyWindow(SDL_Window* window, SDL_Renderer* renderer);
 
 // Fonction vérifiant si l'utilisateur a fermé la fenêtre ou pas.
 int windowIsNotClosed();
+
+#endif

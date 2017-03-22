@@ -7,7 +7,7 @@ SArbre* createArbre(SMap *map){
 	SArbre *arbre = malloc(sizeof(SArbre));
 	Noeud *newNoeud = malloc(sizeof(Noeud));
 
-	Noeud listeFils[taille];
+	Noeud listeFils[20];
 
 	newNoeud->nbFils = 0;
 	newNoeud->fils = NULL;

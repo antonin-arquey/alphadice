@@ -25,12 +25,12 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 	SMap **maps = malloc(sizeof(SMap) * 200);
 	double proba[200];
 
-	SArbre *arbre = createArbre(deepcopy(map));
+	//SArbre *arbre = createArbre(deepcopy(map));
 	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
 			for(int y = 0; y < map->cells[i].nbNeighbors; y++){
 				if(map->cells[i].neighbors[y]->owner != idPlayer){
-					addChanceNode(arbre, map);
+					//addChanceNode(arbre, map);
 				}
 			}
 		}
@@ -38,7 +38,7 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 	return 0;
 	compteur--;
 	SArbre *arbre;
-	arbre = createArbre(deepCopy(map), compteur);
+	//arbre = createArbre(deepCopy(map), compteur);
 	printf("creation\n");
 	addElement(arbre->head, maps, turns, proba, compteur);
 	printf("ajout\n");

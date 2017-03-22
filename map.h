@@ -1,3 +1,5 @@
+#ifndef MAP_H
+  #define MAP_H
 #include "interface.h"
 #include "renderer.h"
 
@@ -17,3 +19,5 @@ void addVoisin(SMap *map,int tl, int t2);
 //Fonction pour load les textures des chiffres et les free
 void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]);
 void freeDiceTextures(SDL_Texture *diceTextures[]);
+
+#endif

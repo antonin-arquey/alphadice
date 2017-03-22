@@ -6,6 +6,7 @@
 #include "map.h"
 #include "gameIA.h"
 #include "libLoader.h"
+#include "player.h"
 #include <unistd.h>
 
 int main(int argc, char* argv[]){
@@ -17,13 +18,14 @@ int main(int argc, char* argv[]){
 	}
 	nbPlayer = atoi(argv[2]);
 	nbGame = atoi(argv[1]);
+	void **libs;
 
-	/* Chargement de la librairie dynamique */
+	playT PlayTurn[nbLib];
+	initG InitGame[nbLib];
+	// Chargement de la librairie dynamique
 	if(nbLib > 0)
 	{
-		void **libs;
-		playT PlayTurn[nbLib];
-		initG InitGame[nbLib];
+
 
 		if(nbLib == 1) //Si une seule librairie
 		{
@@ -41,7 +43,7 @@ int main(int argc, char* argv[]){
 
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
-	InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
+	//InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
 
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
@@ -54,9 +56,17 @@ int main(int argc, char* argv[]){
 	SDL_RenderPresent(renderer);
 	displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
+	/*
+	while(1)
+	{
+		Coord c = waitEvent();
+		printf("%d / %d\n", c.x, c.y);
+	}
+	*/
+
 
 	STurn *turn = malloc(sizeof(STurn));
-	/* Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu) */
+	// Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu)
 	int cpt=0;
 	while(cpt<50 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
@@ -64,7 +74,7 @@ int main(int argc, char* argv[]){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn[i%2](i, mapCopy, turn) == 1){//PlayTurn
+			while(PlayTurn[i](i, mapCopy, turn) == 1){//PlayTurn
 					//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 					if(verifyTurn(i, map, turn) == 1){
 						//printf("Tour validé ! \n");
@@ -96,7 +106,7 @@ int main(int argc, char* argv[]){
 	freeMap(map);
 	free(info);
 
-	/* Ferme le jeu */
+	// Ferme le jeu
 	destroyWindow(window, renderer);
 	freeLib(libs, nbLib);
 	return 0;

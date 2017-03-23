@@ -176,12 +176,8 @@ int verifArguments(int argc, char* argv[], int *nbLib){
 		rappelSyntaxe("Mauvais paramètres\n");
 		return 1;
 	}
-	if(argc >= 4){
-		*nbLib++;
-	}
-	if(argc == 5){
-		*nbLib++;
-	}
+
+	*nbLib = argc - 3;
 	return 0;
 }
 

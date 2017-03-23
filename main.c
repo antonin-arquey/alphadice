@@ -24,8 +24,8 @@ int main(int argc, char* argv[]){
 	nbGame = atoi(argv[1]);
 
 	void **libs;
-	playT PlayTurn[nbLib];
-	initG InitGame[nbLib];
+	playT PlayTurn[nbPlayer];
+	initG InitGame[nbPlayer];
 	// Chargement de la librairie dynamique
 
 	if(nbLib == 1) //Si une seule librairie
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
-	InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
+	//InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
 
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
@@ -53,13 +53,6 @@ int main(int argc, char* argv[]){
 	SDL_RenderPresent(renderer);
 	displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
-
-	/*while(1)
-	{
-		Coord c = waitMouseEvent();
-		printf("%d / %d\n", c.x, c.y);
-	}**/
-
 
 
 	STurn *turn = malloc(sizeof(STurn));
@@ -77,8 +70,8 @@ int main(int argc, char* argv[]){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn[0](i, mapCopy, turn)){//PlayTurn
-				printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
+			while(PlayTurn[0](i, mapCopy, turn)){
+				//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 				verify(i, map, turn);
 				freeMap(mapCopy);
 				mapCopy = deepCopy(map);

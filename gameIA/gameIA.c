@@ -21,19 +21,17 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
 int turnIA(int idPlayer, const SMap *map, STurn *turn){
-	int compteur = -1;
+	int compteur = 0;
 	SArbre *arbre = malloc(sizeof(SArbre));
 	arbre->head = malloc(sizeof(Noeud));
 	arbre->head->map = deepCopy(map);
 	SMap *mapCopy;
 	ChanceNode nodes[100];
 
-	for(int i = 0; i< map->nbCells; i++){
+	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
 			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
 				if(map->cells[i].neighbors[j]->owner != idPlayer){
-					compteur += 1;
-
 					nodes[compteur].turn = malloc(sizeof(STurn));//peut etre modifier et plus utiliser les STurn
 					nodes[compteur].turn->cellFrom = map->cells[i].id;
 					nodes[compteur].turn->cellTo = map->cells[i].neighbors[j]->id;
@@ -47,43 +45,51 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 					mapCopy = deepCopy(map);
 					moveTurnFail(deepCopy(map),nodes[compteur].turn);
 					nodes[compteur].filsGauche->map = mapCopy;
+
+					compteur += 1;
 				}
 			}
 		}
 	}
 	printf("valeur compteur : %d\n", compteur);
-	if(compteur > -1){
-		ChanceNode filsNodes[compteur]; //pas sur que tout soit pris
+	if(compteur > 0){
+		ChanceNode filsNodes[compteur];
 		arbre->head->fils = filsNodes;
-		for(int x = 0; x <= compteur; x++){//a cause du <=
+		for(int x = 0; x < compteur; x++){//a cause du <=
 			arbre->head->fils[x] = nodes[x];
 		}
 		arbre->head->nbFils = compteur;
+
+		printf("ok en avant pour l'évaluation\n");
+		return bestMove(idPlayer, arbre, turn);
 	}
 	return 0;
 }
 
-/*
+
 int bestMove(int idPlayer, SArbre *arbre, STurn *turn){
 	int bouge = 0;
 	double valHead = mapEvaluation(idPlayer, arbre->head->map);
 	double valMax = valHead;
 	double val;
 	for(int i = 0; i < arbre->head->nbFils; i++){
-		val = arbre->head->fils[i].proba * mapEvaluation(idPlayer, arbre->head->fils[i].map) + arbre->head->fils[i+1].proba * mapEvaluation(idPlayer, arbre->head->fils[i+1].map);
+		val = arbre->head->fils[i].probaDroite * mapEvaluation(idPlayer, arbre->head->fils[i].filsDroit->map) + (1 - arbre->head->fils[i].probaDroite) * mapEvaluation(idPlayer, arbre->head->fils[i].filsGauche->map);
+		//printf("%f : %f / %f\n", valHead, valMax, val);
 		if (val > valMax){
 			valMax = val;
-			turn = arbre->head->fils[i].turn;
+			turn->cellFrom = arbre->head->fils[i].turn->cellFrom;
+			turn->cellTo = arbre->head->fils[i].turn->cellTo;
 			bouge = 1;
 		}
 	}
 	return bouge;
 }
 
-int mapEvaluation(int idPlayer, SMap *map){
-	int alpha = 1; int beta = 1;
-	int value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);
-
+double mapEvaluation(int idPlayer, SMap *map){
+	double alpha = 0; double beta = 1;
+	//printf("nbDices : %d / nbToGive : %d \n", getAmountOfDices(idPlayer, map), getDicesToDistribute(idPlayer, map));
+	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);
+	//printf("%f\n", value);
 	return value;
 }
 
@@ -106,7 +112,7 @@ int getDicesToDistribute(int idPlayer, SMap *map){
 	}
 	return nbDices;
 }
-*/
+
 void moveTurnFail(SMap *map, STurn *turn){
 	map->cells[turn->cellFrom].nbDices = 1;
 }

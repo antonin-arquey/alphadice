@@ -8,7 +8,7 @@ typedef struct Noeud{
 }Noeud;
 
 typedef struct ChanceNode {
-	int probaDroite;
+	double probaDroite;
 	//int probaGauche; 1 - probaDroite
 	STurn *turn;
 	Noeud *filsDroit;

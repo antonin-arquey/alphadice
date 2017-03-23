@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
 	SDL_Texture *diceTextures[10];
 	loadDiceTextures(renderer, diceTextures);
 
-	SMap *map = createMap(nbPlayer, renderer,matrice_map, tab_pays);
+	SMap *map = createMap(nbPlayer, renderer, matrice_map, tab_pays);
 	SDL_RenderPresent(renderer);
 	displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
@@ -65,15 +65,15 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	// Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu)
 	int cpt=0;
-	while(cpt<50 && windowIsNotClosed()){
+	while(cpt<5 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
-    while(PlayerTurn(1, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
+    /*while(PlayerTurn(1, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
       verify(1, map, turn);
 			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 			SDL_RenderPresent(renderer);
     }
-    endTurn(0, map);
-		for(int i = 1; i < nbPlayer; i++){
+    endTurn(0, map);*/
+		for(int i = 0; i < nbPlayer; i++){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);

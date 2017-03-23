@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "arbre.h"
 
-
+/*
 SArbre* createArbre(SMap *map){
 	SArbre *arbre = malloc(sizeof(SArbre));
 	Noeud *newNoeud = malloc(sizeof(Noeud));
@@ -38,7 +38,7 @@ void addElement(Noeud *noeud, SMap **map, STurn **turn, double tabProba[], int n
 		newNoeuds[i].proba = tabProba[i];
 	}
 }
-
+*/
 /*int sub(Noeud *noeud, int niv, SMap **map, int taille){
 	//printf("%d\n",niv);
 	if (niv == 0){

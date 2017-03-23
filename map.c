@@ -168,11 +168,10 @@ void addVoisin(SMap *map, int t1, int t2){
 
 // Fonction affichant la carte sur le renderer
 void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2], SDL_Texture *diceTextures[]){
-	int tabColor[8][4]={{242,202,39,1},
-	{44,195,107,1},{236,94,0,1},
-	{231,76,60,1},{102,0,153,1},
-	{44,62,80,1},{52,152,219,1},
-	{163,177,178,1}};
+	int tabColor[8][4] = {{242, 202,  39, 1}, { 44, 195, 107, 1},
+												{236,	 94,   0, 1}, {231,  76,  60, 1},
+												{102,   0, 153, 1},	{ 44,  62,  80, 1},
+												{ 52, 152, 219, 1},	{163, 177, 178, 1}};
 	//Jaune Vert Orange Rose Violet Bleufoncé Bleuclair
 	for (int j=0;j<size_map_h;j++){
 		for (int k=0;k<size_map_l;k++){

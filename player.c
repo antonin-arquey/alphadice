@@ -30,21 +30,24 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_T
   Coord c;
   turn->cellFrom = -1;
   turn->cellTo = -1;
-  displayMap(renderer,map,mat_map,NULL, tab_pays, diceTextures);
+
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
+
   do {
     c = waitMouseEvent();
     turn->cellFrom = mat_map[c.x][c.y];
+    printf("il y a %d dés.\n", map->cells[turn->cellFrom].nbDices);
     printf("essaye encore %d %d\n", turn->cellFrom, map->cells[turn->cellFrom].owner);
   } while(map->cells[turn->cellFrom].owner != idPlayer);
 
-  displayMap(renderer,map,mat_map,NULL, tab_pays, diceTextures);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
 
   c = waitMouseEvent();
   turn->cellTo = mat_map[c.x][c.y];
 
-  displayMap(renderer,map,mat_map,NULL, tab_pays, diceTextures);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
 
   if(map->cells[turn->cellTo].owner == idPlayer){

@@ -12,23 +12,20 @@ void verify(unsigned int i, SMap *map,STurn *turn){
 	if(verifyTurn(i, map, turn)){
 		printf("Tour validé ! \n");
 		moveTurn(map, turn);
-		//SDL_Delay(500);
 	}
 	else{
 		printf("Tour non validé ! \n");
 	}
 }
-int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn)
-{
+
+int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn){
 	//Verifiez que la cellule de départ est bien au joueur
-	if(map->cells[turn->cellFrom].owner != idPlayer)
-	{
-		return -1;
+	if(map->cells[turn->cellFrom].owner != idPlayer){
+		return 0;
 	}
 
-	if(map->cells[turn->cellFrom].nbDices <= 1)
-	{
-		return -1;
+	if(map->cells[turn->cellFrom].nbDices <= 1){
+		return 0;
 	}
 
 	//Verifier que la cellule de départ et d'arrivée sont adjacentes
@@ -37,7 +34,7 @@ int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn)
 			return 1;
 		}
 	}
-	return -1;
+	return 0;
 }
 
 /*

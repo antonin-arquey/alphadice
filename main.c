@@ -60,13 +60,13 @@ int main(int argc, char* argv[]){
 	int cpt=0;
 	while(cpt<1 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
-    /*while(PlayerTurn(1, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
-      verify(1, map, turn);
+    while(PlayerTurn(0, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
+      verify(0, map, turn);
 			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 			SDL_RenderPresent(renderer);
     }
-    endTurn(0, map);*/
-		for(int i = 0; i < nbPlayer; i++){
+    endTurn(0, map);
+		for(int i = 1; i < nbPlayer; i++){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);

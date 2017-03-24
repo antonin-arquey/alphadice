@@ -10,11 +10,7 @@ Renvoie 1 si le tour est bon, -1 si il est pas valide
 */
 void verify(unsigned int i, SMap *map,STurn *turn){
 	if(verifyTurn(i, map, turn)){
-		printf("Tour validé ! \n");
 		moveTurn(map, turn);
-	}
-	else{
-		printf("Tour non validé ! \n");
 	}
 }
 
@@ -150,7 +146,7 @@ void endTurn(int idPlayer, SMap *map)
 		}
 	}
 
-	int nbDiceDistributed = getDiceToDistribute(idPlayer, map);
+	int nbDiceDistributed = getDiceToDistribute(idPlayer, map) + map->stack[idPlayer];
 	int random;
 	Log("///\n");
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé
@@ -162,9 +158,31 @@ void endTurn(int idPlayer, SMap *map)
 			sprintf(str, "%d\n", map->cells[playerCell[random]].id);
 			Log(str);
 		}
+		else{
+			if(allCellsFull(idPlayer, map)){
+				map->stack[idPlayer] += nbDiceDistributed - i + 1;
+				printf("je stack %d dé\n", map->stack[idPlayer]);
+				break;
+			}
+			else{
+				i--;
+			}
+		}
 	}
 	Log("///\n");
 }
+
+//Vérifie si toutes les cellules du joueurs sont pleines
+int allCellsFull(int idPlayer, SMap *map)
+{
+	for(int i=0 ; i  < map->nbCells ; i++)
+	{
+		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices < 8)
+			return 0;
+	}
+	return 1;
+}
+
 
 // Verifie les paramètres mis par l'utilisateur au lancement du
 // programme. Modifie la valeur du pointeur nbLib passé en parametre pour matcher le nombre de lib
@@ -215,6 +233,8 @@ SMap* deepCopy(SMap *map){
 	if(mapCopy->cells == NULL)
 		exit(-1);
 
+	mapCopy->stack = NULL;
+
 	for(int i=0 ; i < mapCopy->nbCells; i++){
 		mapCopy->cells[i].id = map->cells[i].id;
 		mapCopy->cells[i].owner = map->cells[i].owner;
@@ -244,6 +264,8 @@ void freeMap(SMap *map){
 			free(map->cells[i].neighbors);
 		}
 		free(map->cells);
+		if(map->stack != NULL)
+			free(map->stack);
 		free(map);
 	}
 }

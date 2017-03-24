@@ -4,6 +4,7 @@
 #include "interface.h"
 
 
+int allCellsFull(int idPlayer, SMap *map);
 // Verifie les paramètres mis par l'utilisateur au lancement du
 // programme.
 int verifArguments(int argc, char* argv[], int *nbLib);

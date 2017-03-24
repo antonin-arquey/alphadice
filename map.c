@@ -19,19 +19,31 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 	//creation des elements de la map : map et ces territoires
 	int nb_pays = aleatoire(30,60);
 	int nb_de = (int) (nb_pays * 2)/nbPlayer;
+
 	SMap *map = malloc(sizeof(SMap));
+
+	if(map == NULL)
+		exit(-1);
+
+	//Creation des stacks
+	map->stack = malloc(nbPlayer * sizeof(unsigned int));
+
+	if(map->stack == NULL)
+		exit(-1);
+
 	SCell *territoires = malloc(sizeof(SCell) * nb_pays);
 
+	if(territoires == NULL)
+		exit(-1);
+
 	//initilialisation des propriétés de la map
-	int reserve[nbPlayer];
 	int deJoueur[nbPlayer];
 	for(int i = 0; i < nbPlayer; i++){
-		reserve[i] = 0;
 		deJoueur[i] = nb_de;
+		map->stack[i] = 0;
 	}
 	map->cells = territoires;
 	map->nbCells = nb_pays;
-	map->stack = reserve;
 
 	//initilialisation des id des cellules de la map
 	for(int i = 0; i < nb_pays; i++){

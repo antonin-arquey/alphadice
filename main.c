@@ -24,8 +24,8 @@ int main(int argc, char* argv[]){
 	nbGame = atoi(argv[1]);
 
 	void **libs;
-	playT PlayTurn[nbLib];
-	initG InitGame[nbLib];
+	playT PlayTurn[nbPlayer];
+	initG InitGame[nbPlayer];
 	// Chargement de la librairie dynamique
 
 	if(nbLib == 1) //Si une seule librairie
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 
 	/*Initialisation du jeu */
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
-	InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
+	//InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
 
 	/* Création de l'affichage*/
 	SDL_Window* window = createWindow();
@@ -49,36 +49,29 @@ int main(int argc, char* argv[]){
 	SDL_Texture *diceTextures[10];
 	loadDiceTextures(renderer, diceTextures);
 
-	SMap *map = createMap(nbPlayer, renderer,matrice_map, tab_pays);
+	SMap *map = createMap(nbPlayer, renderer, matrice_map, tab_pays);
 	SDL_RenderPresent(renderer);
 	displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
-
-	/*while(1)
-	{
-		Coord c = waitMouseEvent();
-		printf("%d / %d\n", c.x, c.y);
-	}**/
-
 
 
 	STurn *turn = malloc(sizeof(STurn));
 	// Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu)
 	int cpt=0;
-	while(cpt<50 && windowIsNotClosed()){
+	while(cpt<5 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
-    while(PlayerTurn(1, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
+    /*while(PlayerTurn(1, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
       verify(1, map, turn);
 			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 			SDL_RenderPresent(renderer);
     }
-    endTurn(0, map);
-		for(int i = 1; i < nbPlayer; i++){
+    endTurn(0, map);*/
+		for(int i = 0; i < nbPlayer; i++){
 			printf("Copie de la carte\n");
 			SMap *mapCopy = deepCopy(map);
 			printf("Turn to AI %d\n", i);
-			while(PlayTurn[0](i, mapCopy, turn)){//PlayTurn
-				printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
+			while(PlayTurn[0](i, mapCopy, turn)){
+				//printf("Attaque de %d vers %d\n", turn->cellFrom, turn->cellTo);
 				verify(i, map, turn);
 				freeMap(mapCopy);
 				mapCopy = deepCopy(map);

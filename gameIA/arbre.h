@@ -3,13 +3,23 @@
 
 typedef struct Noeud{
 	SMap *map;
-	int nbDices;
-	int getNbDices;
-  STurn *turn;
-  double proba;
-	struct Noeud *fils;
+	struct ChanceNode *fils;
+	struct EndTurnNode *mapAlea;
 	int nbFils;
 }Noeud;
+
+typedef struct ChanceNode {
+	double probaDroite;
+	//int probaGauche; 1 - probaDroite
+	STurn *turn;
+	Noeud *filsDroit;
+	Noeud *filsGauche;
+}ChanceNode;
+
+typedef struct EndTurnNode {
+	Noeud *filsAlea;
+	int nbFils;
+} EndTurnNode;
 
 typedef struct{
 	Noeud *head;

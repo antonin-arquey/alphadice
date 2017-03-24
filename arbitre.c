@@ -69,7 +69,7 @@ void moveTurn(SMap *map, STurn *turn){
 	//printf("nb dés : %d\n", map->cells[turn->cellFrom].nbDices);
 
 	char str2[1000];
-	sprintf(str2, "%d,%d,%d,%d\n", turn->cellFrom, turn->cellTo, sommeAttacker, sommeDefender);
+	sprintf(str2, "%d,%d,%d,%d,%d\n",  cellAttacker->owner, turn->cellFrom, turn->cellTo, sommeAttacker, sommeDefender);
 	Log(str2);
 }
 
@@ -155,14 +155,18 @@ void endTurn(int idPlayer, SMap *map)
 
 	int nbDiceDistributed = getDiceToDistribute(idPlayer, map);
 	int random;
-
+	Log("///\n");
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé
 	for(int i = 1 ; i <= nbDiceDistributed ; i++){
 		random = aleatoire(0, nbPlayerCell-1);
 		if(map->cells[playerCell[random]].nbDices < 8){
 			map->cells[playerCell[random]].nbDices++;
+			char str[100];
+			sprintf(str, "%d\n", map->cells[playerCell[random]].id);
+			Log(str);
 		}
 	}
+	Log("///\n");
 }
 
 // Verifie les paramètres mis par l'utilisateur au lancement du

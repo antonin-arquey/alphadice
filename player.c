@@ -15,7 +15,7 @@ Coord waitMouseEvent()
     {
       if(event.type == SDL_QUIT)
       {
-        exit(-1);
+        exit(0);
       }
       if(event.type == SDL_MOUSEBUTTONDOWN)
       {
@@ -44,19 +44,19 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_T
     turn->cellFrom = mat_map[c.x][c.y];
 
   } while(map->cells[turn->cellFrom].owner != idPlayer);
-  
-  retour:printf("revient la!\n");
-  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
-	SDL_RenderPresent(renderer);
 
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
+  SDL_RenderPresent(renderer);
   do{
+
     c = waitMouseEvent();
     turn->cellTo = mat_map[c.x][c.y];
     if(turn->cellTo != turn->cellFrom && map->cells[turn->cellTo].owner == idPlayer)
     {
       turn->cellFrom = turn->cellTo;
       turn->cellTo = -1;
-      goto retour;
+      displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
+    	SDL_RenderPresent(renderer);
     }
   } while(!verifyTurn(idPlayer, map, turn) && !(turn->cellTo == turn->cellFrom));
 
@@ -65,9 +65,7 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_T
 	SDL_RenderPresent(renderer);
 
   if(map->cells[turn->cellTo].owner == idPlayer){
-    printf("passe\n");
     return 0;
   }
-  printf("joue\n");
   return 1;
 }

@@ -10,3 +10,5 @@ int getAmountOfDices(int idPlayer, SMap *map);
 double mapEvaluation(int idPlayer, SMap *map);
 int bestMove(int idPlayer, SArbre *arbre, STurn *turn);
 SMap* deepCopy(const SMap *map);
+void endTurn(int idPlayer, SMap *map);
+int aleatoire(int a, int b);

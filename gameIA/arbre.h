@@ -4,6 +4,7 @@
 typedef struct Noeud{
 	SMap *map;
 	struct ChanceNode *fils;
+	struct EndTurnNode *mapAlea;
 	int nbFils;
 }Noeud;
 
@@ -14,6 +15,11 @@ typedef struct ChanceNode {
 	Noeud *filsDroit;
 	Noeud *filsGauche;
 }ChanceNode;
+
+typedef struct EndTurnNode {
+	Noeud *filsAlea;
+	int nbFils;
+} EndTurnNode;
 
 typedef struct{
 	Noeud *head;

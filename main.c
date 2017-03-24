@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	// Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu)
 	int cpt=0;
-	while(cpt<1 && windowIsNotClosed()){
+	while(cpt<100 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
     while(PlayerTurn(0, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
       verify(0, map, turn);

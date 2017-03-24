@@ -42,15 +42,23 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_T
   do {
     c = waitMouseEvent();
     turn->cellFrom = mat_map[c.x][c.y];
-  } while(map->cells[turn->cellFrom].owner != idPlayer);
 
+  } while(map->cells[turn->cellFrom].owner != idPlayer);
+  
+  retour:printf("revient la!\n");
   displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
 
   do{
     c = waitMouseEvent();
     turn->cellTo = mat_map[c.x][c.y];
-  } while(!verifyTurn(idPlayer, map, turn) && !(map->cells[turn->cellTo].owner == idPlayer));
+    if(turn->cellTo != turn->cellFrom && map->cells[turn->cellTo].owner == idPlayer)
+    {
+      turn->cellFrom = turn->cellTo;
+      turn->cellTo = -1;
+      goto retour;
+    }
+  } while(!verifyTurn(idPlayer, map, turn) && !(turn->cellTo == turn->cellFrom));
 
 
   displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);

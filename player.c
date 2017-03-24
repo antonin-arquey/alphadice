@@ -1,6 +1,7 @@
 #include "player.h"
 #include "interface.h"
 #include "map.h"
+#include "arbitre.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
@@ -12,6 +13,10 @@ Coord waitMouseEvent()
     SDL_Event event;
     if(SDL_PollEvent(&event))
     {
+      if(event.type == SDL_QUIT)
+      {
+        exit(-1);
+      }
       if(event.type == SDL_MOUSEBUTTONDOWN)
       {
         Coord c;
@@ -37,15 +42,16 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_T
   do {
     c = waitMouseEvent();
     turn->cellFrom = mat_map[c.x][c.y];
-    printf("il y a %d dés.\n", map->cells[turn->cellFrom].nbDices);
-    printf("essaye encore %d %d\n", turn->cellFrom, map->cells[turn->cellFrom].owner);
   } while(map->cells[turn->cellFrom].owner != idPlayer);
 
   displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
 
-  c = waitMouseEvent();
-  turn->cellTo = mat_map[c.x][c.y];
+  do{
+    c = waitMouseEvent();
+    turn->cellTo = mat_map[c.x][c.y];
+  } while(!verifyTurn(idPlayer, map, turn) && !(map->cells[turn->cellTo].owner == idPlayer));
+
 
   displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);

@@ -1,5 +1,6 @@
 #include "map.h"
 #include "arbitre.h"
+#include "log.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -66,6 +67,10 @@ void moveTurn(SMap *map, STurn *turn){
 	//printf("nb dés : %d\n", map->cells[turn->cellFrom].nbDices);
 	cellAttacker->nbDices = 1;
 	//printf("nb dés : %d\n", map->cells[turn->cellFrom].nbDices);
+
+	char str2[1000];
+	sprintf(str2, "%d,%d,%d,%d\n", turn->cellFrom, turn->cellTo, sommeAttacker, sommeDefender);
+	Log(str2);
 }
 
 /*

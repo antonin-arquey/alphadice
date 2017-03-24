@@ -19,7 +19,6 @@ int main(int argc, char* argv[]){
 		return 1;
 	}
 	printf("combien de lib ? %d\n", nbLib);
-	nbLib = 1;
 	nbPlayer = atoi(argv[2]);
 	nbGame = atoi(argv[1]);
 
@@ -58,7 +57,7 @@ int main(int argc, char* argv[]){
 	STurn *turn = malloc(sizeof(STurn));
 	// Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu)
 	int cpt=0;
-	while(cpt<5 && windowIsNotClosed()){
+	while(cpt<1 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
     /*while(PlayerTurn(1, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
       verify(1, map, turn);

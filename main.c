@@ -5,6 +5,7 @@
 #include "arbitre.h"
 #include "map.h"
 #include "libLoader.h"
+#include "log.h"
 #include "player.h"
 #include <unistd.h>
 
@@ -97,5 +98,6 @@ int main(int argc, char* argv[]){
 	// Ferme le jeu
 	destroyWindow(window, renderer);
 	freeLib(libs, nbLib);
+	printf("%s", ReadFile("game.log"));
 	return 0;
 }

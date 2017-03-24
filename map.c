@@ -1,5 +1,6 @@
 #include "map.h"
 #include "interface.h"
+#include "log.h"
 #include <time.h>
 #include <unistd.h>
 
@@ -67,14 +68,20 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 			mat_map[j][k]=-1;
 		}
 	}
-
+	char str[10];
+	sprintf(str, "%d\n", nb_pays);
+	Log(str);
 	//génération des centres des territoires;
 	for (int j=0;j<nb_pays;j++){
 		int i; int k;
 		i = aleatoire(border,size_map_h - border);
 		k = aleatoire(border,size_map_l - border);
 		mat_map[i][k]=j; tabPays[j][0]=i;	tabPays[j][1]=k;
+		char str[20];
+		sprintf(str, "%d,%d,%d,%d,%d\n", j, territoires[j].owner, i, k, territoires[j].nbDices);
+		Log(str);
 	}
+	Log("/-/\n");
 	//printf("Germe territoire crées\n");
 	//génération des territoires
 	for (int j=0;j<size_map_h;j++){

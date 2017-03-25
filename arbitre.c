@@ -38,10 +38,8 @@ Simule le nombre de lancers de dé passé en paramètres et renvoie la somme des
 */
 int lancerDe(int nbDe){
 	int s = 0;
-	for(int i=0 ; i < nbDe ; i++)
-	{
+	for(int i = 0; i < nbDe; i++)
 		s += aleatoire(1, 6);
-	}
 	return s;
 }
 
@@ -52,14 +50,11 @@ void moveTurn(SMap *map, STurn *turn){
 	SCell *cellDefender = &map->cells[turn->cellTo];
 	int sommeAttacker = lancerDe(cellAttacker->nbDices);
 	int sommeDefender = lancerDe(cellDefender->nbDices);
-	//printf("%d vs %d\n", sommeAttacker, sommeDefender);
 	if(sommeAttacker > sommeDefender){
 		cellDefender->owner = cellAttacker->owner;
 		cellDefender->nbDices = cellAttacker->nbDices - 1;
 	}
-	//printf("nb dés : %d\n", map->cells[turn->cellFrom].nbDices);
 	cellAttacker->nbDices = 1;
-	//printf("nb dés : %d\n", map->cells[turn->cellFrom].nbDices);
 
 	char str2[1000];
 	sprintf(str2, "%d,%d,%d,%d,%d\n",  cellAttacker->owner, turn->cellFrom, turn->cellTo, sommeAttacker, sommeDefender);

@@ -7,6 +7,7 @@
 // Fonction initialisant la carte et l'affichant sur le renderer
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[800][600], int tabPays[][2]);
 int aleatoire(int a, int b);
+int plusdeTerritoires(int b, int nbTerritoiresOwne[], int nbPlayer);
 
 // Fonction affichant la carte sur le renderer
 // Actuellement en test afin d'afficher juste

@@ -13,6 +13,14 @@ int aleatoire(int a, int b){
 	return rand() % (b-a+1) + a;
 }
 
+int plusdeTerritoires(int b, int nbTerritoiresOwne[], int nbPlayer){
+	for(int i = 0; i < nbPlayer; i++){
+		if(nbTerritoiresOwne[b] > nbTerritoiresOwne[i])
+			return 1;
+	}
+	return 0;
+}
+
 // Fonction initialisant la carte et l'affichant sur le renderer
 SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][size_map_l], int tabPays[][2]){
 	srand(time(NULL));
@@ -52,8 +60,18 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		territoires[i].neighbors = malloc(sizeof(SCell*)*nb_pays);
 	}
 	//tirages aux sorts des joueurs possédant les territoires
+	int nbTerritoiresOwne[nbPlayer];
+	for(int i = 0; i < nbPlayer; i++){
+		nbTerritoiresOwne[i] = 0;
+	}
+	int b;
 	for(int i = 0; i < nb_pays; i++){
-		territoires[i].owner = aleatoire(0,nbPlayer-1);//numero du player
+		b = aleatoire(0,nbPlayer - 1);
+		while (plusdeTerritoires(b,nbTerritoiresOwne,nbPlayer)) {
+			b = aleatoire(0,nbPlayer - 1);
+		}
+		nbTerritoiresOwne[b] += 1;
+		territoires[i].owner = b;//numero du player
 	}
 	//repartition des dés des joueurs
 	int de;
@@ -61,7 +79,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		if (deJoueur[territoires[i].owner] < 4){
 			de = aleatoire(0, deJoueur[territoires[i].owner]);
 		}else{
-			de = aleatoire(0,4);
+			de = aleatoire(0, 4);
 		}
 		deJoueur[territoires[i].owner] -= de;
 		territoires[i].nbDices = 1 + de;
@@ -94,7 +112,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		Log(str);
 	}
 	Log("/-/\n");
-	//printf("Germe territoire crées\n");
+
 	//génération des territoires
 	for (int j=0;j<size_map_h;j++){
 		for (int k=0;k<size_map_l;k++){
@@ -143,25 +161,6 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 			}
 		}
 	}
-
-	/*for (int j=0;j<size_map_h/20;j++){
-		for (int k=0;k<size_map_l/20;k++){
-			printf("%d ",mat_map[j][k]);
-		}
-		printf("\n");
-	}*/
-
-	/*for(int i = 0; i < nb_pays; i++){
-		printf("Territoire id = %d\n",territoires[i].id);
-		printf("nbVoisins = %d\n",territoires[i].nbNeighbors);
-		printf("Voisins :\n");
-		for(int j=0;j<territoires[i].nbNeighbors;j++)
-		{
-			printf("%d ",territoires[i].neighbors[j]->id);
-		}
-		printf("\n");
-	}*/
-
 	return map;
 }
 

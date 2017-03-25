@@ -70,64 +70,66 @@ void moveTurn(SMap *map, STurn *turn){
 Trouve le plus grand nombre de territoire connexe appartenant au joueur passé en paramètre
 */
 int getDiceToDistribute(int idPlayer, SMap *map){
-	/*colorier x avec i
-	pour tout sommet y successeur de x
-	  si y n'est pas colorié faire CC_sommet(G,y,i)*/
 
-	// SCell* tabCellOwner[map->nbCells];
-	// SCell* tabVoisins[map->nbCells];
-	// int i = 0, y = 0, j = 0, z = 0, count = 0, x = 0, bestCount = 0, n = 0;
-	// SCell* cellActive;
-	// //Rempli le tableau de toutes les cellules du joueur
-	// for(;i<nbCells;i++){
-	// 	if (map->cells[i]->owner == idPlayer){
-	// 		tabCellOwner[y]=map->cells[i];
-	// 		y++;
-	// 	}
-	// }
-	//
-	// //Boucle sur la taille du tableau des cellules du joueur
-	// for(i = 0; i<y; i++){
-	// 	//Si la cellule existe (Et non écrasée plus tard)
-	// 	if(tabCellOwner[i]!=NULL){
-	// 		cellActive = tabCellOwner[i];
-	// 		//Pour chaque voisin de la cellule actuelle
-	// 		for(;j<cellActive->nbNeighbors;j++){
-	// 			//Si le voisin actuel est au même joueur
-	// 			if(cellActive->neighbors[j]->owner==idPlayer){
-	// 				//On cherche cette cellule dans le tableau des cellules du joueur pour la supprimer comme on va
-	// 				//vérifier plus tard ses voisins par récursivité plus en utilisant le tableau tabVoisins.
-	// 				for(; z < y; y++){
-	// 					if(tabCellOwner[z]==cellActive->neighbors){
-	// 						tabCellOwner[z] = NULL;
-	// 						tabVoisins[x] = cellActive->neighbors[j];
-	// 						x++;
-	// 						count += 1;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	//On met à jour le count avec les recursions sur le tableau des voisins
-	// 	count += recurGetDiceToDistribute(tabCellOwner, tabVoisins);
-	// 	if (bestCount < count){
-	// 		bestCount = count;
-	// 	}
-	// 	// On remet à 0 le tableau des voisins pour le prochain territoire
-	// 	for(;n<x;n++){
-	// 		tabVoisins[n] == NULL;
-	// 	}
-	//
-	// }
-	//return bestCount;
+	int marque[60];
+	int lenMarque = 0;
+	int playerCell[60];
+	int nbPlayerCell = 0;
+	int max = 0;
 
-	int nbDices = 0;
-	for(int i = 0; i < map->nbCells; i++){
-		if(map->cells[i].owner == idPlayer){
-			nbDices += 1;
+	//On génére un tableau contenant les position des cellules dans map->cells
+	for(int i = 0 ; i < map->nbCells ; i++)
+	{
+		if(map->cells[i].owner == idPlayer)
+		{
+			playerCell[nbPlayerCell] = i;
+			nbPlayerCell++;
 		}
 	}
-	return nbDices;
+
+	for(int i = 0; i < nbPlayerCell ; i++)
+	{
+		int calcul = 0;
+		if(!(inTab(playerCell[i], marque, lenMarque)))
+		{
+			calcul += explorer(map, idPlayer, marque, &lenMarque, playerCell[i]);
+		}
+		if(calcul > max)
+		{
+			max = calcul;
+		}
+	}
+	return max;
+}
+
+
+//Fonction récursive réalisant l'exploration en profondeur pour chercher le total de cellule adjacentes
+int explorer(SMap *map, int idPlayer, int marque[], int* lenMarque, int idCell)
+{
+	int calcul = 1; //Cellule adjacentes plus un
+	marque[*lenMarque] = idCell; //Marquage de la cellule pour ne pas la recompter
+	(*lenMarque)++; //Incrementation de la valeur du pointeur
+
+	for(int j = 0 ; j < map->cells[idCell].nbNeighbors ; j++)
+	{
+		//Si un des voisins est a nous et n'est pas deja marqué
+		if(map->cells[idCell].neighbors[j]->owner == idPlayer && !(inTab(map->cells[idCell].neighbors[j]->id, marque, *lenMarque)))
+		{
+			//On l'explore
+			calcul += explorer(map, idPlayer, marque, lenMarque, map->cells[idCell].neighbors[j]->id);
+		}
+	}
+	return calcul;
+}
+
+int inTab(int id, int tab[], int lenTab)
+{
+	for(int i = 0 ; i  < lenTab ; i++)
+	{
+		if(tab[i] == id)
+			return 1;
+	}
+	return 0;
 }
 
 /*
@@ -147,6 +149,7 @@ void endTurn(int idPlayer, SMap *map)
 	}
 
 	int nbDiceDistributed = getDiceToDistribute(idPlayer, map) + map->stack[idPlayer];
+	printf("Je distribue %d dés !! \n", nbDiceDistributed);
 	int random;
 	Log("///\n");
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé

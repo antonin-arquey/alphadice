@@ -23,6 +23,9 @@ void endTurn(int idPlayer, SMap *map);
 
 int getDiceToDistribute(int idPlayer, SMap *map);
 
+int inTab(int id, int tab[], int lenTab);
+int explorer(SMap *map, int idPlayer, int marque[], int *lenMarque, int idCell);
+
 int victoire(unsigned int idPlayer, SMap *map);
 
 void freeMap(SMap *map);

@@ -21,32 +21,38 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
 int turnIA(int idPlayer, const SMap *map, STurn *turn){
-	int compteur = 0;
-	SArbre *arbre = malloc(sizeof(SArbre));
-	arbre->head = malloc(sizeof(Noeud));
-	arbre->head->map = deepCopy(map);
+	int compteur = 0; int compteurBis = 0;
+	SArbre arbre[1];//*arbre = malloc(sizeof(SArbre));
+	Noeud newHead[1];
+	arbre->head = newHead;//malloc(sizeof(Noeud));
 	SMap *mapCopy;
+	arbre->head->map = deepCopy(map); //mapCopy;
 	ChanceNode nodes[100];
+	STurn turns[100];
+	Noeud fils[200];
 
 	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
 			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
 				if(map->cells[i].neighbors[j]->owner != idPlayer){
-					nodes[compteur].turn = malloc(sizeof(STurn));//peut etre modifier et plus utiliser les STurn
+					nodes[compteur].turn = &turns[compteur];//malloc(sizeof(STurn));//peut etre modifier et plus utiliser les STurn
 					nodes[compteur].turn->cellFrom = map->cells[i].id;
 					nodes[compteur].turn->cellTo = map->cells[i].neighbors[j]->id;
 					nodes[compteur].probaDroite = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[j]->nbDices];
 
-					nodes[compteur].filsDroit = malloc(sizeof(Noeud));
-					nodes[compteur].filsGauche = malloc(sizeof(Noeud));
+					nodes[compteur].filsDroit = &fils[compteurBis];//malloc(sizeof(Noeud));
+					compteurBis += 1;
+					nodes[compteur].filsGauche = &fils[compteurBis];//malloc(sizeof(Noeud));
+					//freeMap(mapCopy);
 					mapCopy = deepCopy(map);
 					moveTurnWin(mapCopy,nodes[compteur].turn);
 					nodes[compteur].filsDroit->map = mapCopy;
+					//freeMap(mapCopy);
 					mapCopy = deepCopy(map);
-					moveTurnFail(deepCopy(map),nodes[compteur].turn);
+					moveTurnFail(mapCopy,nodes[compteur].turn);
 					nodes[compteur].filsGauche->map = mapCopy;
 
-					compteur += 1;
+					compteur += 1; compteurBis += 1;
 				}
 			}
 		}
@@ -59,11 +65,12 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 			arbre->head->fils[x] = nodes[x];
 		}
 		arbre->head->nbFils = compteur;
-		EndTurnNode *endTurnNode = malloc(sizeof(EndTurnNode));
+		EndTurnNode endTurnNode[1];// = malloc(sizeof(EndTurnNode));
 		endTurnNode->nbFils = 5;
 		Noeud nodeAlea[5];
 
 		for(int i = 0; i < endTurnNode->nbFils; i++){
+			//freeMap(mapCopy);
 			mapCopy = deepCopy(map);
 			endTurn(idPlayer, mapCopy);
 			nodeAlea[i].map = mapCopy;
@@ -74,6 +81,7 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 		//printf("ok en avant pour l'évaluation\n");
 		return bestMove(idPlayer, arbre, turn);
 	}
+	freeMap(mapCopy);
 	return 0;
 }
 
@@ -194,4 +202,16 @@ void endTurn(int idPlayer, SMap *map){
 
 int aleatoire(int a, int b){
 	return rand() % (b-a+1) + a;
+}
+
+void freeMap(SMap *map){
+	if(map != NULL){
+		for(int i=0 ; i  < map->nbCells ; i++){
+			free(map->cells[i].neighbors);
+		}
+		free(map->cells);
+		if(map->stack != NULL)
+			free(map->stack);
+		free(map);
+	}
 }

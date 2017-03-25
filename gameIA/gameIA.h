@@ -3,6 +3,7 @@
 
 
 int turnIA(int idPlayer, const SMap *map, STurn *turn);
+void freeMap(SMap *map);
 void moveTurnWin(SMap *map, STurn *turn);
 void moveTurnFail(SMap *map, STurn *turn);
 int getDicesToDistribute(int idPlayer, SMap *map);

@@ -112,26 +112,6 @@ double mapEvaluation(int idPlayer, SMap *map){
 	return value;
 }
 
-int getAmountOfDices(int idPlayer, SMap *map){
-	int nbDices = 0;
-	for(int i = 0; i < map->nbCells; i++){
-		if(map->cells[i].owner == idPlayer){
-			nbDices += map->cells[i].nbDices;
-		}
-	}
-	return nbDices;
-}
-
-int getDicesToDistribute(int idPlayer, SMap *map){
-	int nbDices = 0;
-	for(int i = 0; i < map->nbCells; i++){
-		if(map->cells[i].owner == idPlayer){
-			nbDices += 1;
-		}
-	}
-	return nbDices;
-}
-
 void moveTurnFail(SMap *map, STurn *turn){
 	map->cells[turn->cellFrom].nbDices = 1;
 }
@@ -214,4 +194,68 @@ void freeMap(SMap *map){
 			free(map->stack);
 		free(map);
 	}
+}
+
+int getAmountOfDices(int idPlayer, SMap *map){
+	int nbDices = 0;
+	for(int i = 0; i < map->nbCells; i++){
+		if(map->cells[i].owner == idPlayer){
+			nbDices += map->cells[i].nbDices;
+		}
+	}
+	return nbDices;
+}
+
+/*
+Trouve le plus grand nombre de territoire connexe appartenant au joueur passé en paramètre
+*/
+int getDicesToDistribute(int idPlayer, SMap *map){
+
+	int marque[60];
+	int lenMarque = 0;
+	int playerCell[60];
+	int nbPlayerCell = 0;
+	int max = 0;
+
+	//On génére un tableau contenant les position des cellules dans map->cells
+	for(int i = 0 ; i < map->nbCells ; i++){
+		if(map->cells[i].owner == idPlayer){
+			playerCell[nbPlayerCell] = i;
+			nbPlayerCell++;
+		}
+	}
+
+	for(int i = 0; i < nbPlayerCell ; i++){
+		int calcul = 0;
+		if(!(inTab(playerCell[i], marque, lenMarque)))
+			calcul += explorer(map, idPlayer, marque, &lenMarque, playerCell[i]);
+		if(calcul > max)
+			max = calcul;
+	}
+	return max;
+}
+
+
+//Fonction récursive réalisant l'exploration en profondeur pour chercher le total de cellule adjacentes
+int explorer(SMap *map, int idPlayer, int marque[], int* lenMarque, int idCell){
+	int calcul = 1; //Cellule adjacentes plus un
+	marque[*lenMarque] = idCell; //Marquage de la cellule pour ne pas la recompter
+	(*lenMarque)++; //Incrementation de la valeur du pointeur
+
+	for(int j = 0 ; j < map->cells[idCell].nbNeighbors ; j++){
+		//Si un des voisins est a nous et n'est pas deja marqué
+		if(map->cells[idCell].neighbors[j]->owner == idPlayer && !(inTab(map->cells[idCell].neighbors[j]->id, marque, *lenMarque))){
+			//On l'explore
+			calcul += explorer(map, idPlayer, marque, lenMarque, map->cells[idCell].neighbors[j]->id);
+		}
+	}
+	return calcul;
+}
+
+int inTab(int id, int tab[], int lenTab){
+	for(int i = 0 ; i  < lenTab ; i++){
+		if(tab[i] == id)
+			return 1;
+	}
+	return 0;
 }

@@ -13,3 +13,5 @@ int bestMove(int idPlayer, SArbre *arbre, STurn *turn);
 SMap* deepCopy(const SMap *map);
 void endTurn(int idPlayer, SMap *map);
 int aleatoire(int a, int b);
+int explorer(SMap *map, int idPlayer, int marque[], int *lenMarque, int idCell);
+int inTab(int id, int tab[], int lenTab);

@@ -2,14 +2,15 @@
 #include "arbre.h"
 
 
-int turnIA(int idPlayer, const SMap *map, STurn *turn);
+void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur);
+int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur);
 void freeMap(SMap *map);
 void moveTurnWin(SMap *map, STurn *turn);
 void moveTurnFail(SMap *map, STurn *turn);
 int getDicesToDistribute(int idPlayer, SMap *map);
 int getAmountOfDices(int idPlayer, SMap *map);
 double mapEvaluation(int idPlayer, SMap *map);
-int bestMove(int idPlayer, SArbre *arbre, STurn *turn);
+int bestMove(int idPlayer, Noeud *head, STurn *turn);
 SMap* deepCopy(const SMap *map);
 void endTurn(int idPlayer, SMap *map);
 int aleatoire(int a, int b);

@@ -6,6 +6,7 @@ typedef struct Noeud{
 	struct ChanceNode *fils;
 	struct EndTurnNode *mapAlea;
 	int nbFils;
+	int a;
 }Noeud;
 
 typedef struct ChanceNode {

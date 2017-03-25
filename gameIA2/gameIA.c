@@ -20,13 +20,13 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {1,				0.999801, 0.994674, 0.961525, 0.862370, 0.685111, 0.469154, 0.274377},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
-int turnIA(int idPlayer, const SMap *map, STurn *turn){
+int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur){
+	return bestMove(idPlayer, head, turn);
+}
+
+void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur){
 	int compteur = 0; int compteurBis = 0;
-	SArbre arbre[1];//*arbre = malloc(sizeof(SArbre));
-	Noeud newHead[1];
-	arbre->head = newHead;//malloc(sizeof(Noeud));
 	SMap *mapCopy;
-	arbre->head->map = deepCopy(map); //mapCopy;
 	ChanceNode nodes[100];
 	STurn turns[100];
 	Noeud fils[200];
@@ -57,47 +57,46 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 			}
 		}
 	}
-	//printf("valeur compteur : %d\n", compteur);
+	head->nbFils = compteur;
 	if(compteur > 0){
 		ChanceNode filsNodes[compteur];
-		arbre->head->fils = filsNodes;
+		head->fils = filsNodes;
 		for(int x = 0; x < compteur; x++){//a cause du <=
-			arbre->head->fils[x] = nodes[x];
+			if(profondeur > 0){
+				//turnIA(idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, profondeur - 1);
+				//turnIA(idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, profondeur - 1);
+			}
+			head->fils[x] = nodes[x];
 		}
-		arbre->head->nbFils = compteur;
+
 		EndTurnNode endTurnNode[1];// = malloc(sizeof(EndTurnNode));
 		endTurnNode->nbFils = 5;
 		Noeud nodeAlea[5];
 
 		for(int i = 0; i < endTurnNode->nbFils; i++){
-			//freeMap(mapCopy);
 			mapCopy = deepCopy(map);
 			endTurn(idPlayer, mapCopy);
 			nodeAlea[i].map = mapCopy;
+			//if(profondeur > 0)
+				//turnIA(idPlayer, &nodeAlea[i], nodeAlea[i].map, profondeur - 1);
 		}
 		endTurnNode->filsAlea = nodeAlea;
-		arbre->head->mapAlea = endTurnNode;
-
-		//printf("ok en avant pour l'évaluation\n");
-		return bestMove(idPlayer, arbre, turn);
+		head->mapAlea = endTurnNode;
 	}
-	//freeMap(mapCopy);
-	return 0;
 }
 
-
-int bestMove(int idPlayer, SArbre *arbre, STurn *turn){
+int bestMove(int idPlayer, Noeud *head, STurn *turn){
 	int bouge = 0;
-	double valHead = mapEvaluation(idPlayer, arbre->head->map);
+	double valHead = mapEvaluation(idPlayer, head->map);
 	double valMax = valHead;
 	double val;
-	for(int i = 0; i < arbre->head->nbFils; i++){
-		val = arbre->head->fils[i].probaDroite * mapEvaluation(idPlayer, arbre->head->fils[i].filsDroit->map) + (1 - arbre->head->fils[i].probaDroite) * mapEvaluation(idPlayer, arbre->head->fils[i].filsGauche->map);
+	for(int i = 0; i < head->nbFils; i++){
+		val = head->fils[i].probaDroite * mapEvaluation(idPlayer, head->fils[i].filsDroit->map) + (1 - head->fils[i].probaDroite) * mapEvaluation(idPlayer, head->fils[i].filsGauche->map);
 		//printf("%f : %f / %f\n", valHead, valMax, val);
 		if (val > valMax){
 			valMax = val;
-			turn->cellFrom = arbre->head->fils[i].turn->cellFrom;
-			turn->cellTo = arbre->head->fils[i].turn->cellTo;
+			turn->cellFrom = head->fils[i].turn->cellFrom;
+			turn->cellTo = head->fils[i].turn->cellTo;
 			bouge = 1;
 		}
 	}
@@ -105,6 +104,8 @@ int bestMove(int idPlayer, SArbre *arbre, STurn *turn){
 }
 
 double mapEvaluation(int idPlayer, SMap *map){
+	if(map == NULL)
+		exit(-1);
 	double alpha = 0; double beta = 1;
 	//printf("nbDices : %d / nbToGive : %d \n", getAmountOfDices(idPlayer, map), getDicesToDistribute(idPlayer, map));
 	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);

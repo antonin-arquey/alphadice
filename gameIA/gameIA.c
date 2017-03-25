@@ -156,7 +156,11 @@ SMap* deepCopy(const SMap *map){
 	return mapCopy;
 }
 
-void endTurn(int idPlayer, SMap *map){
+/*
+Fonction qui répartit les dés a la fin d'un tour d'un joueur
+*/
+void endTurn(int idPlayer, SMap *map)
+{
 	int playerCell[60];
 	int nbPlayerCell = 0;
 
@@ -168,16 +172,33 @@ void endTurn(int idPlayer, SMap *map){
 		}
 	}
 
-	int nbDiceDistributed = getDicesToDistribute(idPlayer, map);
+	int nbDiceDistributed = getDiceToDistribute(idPlayer, map) + map->stack[idPlayer];
 	int random;
-
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé
 	for(int i = 1 ; i <= nbDiceDistributed ; i++){
 		random = aleatoire(0, nbPlayerCell-1);
 		if(map->cells[playerCell[random]].nbDices < 8){
 			map->cells[playerCell[random]].nbDices++;
 		}
+		else{
+			if(allCellsFull(idPlayer, map)){
+				map->stack[idPlayer] += nbDiceDistributed - i + 1;
+				break;
+			}
+			else{
+				i--;
+			}
+		}
 	}
+}
+
+//Vérifie si toutes les cellules du joueurs sont pleines
+int allCellsFull(int idPlayer, SMap *map){
+	for(int i=0 ; i  < map->nbCells ; i++){
+		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices < 8)
+			return 0;
+	}
+	return 1;
 }
 
 int aleatoire(int a, int b){

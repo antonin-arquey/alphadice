@@ -32,7 +32,7 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	arbre->head->bestTurn->cellFrom = -1;
 	arbre->head->bestTurn->cellTo = -1;
 	arbre->head->map = deepCopy(map); //mapCopy;
-  turnIA(idPlayer, arbre->head, map, 1);//peut-etre pas besoin de passer la map en param
+  turnIA(idPlayer, arbre->head, map, 0);//peut-etre pas besoin de passer la map en param
 	if(arbre->head->bestTurn->cellFrom != -1 && arbre->head->bestTurn->cellTo != -1){//return evalArbre(idPlayer, arbre->head, turn, 2);
 		turn->cellFrom = arbre->head->bestTurn->cellFrom;
 		turn->cellTo = arbre->head->bestTurn->cellTo;

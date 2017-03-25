@@ -21,7 +21,7 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
 int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur){
-	return bestMove(idPlayer, head, turn);
+	//return bestMove(idPlayer, head, turn);
 }
 
 void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur){
@@ -63,10 +63,12 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur){
 		head->fils = filsNodes;
 		for(int x = 0; x < compteur; x++){//a cause du <=
 			if(profondeur > 0){
-				//turnIA(idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, profondeur - 1);
-				//turnIA(idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, profondeur - 1);
+				turnIA(idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, profondeur - 1);
+				turnIA(idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, profondeur - 1);
 			}
 			head->fils[x] = nodes[x];
+			if(profondeur == 0)
+				bestMove(idPlayer, head);
 		}
 
 		EndTurnNode endTurnNode[1];// = malloc(sizeof(EndTurnNode));
@@ -77,30 +79,27 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur){
 			mapCopy = deepCopy(map);
 			endTurn(idPlayer, mapCopy);
 			nodeAlea[i].map = mapCopy;
-			//if(profondeur > 0)
-				//turnIA(idPlayer, &nodeAlea[i], nodeAlea[i].map, profondeur - 1);
+			if(profondeur > 0)
+				turnIA(idPlayer, &nodeAlea[i], nodeAlea[i].map, profondeur - 1);
 		}
 		endTurnNode->filsAlea = nodeAlea;
 		head->mapAlea = endTurnNode;
 	}
 }
 
-int bestMove(int idPlayer, Noeud *head, STurn *turn){
-	int bouge = 0;
-	double valHead = mapEvaluation(idPlayer, head->map);
-	double valMax = valHead;
+void bestMove(int idPlayer, Noeud *head){
+	head->maxQ = mapEvaluation(idPlayer, head->map);
+	head->bestTurn->cellFrom = -1;
+	head->bestTurn->cellTo = -1;
 	double val;
 	for(int i = 0; i < head->nbFils; i++){
 		val = head->fils[i].probaDroite * mapEvaluation(idPlayer, head->fils[i].filsDroit->map) + (1 - head->fils[i].probaDroite) * mapEvaluation(idPlayer, head->fils[i].filsGauche->map);
-		//printf("%f : %f / %f\n", valHead, valMax, val);
-		if (val > valMax){
-			valMax = val;
-			turn->cellFrom = head->fils[i].turn->cellFrom;
-			turn->cellTo = head->fils[i].turn->cellTo;
-			bouge = 1;
+		if (val > head->maxQ){
+			head->maxQ = val;
+			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;
+			head->bestTurn->cellTo = head->fils[i].turn->cellTo;
 		}
 	}
-	return bouge;
 }
 
 double mapEvaluation(int idPlayer, SMap *map){

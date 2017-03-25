@@ -10,7 +10,7 @@ void moveTurnFail(SMap *map, STurn *turn);
 int getDicesToDistribute(int idPlayer, SMap *map);
 int getAmountOfDices(int idPlayer, SMap *map);
 double mapEvaluation(int idPlayer, SMap *map);
-int bestMove(int idPlayer, Noeud *head, STurn *turn);
+void bestMove(int idPlayer, Noeud *head);
 SMap* deepCopy(const SMap *map);
 void endTurn(int idPlayer, SMap *map);
 int aleatoire(int a, int b);

@@ -67,9 +67,12 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur){
 				turnIA(idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, profondeur - 1);
 			}
 			head->fils[x] = nodes[x];
-			if(profondeur == 0)
-				bestMove(idPlayer, head);
 		}
+		if(profondeur == 0)
+			bestMove(idPlayer, head);
+		else
+			bestMove2(idPlayer, head);
+
 
 		EndTurnNode endTurnNode[1];// = malloc(sizeof(EndTurnNode));
 		endTurnNode->nbFils = 5;
@@ -87,13 +90,32 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur){
 	}
 }
 
-void bestMove(int idPlayer, Noeud *head){
-	head->maxQ = mapEvaluation(idPlayer, head->map);
+void bestMove2(int idPlayer, Noeud *head){
+	head->maxQ = mapEvaluation(idPlayer, head->map);//voir s'il faut pas regarder les fils alea
+	STurn bestTurn[1];
+	head->bestTurn = bestTurn;
 	head->bestTurn->cellFrom = -1;
 	head->bestTurn->cellTo = -1;
 	double val;
 	for(int i = 0; i < head->nbFils; i++){
-		val = head->fils[i].probaDroite * mapEvaluation(idPlayer, head->fils[i].filsDroit->map) + (1 - head->fils[i].probaDroite) * mapEvaluation(idPlayer, head->fils[i].filsGauche->map);
+		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ;
+		if (val > head->maxQ){
+			head->maxQ = val;
+			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;
+			head->bestTurn->cellTo = head->fils[i].turn->cellTo;
+		}
+	}
+}
+
+void bestMove(int idPlayer, Noeud *head){
+	head->maxQ = mapEvaluation(idPlayer, head->map);
+	STurn bestTurn[1];
+	head->bestTurn = bestTurn;
+	head->bestTurn->cellFrom = -1;
+	head->bestTurn->cellTo = -1;
+	double val;
+	for(int i = 0; i < head->nbFils; i++){
+		val = head->fils[i].probaDroite;// * mapEvaluation(idPlayer, head->fils[i].filsDroit->map) + (1 - head->fils[i].probaDroite) * mapEvaluation(idPlayer, head->fils[i].filsGauche->map);
 		if (val > head->maxQ){
 			head->maxQ = val;
 			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;

@@ -26,10 +26,20 @@ void EndGame(unsigned int idWinner)
 int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	SArbre arbre[1];//*arbre = malloc(sizeof(SArbre));
 	Noeud newHead[1];
+	STurn bestTurn[1];
 	arbre->head = newHead;//malloc(sizeof(Noeud));
+	arbre->head->bestTurn = bestTurn;
+	arbre->head->bestTurn->cellFrom = -1;
+	arbre->head->bestTurn->cellTo = -1;
 	arbre->head->map = deepCopy(map); //mapCopy;
-  turnIA(idPlayer, arbre->head, map, 2);//peut-etre pas besoin de passer la map en param
-	return evalArbre(idPlayer, arbre->head, turn, 2);
+  turnIA(idPlayer, arbre->head, map, 1);//peut-etre pas besoin de passer la map en param
+	if(arbre->head->bestTurn->cellFrom != -1 && arbre->head->bestTurn->cellTo != -1){//return evalArbre(idPlayer, arbre->head, turn, 2);
+		turn->cellFrom = arbre->head->bestTurn->cellFrom;
+		turn->cellTo = arbre->head->bestTurn->cellTo;
+		printf("cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
+		return 1;
+	}
+	return 0;
 }
 
 int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){

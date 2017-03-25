@@ -81,7 +81,7 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 		//printf("ok en avant pour l'évaluation\n");
 		return bestMove(idPlayer, arbre, turn);
 	}
-	freeMap(mapCopy);
+	//freeMap(mapCopy);
 	return 0;
 }
 

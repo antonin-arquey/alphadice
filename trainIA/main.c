@@ -77,7 +77,7 @@ int main(int argc, char const *argv[]) {
     //err_delta = err * deriv(out)
 
     transpose(outT, out);
-    dot(update, outT, err);//pas err normalement mais err_delta
+    dot(update, outT, err, 5);//pas err normalement mais err_delta
     add(weights,update);
   }
   return 0;

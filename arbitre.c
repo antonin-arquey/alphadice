@@ -231,9 +231,17 @@ SMap* deepCopy(SMap *map){
 	if(mapCopy->cells == NULL)
 		exit(-1);
 
-	mapCopy->stack = NULL;
+	int nbPlayer = sizeof(map->stack) / sizeof(int);
 
-	for(int i=0 ; i < mapCopy->nbCells; i++){
+	mapCopy->stack = malloc(sizeof(int) * nbPlayer);
+
+	for(int i=0 ; i < nbPlayer ; i++)
+	{
+		mapCopy->stack[i] = map->stack[i];
+	}
+
+	for(int i=0 ; i < mapCopy->nbCells; i++)
+	{
 		mapCopy->cells[i].id = map->cells[i].id;
 		mapCopy->cells[i].owner = map->cells[i].owner;
 		mapCopy->cells[i].nbDices = map->cells[i].nbDices;
@@ -244,8 +252,10 @@ SMap* deepCopy(SMap *map){
 			exit(-1);
 	}
 
-	for(int i=0 ; i < mapCopy->nbCells; i++){
-		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++){
+	for(int i=0 ; i < mapCopy->nbCells; i++)
+	{
+		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++)
+		{
 			int idToAdd = map->cells[i].neighbors[j]->id;
 			mapCopy->cells[i].neighbors[j] = &(mapCopy->cells[idToAdd]);
 		}

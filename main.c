@@ -19,9 +19,9 @@ int main(int argc, char* argv[]){
 	if(verifArguments(argc, argv, &nbLib)){
 		return 1;
 	}
-	printf("combien de lib ? %d\n", nbLib);
 	nbPlayer = atoi(argv[2]);
 	nbGame = atoi(argv[1]);
+	printf("Paramètres de la partie :\n\t Nombre de parties : %d\n\t Nombre de joueurs %d (%d IA / %d interactifs)\n", nbGame, nbPlayer, nbLib, nbPlayer-nbLib);
 
 	void **libs;
 	playT PlayTurn[nbPlayer];
@@ -77,6 +77,9 @@ int main(int argc, char* argv[]){
 				SDL_RenderPresent(renderer);
 			}
 			if(victoire(i, map)){
+				char str[20];
+				sprintf(str, "###\n%d\n###\n",  i);
+				Log(str);
 				printf("Victoire du joueur %d !!\n", i);
 				return 0;
 			}

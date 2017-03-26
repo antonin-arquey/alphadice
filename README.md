@@ -13,4 +13,4 @@ Symbole /// : fin du tour d'un joueur et début de la remise des dé (jusqu'au p
 
   idCell (on rajoute un dé a cette cellule)
 
-Symbole --- : ligne apres -> gagnant de la partie (jusqu'au prochain symbole ---)
+Symbole ### : ligne apres -> gagnant de la partie (jusqu'au prochain symbole ###)

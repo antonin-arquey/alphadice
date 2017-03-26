@@ -13,6 +13,7 @@ double mapEvaluation(int idPlayer, SMap *map);
 void bestMove(int idPlayer, Noeud *head);
 void bestMove2(int idPlayer, Noeud *head);
 SMap* deepCopy(const SMap *map);
+void deepCopy2(SMap *mapCopy, const SMap *map);
 void endTurn(int idPlayer, SMap *map);
 int aleatoire(int a, int b);
 int explorer(SMap *map, int idPlayer, int marque[], int *lenMarque, int idCell);

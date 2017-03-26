@@ -26,7 +26,11 @@ int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur){
 
 void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur){
 	int compteur = 0; int compteurBis = 0;
-	SMap *mapCopy;
+	SMap mapCopys[200];
+	for (int x = 0; x < 200; x++) {
+		printf("ook\n");
+		deepCopy2(&mapCopys[x],map);
+	}
 	ChanceNode nodes[100];
 	STurn turns[100];
 	Noeud fils[200];
@@ -35,24 +39,24 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
 			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
 				if(map->cells[i].neighbors[j]->owner != idPlayer){
-					nodes[compteur].turn = &turns[compteur];//malloc(sizeof(STurn));//peut etre modifier et plus utiliser les STurn
+					nodes[compteur].turn = &turns[compteur];//peut etre modifier et plus utiliser les STurn
 					nodes[compteur].turn->cellFrom = map->cells[i].id;
 					nodes[compteur].turn->cellTo = map->cells[i].neighbors[j]->id;
 					nodes[compteur].probaDroite = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[j]->nbDices];
 
 					nodes[compteur].filsDroit = &fils[compteurBis];//malloc(sizeof(Noeud));
+					printf("okh\n");
+					//deepCopy2(&mapCopys[compteurBis], map);
+					moveTurnWin(&mapCopys[compteurBis],nodes[compteur].turn);
+					nodes[compteur].filsDroit->map = &mapCopys[compteurBis];
 					compteurBis += 1;
-					nodes[compteur].filsGauche = &fils[compteurBis];//malloc(sizeof(Noeud));
-					//freeMap(mapCopy);
-					mapCopy = deepCopy(map);
-					moveTurnWin(mapCopy,nodes[compteur].turn);
-					nodes[compteur].filsDroit->map = mapCopy;
-					//freeMap(mapCopy);
-					mapCopy = deepCopy(map);
-					moveTurnFail(mapCopy,nodes[compteur].turn);
-					nodes[compteur].filsGauche->map = mapCopy;
-
+					nodes[compteur].filsGauche = &fils[compteurBis];
+					//deepCopy2(&mapCopys[compteurBis], map);
+					printf("okh\n");
+					moveTurnFail(&mapCopys[compteurBis],nodes[compteur].turn);
+					nodes[compteur].filsGauche->map = &mapCopys[compteurBis];
 					compteur += 1; compteurBis += 1;
+
 				}
 			}
 		}
@@ -73,9 +77,10 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 		endTurnNode->nbFils = 5;
 		Noeud nodeAlea[5];
 		for(int i = 0; i < endTurnNode->nbFils; i++){
-			mapCopy = deepCopy(map);
-			endTurn(idPlayer, mapCopy);
-			nodeAlea[i].map = mapCopy;
+			//deepCopy2(&mapCopys[compteurBis], map);
+			endTurn(idPlayer, &mapCopys[compteurBis]);
+			nodeAlea[i].map = &mapCopys[compteurBis];
+			compteurBis++;
 			if(profondeur > 0)
 				turnIA(idPlayer, &nodeAlea[i], nodeAlea[i].map, turn, profondeur - 1);
 		}
@@ -91,8 +96,8 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 			bestMove2(idPlayer, head);
 			//printf("mov2 cellFrom %d -> cellTo %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo);
 	}
-	printf("fin turnIA cellFrom %d -> cellTo %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo);
-	printf("fin turnIA 2 cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
+	//printf("fin turnIA cellFrom %d -> cellTo %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo);
+	//printf("fin turnIA 2 cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
 }
 
 void bestMove2(int idPlayer, Noeud *head){
@@ -126,7 +131,7 @@ void bestMove(int idPlayer, Noeud *head){
 			head->maxQ = val;
 			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;
 			head->bestTurn->cellTo = head->fils[i].turn->cellTo;
-			printf("move cellFrom %d -> cellTo %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo);
+			//printf("move cellFrom %d -> cellTo %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo);
 		}
 	}
 }
@@ -134,7 +139,7 @@ void bestMove(int idPlayer, Noeud *head){
 double mapEvaluation(int idPlayer, SMap *map){
 	if(map == NULL)
 		exit(-1);
-	double alpha = 0; double beta = 1;
+	double alpha = 0.1; double beta = 2;
 	//printf("nbDices : %d / nbToGive : %d \n", getAmountOfDices(idPlayer, map), getDicesToDistribute(idPlayer, map));
 	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);
 	//printf("%f\n", value);
@@ -173,7 +178,7 @@ SMap* deepCopy(const SMap *map){
 	{
 		mapCopy->stack[i] = map->stack[i];
 	}
-	
+
 	for(int i=0 ; i < mapCopy->nbCells; i++){
 		mapCopy->cells[i].id = map->cells[i].id;
 		mapCopy->cells[i].owner = map->cells[i].owner;
@@ -194,6 +199,42 @@ SMap* deepCopy(const SMap *map){
 	return mapCopy;
 }
 
+void deepCopy2(SMap *mapCopy, const SMap *map){
+	printf("okj1\n");
+	if(mapCopy == NULL)
+		exit(-1);
+	printf("okj1\n");
+	int nbPlayer = sizeof(map->stack) / sizeof(int);
+	SCell cellsCopy[map->nbCells];
+	int stackCopy[nbPlayer];
+	SCell* tabNeighborsCopy[60][30];
+	printf("okj1\n");
+	mapCopy->stack = stackCopy;
+	mapCopy->nbCells = map->nbCells;
+	for(int i=0 ; i < nbPlayer; i++){
+		stackCopy[i] = map->stack[i];
+		mapCopy->stack[i] = stackCopy[i];
+	}
+	printf("okj1\n");
+	for(int i=0 ; i < mapCopy->nbCells; i++){
+		cellsCopy[i].id = map->cells[i].id;
+		cellsCopy[i].owner = map->cells[i].owner;
+		cellsCopy[i].nbDices = map->cells[i].nbDices;
+		cellsCopy[i].nbNeighbors = map->cells[i].nbNeighbors;
+		cellsCopy[i].neighbors = tabNeighborsCopy[i];
+		mapCopy->cells[i] = cellsCopy[i];
+	}
+	printf("okj1\n");
+	int idToAdd;
+	for(int i=0 ; i < mapCopy->nbCells; i++){
+		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++){
+			idToAdd = map->cells[i].neighbors[j]->id;
+			mapCopy->cells[i].neighbors[j] = &(mapCopy->cells[idToAdd]);
+		}
+	}
+	printf("okj\n");
+	//return mapCopy;
+}
 /*
 Fonction qui répartit les dés a la fin d'un tour d'un joueur
 */
@@ -209,10 +250,10 @@ void endTurn(int idPlayer, SMap *map){
 		}
 	}
 
-	int nbDiceDistributed = getDicesToDistribute(idPlayer, map); // + map->stack[idPlayer];
+	int nbDiceDistributed = getDicesToDistribute(idPlayer, map) + map->stack[idPlayer];
 	int random;
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé
-	/*for(int i = 1 ; i <= nbDiceDistributed ; i++){
+	for(int i = 1 ; i <= nbDiceDistributed ; i++){
 		random = aleatoire(0, nbPlayerCell-1);
 		if(map->cells[playerCell[random]].nbDices < 8){
 			map->cells[playerCell[random]].nbDices++;
@@ -226,7 +267,7 @@ void endTurn(int idPlayer, SMap *map){
 				i--;
 			}
 		}
-	}*/
+	}
 }
 
 //Vérifie si toutes les cellules du joueurs sont pleines

@@ -31,14 +31,17 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	arbre->head->bestTurn = bestTurn;
 	arbre->head->bestTurn->cellFrom = -1;
 	arbre->head->bestTurn->cellTo = -1;
+	turn->cellFrom = -1; turn->cellTo = -1;
+	printf("------------ nouvelle requete de turn ---------------\n");
 	arbre->head->map = deepCopy(map); //mapCopy;
-  turnIA(idPlayer, arbre->head, map, 0);//peut-etre pas besoin de passer la map en param
-	if(arbre->head->bestTurn->cellFrom != -1 && arbre->head->bestTurn->cellTo != -1){//return evalArbre(idPlayer, arbre->head, turn, 2);
-		turn->cellFrom = arbre->head->bestTurn->cellFrom;
-		turn->cellTo = arbre->head->bestTurn->cellTo;
-		printf("cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
+  turnIA(idPlayer, arbre->head, map, turn, 1);//peut-etre pas besoin de passer la map en param
+	if(turn->cellFrom != -1 && turn->cellTo != -1){//return evalArbre(idPlayer, arbre->head, turn, 2);
+		//turn->cellFrom = arbre->head->bestTurn->cellFrom;
+		//turn->cellTo = arbre->head->bestTurn->cellTo;
+		printf("PlayTurn cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
 		return 1;
 	}
+	printf("--- je veux pas joueur ---\n");
 	return 0;
 }
 

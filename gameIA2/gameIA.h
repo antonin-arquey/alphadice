@@ -2,7 +2,7 @@
 #include "arbre.h"
 
 
-void turnIA(int idPlayer, Noeud *head, const SMap *map, int profondeur);
+void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur);
 int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur);
 void freeMap(SMap *map);
 void moveTurnWin(SMap *map, STurn *turn);

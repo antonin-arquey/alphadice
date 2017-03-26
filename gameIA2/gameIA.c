@@ -165,6 +165,15 @@ SMap* deepCopy(const SMap *map){
 	if(mapCopy->cells == NULL)
 		exit(-1);
 
+	int nbPlayer = sizeof(map->stack) / sizeof(int);
+
+	mapCopy->stack = malloc(sizeof(int) * nbPlayer);
+
+	for(int i=0 ; i < nbPlayer ; i++)
+	{
+		mapCopy->stack[i] = map->stack[i];
+	}
+	
 	for(int i=0 ; i < mapCopy->nbCells; i++){
 		mapCopy->cells[i].id = map->cells[i].id;
 		mapCopy->cells[i].owner = map->cells[i].owner;

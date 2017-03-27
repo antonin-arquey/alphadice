@@ -5,11 +5,32 @@ double random(){
     return 2 * (rand() / (RAND_MAX + 1.)) - 1;
 }
 
-void init(double w[][1], int taille){
-  for (int i = 0; i < taille; i++) {
-    w[i][0] = random();
+void init_rand(double **w, int wx, int wy){
+  w = malloc(sizeof(double * wy));
+  for(int i = 0;i<wy;i++){
+    w[i] = malloc(sizeof(double * wx));
+  }
+
+  for (int i = 0; i < wy; i++) {
+    for (int j=0; j < wx; j++){
+      w[i][j] = random();
+    }
   }
 }
+
+void init0(double **w, int wx, int wy){
+  w = malloc(sizeof(double * wy));
+  for(int i = 0;i<wy;i++){
+    w[i] = malloc(sizeof(double * wx));
+  }
+
+  for (int i = 0; i < wy; i++) {
+    for (int j=0; j < wx; j++){
+      w[i][j] = 0;
+    }
+  }
+}
+
 void recupXY(double X[][3], double Y[][1], double data[][4], int debut, int fin){
   for (int i = debut; i < fin; i++) {
     Y[i][1] = data[i][4];
@@ -29,13 +50,14 @@ void affichage(double tab[][3], int a, int b){
   }
   printf("-- fin d'affichage --\n");
 }
-void dot(double out[][1], double x[][3], double w[][1], int taille){
-  double val = 0;
-  for (int i = 0; i < taille; i++) {
-    for (int j = 0; j < 3; j++) {
-      val += x[i][j] * w[j][0];
+void dot(double **out, double **a, int ax, int ay, double **b, int bx, int by){
+  init0(out,bx,ay);
+  double val=0;
+  for (int i = 0; i < ay; i++) {
+    for (int j = 0; j < ax; j++) {
+      val += a[i][j] * b[j][i];
     }
-    out[i][0] = val;
+    out[i][j] = val;
     val = 0;
   }
 }
@@ -62,9 +84,11 @@ int main(int argc, char const *argv[]) {
   double trainY[5][1];
   recupXY(trainX,trainY,data, 0, 5);
   affichage(trainX, 5, 3);
-  double weights[3][1];
+  int weightsX = 0;
+  int weightsY = 0;
+  double **weights;
+  init(weights, weightsX, weightsY);
   double out[5][1];
-  init(weights, 3);
 
   for(int j = 0; j < 1; j++){
     dot(out, trainX, weights, 5);

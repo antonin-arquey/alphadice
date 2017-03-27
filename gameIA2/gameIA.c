@@ -26,10 +26,11 @@ int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur){
 
 void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur){
 	int compteur = 0; int compteurBis = 0;
-	SMap mapCopys[200];
+	//SMap mapCopys[200];
+	SMap **mapCopys = malloc(200 * sizeof(*map));
 	for (int x = 0; x < 200; x++) {
-		printf("ook\n");
-		deepCopy2(&mapCopys[x],map);
+		//deepCopy2(&mapCopys[x],map);
+		mapCopys[x] = deepCopy(map);
 	}
 	ChanceNode nodes[100];
 	STurn turns[100];
@@ -45,18 +46,15 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 					nodes[compteur].probaDroite = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[j]->nbDices];
 
 					nodes[compteur].filsDroit = &fils[compteurBis];//malloc(sizeof(Noeud));
-					printf("okh\n");
 					//deepCopy2(&mapCopys[compteurBis], map);
-					moveTurnWin(&mapCopys[compteurBis],nodes[compteur].turn);
-					nodes[compteur].filsDroit->map = &mapCopys[compteurBis];
+					moveTurnWin(mapCopys[compteurBis],nodes[compteur].turn);
+					nodes[compteur].filsDroit->map = mapCopys[compteurBis];
 					compteurBis += 1;
 					nodes[compteur].filsGauche = &fils[compteurBis];
 					//deepCopy2(&mapCopys[compteurBis], map);
-					printf("okh\n");
-					moveTurnFail(&mapCopys[compteurBis],nodes[compteur].turn);
-					nodes[compteur].filsGauche->map = &mapCopys[compteurBis];
+					moveTurnFail(mapCopys[compteurBis],nodes[compteur].turn);
+					nodes[compteur].filsGauche->map = mapCopys[compteurBis];
 					compteur += 1; compteurBis += 1;
-
 				}
 			}
 		}
@@ -78,8 +76,8 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 		Noeud nodeAlea[5];
 		for(int i = 0; i < endTurnNode->nbFils; i++){
 			//deepCopy2(&mapCopys[compteurBis], map);
-			endTurn(idPlayer, &mapCopys[compteurBis]);
-			nodeAlea[i].map = &mapCopys[compteurBis];
+			endTurn(idPlayer, mapCopys[compteurBis]);
+			nodeAlea[i].map = mapCopys[compteurBis];
 			compteurBis++;
 			if(profondeur > 0)
 				turnIA(idPlayer, &nodeAlea[i], nodeAlea[i].map, turn, profondeur - 1);
@@ -96,6 +94,12 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 			bestMove2(idPlayer, head);
 			//printf("mov2 cellFrom %d -> cellTo %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo);
 	}
+
+	for(int z = 0 ; z < 200; z++)
+	{
+		freeMap(mapCopys[z]);
+	}
+	free(mapCopys);
 	//printf("fin turnIA cellFrom %d -> cellTo %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo);
 	//printf("fin turnIA 2 cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
 }

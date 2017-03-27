@@ -40,10 +40,10 @@ void recupXY(double X[][3], double Y[][1], double data[][4], int debut, int fin)
   }
 }
 
-void affichage(double tab[][3], int a, int b){
+void affichage(double **tab, int ax, int ay){
   printf("--affichage du tableau --\n");
-  for(int i = 0; i < a; i++){
-    for(int j = 0; j < b; j++){
+  for(int i = 0; i < ay; i++){
+    for(int j = 0; j < ax; j++){
       printf("%f ", tab[i][j]);
     }
     printf("\n");

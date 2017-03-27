@@ -4,6 +4,7 @@
 double random();
 double** init_rand(int wx, int wy);
 double** init0(int wx, int wy);
+double** addition(double** m1, double** m2, int mx, int my);
 void affichage(double **tab, int ax, int ay);
 
 double random(){
@@ -75,7 +76,21 @@ void diff(double err[][1], double y[][1], double out[][1], int taille){
     err[i][0] = y[i][0] - out[i][0];
   }
 }
+*/
 
+double** addition(double** m1, double** m2, int mx, int my){
+  double** r = init0(mx,my);
+
+  for(int i = 0; i < my; i++){
+    for(int j = 0; j < mx; j++){
+      r[i][j]=m1[i][j]+m2[i][j];
+    }
+  }
+
+  return r;
+}
+
+/*
 void transpose(double outT[1][5], double out[5][1]){
     for (int i = 0; i < 5; i++) {
       outT[0][i] = out[i][0];
@@ -83,11 +98,16 @@ void transpose(double outT[1][5], double out[5][1]){
 }*/
 
 int main(int argc, char const *argv[]) {
-  double **m;
+  double **m,**m2,**m3;
   int mx=3;
   int my=5;
   m = init_rand(mx,my);
+  m2 = init_rand(mx,my);
   affichage(m,mx,my);
+  affichage(m2,mx,my);
+  m3 = addition(m,m2,mx,my);
+  affichage(m3,mx,my);
+
   /*double data[5][4] = {{0,1,3,0},
                      {3,1,0,1},
                      {0,1,0,1},

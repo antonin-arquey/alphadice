@@ -6,6 +6,8 @@ double** init_rand(int wx, int wy);
 double** init0(int wx, int wy);
 double** addition(double** m1, double** m2, int mx, int my);
 void affichage(double **tab, int ax, int ay);
+double** soustraction(double** m1, double** m2, int mx, int my);
+double** dot(double **a, int ax, int ay, double **b, int bx, int by);
 
 double random(){
     return 2 * (rand() / (RAND_MAX + 1.)) - 1;
@@ -13,13 +15,15 @@ double random(){
 
 double** init_rand(int wx, int wy){
   double** w = malloc(sizeof(double)*wy);
+  int test;
   for(int i = 0;i<wy;i++){
     w[i] = malloc(sizeof(double)* wx);
   }
 
   for (int i = 0; i < wy; i++) {
     for (int j=0; j < wx; j++){
-      w[i][j] = random();
+      test = (int)(random()*10);
+      w[i][j] =(double)(test);
     }
   }
 
@@ -59,24 +63,31 @@ void affichage(double **tab, int ax, int ay){
   }
   printf("-- fin d'affichage --\n");
 }
-/*
-void dot(double **out, double **a, int ax, int ay, double **b, int bx, int by){
-  init0(out,bx,ay);
+
+double** dot(double **a, int ax, int ay, double **b, int bx, int by){
+  double** r = init0(bx,ay);
+  if (ax != by){
+    printf("Les matrices ne peuvent pas être multipliées entre elles (Dimensions non compatibles).\n");
+    return NULL;
+  }
+
   double val=0;
   for (int i = 0; i < ay; i++) {
     for (int j = 0; j < ax; j++) {
       val += a[i][j] * b[j][i];
+      printf("%f * %f +", a[i][j],b[j][i]);
+      /*for (int k=0; k< by;k++){
+        printf("%f * %f +", a[i][k],b[k][i]);
+        //val += a[i][k] * b[k][i];
+      }
+      r[i][j] = val;*/
     }
-    out[i][j] = val;
+    printf("\n");
     val = 0;
   }
+
+  return r;
 }
-void diff(double err[][1], double y[][1], double out[][1], int taille){
-  for (int i = 0; i < taille; i++) {
-    err[i][0] = y[i][0] - out[i][0];
-  }
-}
-*/
 
 double** addition(double** m1, double** m2, int mx, int my){
   double** r = init0(mx,my);
@@ -84,6 +95,18 @@ double** addition(double** m1, double** m2, int mx, int my){
   for(int i = 0; i < my; i++){
     for(int j = 0; j < mx; j++){
       r[i][j]=m1[i][j]+m2[i][j];
+    }
+  }
+
+  return r;
+}
+
+double** soustraction(double** m1, double** m2, int mx, int my){
+  double** r = init0(mx,my);
+
+  for(int i = 0; i < my; i++){
+    for(int j = 0; j < mx; j++){
+      r[i][j]=m1[i][j]-m2[i][j];
     }
   }
 
@@ -100,13 +123,15 @@ void transpose(double outT[1][5], double out[5][1]){
 int main(int argc, char const *argv[]) {
   double **m,**m2,**m3;
   int mx=3;
-  int my=5;
+  int my=2;
+  int m2x=2;
+  int m2y = 3;
   m = init_rand(mx,my);
-  m2 = init_rand(mx,my);
+  m2 = init_rand(m2x,m2y);
   affichage(m,mx,my);
-  affichage(m2,mx,my);
-  m3 = addition(m,m2,mx,my);
-  affichage(m3,mx,my);
+  affichage(m2,m2x,m2y);
+  m3 = dot(m, mx, my,m2,m2x,m2y);
+  affichage(m3,m2x,my);
 
   /*double data[5][4] = {{0,1,3,0},
                      {3,1,0,1},

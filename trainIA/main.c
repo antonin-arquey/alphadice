@@ -49,26 +49,6 @@ Matrice init0(int wx, int wy){
   mat.nbL = wy;
   return mat;
 }
-/*
-void recupXY(double X[][3], double Y[][1], double data[][4], int debut, int fin){
-  for (int i = debut; i < fin; i++) {
-    Y[i][1] = data[i][4];
-    for (int h = 0; h < 4; h++){
-      X[i][h] = data[i][h];
-    }
-  }
-}*/
-
-void affichage(Matrice m){
-  printf("--affichage du tableau --\n");
-  for(int i = 0; i < m.nbL; i++){
-    for(int j = 0; j < m.nbC; j++){
-      printf("%f \t", m.tab[i][j]);
-    }
-    printf("\n");
-  }
-  printf("-- fin d'affichage --\n");
-}
 
 Matrice dot(Matrice m1, Matrice m2){
   //ax=m1.nbC bx=m2.nbC
@@ -140,6 +120,33 @@ Matrice transpose(Matrice m){
     return r;
 }
 
+void freeMat(Matrice m){
+  for (int i=0;i<m.nbL;i++){
+    free(m.tab[i]);
+  }
+  free(m.tab);
+}
+/*
+void recupXY(double X[][3], double Y[][1], double data[][4], int debut, int fin){
+  for (int i = debut; i < fin; i++) {
+    Y[i][1] = data[i][4];
+    for (int h = 0; h < 4; h++){
+      X[i][h] = data[i][h];
+    }
+  }
+}*/
+
+void affichage(Matrice m){
+  printf("--affichage du tableau --\n");
+  for(int i = 0; i < m.nbL; i++){
+    for(int j = 0; j < m.nbC; j++){
+      printf("%f \t", m.tab[i][j]);
+    }
+    printf("\n");
+  }
+  printf("-- fin d'affichage --\n");
+}
+
 int main(int argc, char const *argv[]) {
   Matrice m,m2,m3;
   int mx=4;
@@ -152,6 +159,10 @@ int main(int argc, char const *argv[]) {
   affichage(m2);
   m3 = dot(m,m2);
   affichage(m3);
+
+  freeMat(m);
+  freeMat(m2);
+  freeMat(m3);
 
   /*double data[5][4] = {{0,1,3,0},
                      {3,1,0,1},

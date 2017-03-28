@@ -1,19 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct{
+  double** tab;
+  int nbL;  //nombre de lignes
+  int nbC;  //nombre de colonnes
+}Matrice;
+
 double random();
-double** init_rand(int wx, int wy);
-double** init0(int wx, int wy);
-double** addition(double** m1, double** m2, int mx, int my);
-void affichage(double **tab, int ax, int ay);
-double** soustraction(double** m1, double** m2, int mx, int my);
-double** dot(double **a, int ax, int ay, double **b, int bx, int by);
+Matrice init_rand(int wx, int wy);
+Matrice init0(int wx, int wy);
+Matrice addition(Matrice m1, Matrice m2);
+Matrice soustraction(Matrice m1, Matrice m2);
+void affichage(Matrice m);
+Matrice dot(Matrice m1, Matrice m2);
+
 
 double random(){
     return 2 * (rand() / (RAND_MAX + 1.)) - 1;
 }
 
-double** init_rand(int wx, int wy){
+Matrice init_rand(int wx, int wy){
+  Matrice mat;
+  mat.tab = malloc(sizeof(double)*wy);
+  int test;
+  for(int i = 0;i<wy;i++){
+    mat.tab[i] = malloc(sizeof(double)* wx);
+  }
+
+  for (int i = 0; i < wy; i++) {
+    for (int j=0; j < wx; j++){
+      test = (int)(random()*10);
+      mat.tab[i][j] =(double)(test);
+    }
+  }
+
+  mat.nbC = wx;
+  mat.nbL = wy;
+
+  return mat;
+}
+
+Matrice init0(int wx, int wy){
+  Matrice mat;
   double** w = malloc(sizeof(double)*wy);
   int test;
   for(int i = 0;i<wy;i++){
@@ -22,26 +51,15 @@ double** init_rand(int wx, int wy){
 
   for (int i = 0; i < wy; i++) {
     for (int j=0; j < wx; j++){
-      test = (int)(random()*10);
-      w[i][j] =(double)(test);
+      w[i][j] =0;
     }
   }
 
-  return w;
-}
+  mat.tab = w;
+  mat.nbC = wy;
+  mat.nbL = wx;
 
-double** init0(int wx, int wy){
-  double** w = malloc(sizeof(double)*wy);
-  for(int i = 0;i<wy;i++){
-    w[i] = malloc(sizeof(double)* wx);
-  }
-
-  for (int i = 0; i < wy; i++) {
-    for (int j=0; j < wx; j++){
-      w[i][j] = 0;
-    }
-  }
-  return w;
+  return mat;
 }
 /*
 void recupXY(double X[][3], double Y[][1], double data[][4], int debut, int fin){
@@ -53,63 +71,74 @@ void recupXY(double X[][3], double Y[][1], double data[][4], int debut, int fin)
   }
 }*/
 
-void affichage(double **tab, int ax, int ay){
+void affichage(Matrice m){
   printf("--affichage du tableau --\n");
-  for(int i = 0; i < ay; i++){
-    for(int j = 0; j < ax; j++){
-      printf("%f \t", tab[i][j]);
+  for(int i = 0; i < m.nbL; i++){
+    for(int j = 0; j < m.nbC; j++){
+      printf("%f \t", m.tab[i][j]);
     }
     printf("\n");
   }
   printf("-- fin d'affichage --\n");
 }
 
-double** dot(double **a, int ax, int ay, double **b, int bx, int by){
-  double** r = init0(bx,ay);
-  if (ax != by){
+Matrice dot(Matrice m1, Matrice m2){
+  //ax=m1.nbC bx=m2.nbC
+  Matrice res;
+  res = init0(m2.nbC,m1.nbL);
+  if (m1.nbC != m2.nbL){
     printf("Les matrices ne peuvent pas être multipliées entre elles (Dimensions non compatibles).\n");
-    return NULL;
+    return res;
   }
 
   double val=0;
-  for (int i = 0; i < ay; i++) {
-    for (int j = 0; j < ay; j++) {
+  for (int i = 0; i < m1.nbL; i++) {
+    for (int j = 0; j < m1.nbL; j++) {
       val = 0;
-      for (int k=0; k< by;k++){
-        val += a[i][k] * b[k][j];
+      for (int k=0; k< m2.nbL;k++){
+        val += m1.tab[i][k] * m2.tab[k][j];
       }
-      r[i][j] = val;
+      res.tab[i][j] = val;
     }
     val = 0;
   }
 
-  return r;
+  return res;
 }
 
-double** addition(double** m1, double** m2, int mx, int my){
-  double** r = init0(mx,my);
+Matrice addition(Matrice m1, Matrice m2){
+  Matrice m3 = init0(m1.nbL,m1.nbC);
 
-  for(int i = 0; i < my; i++){
-    for(int j = 0; j < mx; j++){
-      r[i][j]=m1[i][j]+m2[i][j];
+  if((m1.nbL != m2.nbL) || (m1.nbC != m2.nbC)){
+    printf("Les matrices ne peuvent pas être additionnés entre elles (Dimensions non compatibles).\n");
+    return m3;
+  }
+
+  for(int i = 0; i < m1.nbL; i++){
+    for(int j = 0; j < m1.nbC; j++){
+      m3.tab[i][j]=m1.tab[i][j]+m2.tab[i][j];
     }
   }
 
-  return r;
+  return m3;
 }
 
-double** soustraction(double** m1, double** m2, int mx, int my){
-  double** r = init0(mx,my);
+Matrice soustraction(Matrice m1, Matrice m2){
+  Matrice m3 = init0(m1.nbL,m1.nbC);
 
-  for(int i = 0; i < my; i++){
-    for(int j = 0; j < mx; j++){
-      r[i][j]=m1[i][j]-m2[i][j];
+  if((m1.nbL != m2.nbL) || (m1.nbC != m2.nbC)){
+    printf("Les matrices ne peuvent pas être soustraites entre elles (Dimensions non compatibles).\n");
+    return m3;
+  }
+
+  for(int i = 0; i < m1.nbL; i++){
+    for(int j = 0; j < m1.nbC; j++){
+      m3.tab[i][j]=m1.tab[i][j]-m2.tab[i][j];
     }
   }
 
-  return r;
+  return m3;
 }
-
 /*
 void transpose(double outT[1][5], double out[5][1]){
     for (int i = 0; i < 5; i++) {
@@ -118,17 +147,17 @@ void transpose(double outT[1][5], double out[5][1]){
 }*/
 
 int main(int argc, char const *argv[]) {
-  double **m,**m2,**m3;
+  Matrice m,m2,m3;
   int mx=4;
   int my=3;
-  int m2x=5;
+  int m2x=3;
   int m2y = 4;
   m = init_rand(mx,my);
   m2 = init_rand(m2x,m2y);
-  affichage(m,mx,my);
-  affichage(m2,m2x,m2y);
-  m3 = dot(m, mx, my,m2,m2x,m2y);
-  affichage(m3,m2x,my);
+  affichage(m);
+  affichage(m2);
+  m3 = dot(m,m2);
+  affichage(m3);
 
   /*double data[5][4] = {{0,1,3,0},
                      {3,1,0,1},

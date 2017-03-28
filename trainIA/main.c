@@ -14,6 +14,7 @@ Matrice addition(Matrice m1, Matrice m2);
 Matrice soustraction(Matrice m1, Matrice m2);
 void affichage(Matrice m);
 Matrice dot(Matrice m1, Matrice m2);
+Matrice transpose(Matrice m);
 
 
 double random(){
@@ -56,8 +57,11 @@ Matrice init0(int wx, int wy){
   }
 
   mat.tab = w;
-  mat.nbC = wy;
-  mat.nbL = wx;
+  mat.nbC = wx;
+  mat.nbL = wy;
+
+  //printf("inbL = %d\n",mat.nbL);
+  //printf("inbC = %d\n",mat.nbC);
 
   return mat;
 }
@@ -139,12 +143,18 @@ Matrice soustraction(Matrice m1, Matrice m2){
 
   return m3;
 }
-/*
-void transpose(double outT[1][5], double out[5][1]){
-    for (int i = 0; i < 5; i++) {
-      outT[0][i] = out[i][0];
+
+Matrice transpose(Matrice m){
+    Matrice r = init0(m.nbL,m.nbC);
+
+    for (int i = 0; i < m.nbL; i++){
+      for (int j=0;j<m.nbC;j++){
+        r.tab[j][i]=m.tab[i][j];
+      }
     }
-}*/
+
+    return r;
+}
 
 int main(int argc, char const *argv[]) {
   Matrice m,m2,m3;
@@ -153,10 +163,10 @@ int main(int argc, char const *argv[]) {
   int m2x=3;
   int m2y = 4;
   m = init_rand(mx,my);
-  m2 = init_rand(m2x,m2y);
+  //m2 = init_rand(m2x,m2y);
   affichage(m);
-  affichage(m2);
-  m3 = dot(m,m2);
+  //affichage(m2);
+  m3 = transpose(m);
   affichage(m3);
 
   /*double data[5][4] = {{0,1,3,0},

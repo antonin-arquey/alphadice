@@ -73,16 +73,13 @@ double** dot(double **a, int ax, int ay, double **b, int bx, int by){
 
   double val=0;
   for (int i = 0; i < ay; i++) {
-    for (int j = 0; j < ax; j++) {
-      val += a[i][j] * b[j][i];
-      printf("%f * %f +", a[i][j],b[j][i]);
-      /*for (int k=0; k< by;k++){
-        printf("%f * %f +", a[i][k],b[k][i]);
-        //val += a[i][k] * b[k][i];
+    for (int j = 0; j < ay; j++) {
+      val = 0;
+      for (int k=0; k< by;k++){
+        val += a[i][k] * b[k][j];
       }
-      r[i][j] = val;*/
+      r[i][j] = val;
     }
-    printf("\n");
     val = 0;
   }
 
@@ -122,10 +119,10 @@ void transpose(double outT[1][5], double out[5][1]){
 
 int main(int argc, char const *argv[]) {
   double **m,**m2,**m3;
-  int mx=3;
-  int my=2;
-  int m2x=2;
-  int m2y = 3;
+  int mx=4;
+  int my=3;
+  int m2x=5;
+  int m2y = 4;
   m = init_rand(mx,my);
   m2 = init_rand(m2x,m2y);
   affichage(m,mx,my);

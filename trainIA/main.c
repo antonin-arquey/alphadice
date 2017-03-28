@@ -7,16 +7,6 @@ typedef struct{
   int nbC;  //nombre de colonnes
 }Matrice;
 
-double random();
-Matrice init_rand(int wx, int wy);
-Matrice init0(int wx, int wy);
-Matrice addition(Matrice m1, Matrice m2);
-Matrice soustraction(Matrice m1, Matrice m2);
-void affichage(Matrice m);
-Matrice dot(Matrice m1, Matrice m2);
-Matrice transpose(Matrice m);
-
-
 double random(){
     return 2 * (rand() / (RAND_MAX + 1.)) - 1;
 }
@@ -24,15 +14,14 @@ double random(){
 Matrice init_rand(int wx, int wy){
   Matrice mat;
   mat.tab = malloc(sizeof(double)*wy);
-  int test;
+
   for(int i = 0;i<wy;i++){
     mat.tab[i] = malloc(sizeof(double)* wx);
   }
 
   for (int i = 0; i < wy; i++) {
     for (int j=0; j < wx; j++){
-      test = (int)(random()*10);
-      mat.tab[i][j] =(double)(test);
+      mat.tab[i][j] = random();
     }
   }
 
@@ -45,7 +34,6 @@ Matrice init_rand(int wx, int wy){
 Matrice init0(int wx, int wy){
   Matrice mat;
   double** w = malloc(sizeof(double)*wy);
-  int test;
   for(int i = 0;i<wy;i++){
     w[i] = malloc(sizeof(double)* wx);
   }

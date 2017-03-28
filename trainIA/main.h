@@ -9,5 +9,8 @@ Matrice soustraction(Matrice m1, Matrice m2);
 Matrice dot(Matrice m1, Matrice m2);
 Matrice transpose(Matrice m);
 
+void applyMat(Matrice m, double (*f)(double));
+double pow2(double m);
+
 void freeMat(Matrice m);
 void affichage(Matrice m);

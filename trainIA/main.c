@@ -120,6 +120,14 @@ Matrice transpose(Matrice m){
     return r;
 }
 
+void applyMat(Matrice m, double (*f)(double)){
+  for (int i = 0; i < m.nbL; i++){
+      for (int j=0;j<m.nbC;j++){
+        m.tab[i][j]=f(m.tab[i][j]);
+    }
+  }
+}
+
 void freeMat(Matrice m){
   for (int i=0;i<m.nbL;i++){
     free(m.tab[i]);
@@ -135,6 +143,10 @@ void recupXY(double X[][3], double Y[][1], double data[][4], int debut, int fin)
     }
   }
 }*/
+
+double pow2(double m){
+  return m*m;
+}
 
 void affichage(Matrice m){
   printf("--affichage du tableau --\n");
@@ -158,6 +170,8 @@ int main(int argc, char const *argv[]) {
   affichage(m);
   affichage(m2);
   m3 = dot(m,m2);
+  affichage(m3);
+  applyMat(m3,pow2);
   affichage(m3);
 
   freeMat(m);

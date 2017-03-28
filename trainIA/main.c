@@ -59,10 +59,6 @@ Matrice init0(int wx, int wy){
   mat.tab = w;
   mat.nbC = wx;
   mat.nbL = wy;
-
-  //printf("inbL = %d\n",mat.nbL);
-  //printf("inbC = %d\n",mat.nbC);
-
   return mat;
 }
 /*
@@ -89,7 +85,7 @@ void affichage(Matrice m){
 Matrice dot(Matrice m1, Matrice m2){
   //ax=m1.nbC bx=m2.nbC
   Matrice res;
-  res = init0(m2.nbC,m1.nbL);
+  res = init0(m1.nbL,m2.nbC);
   if (m1.nbC != m2.nbL){
     printf("Les matrices ne peuvent pas être multipliées entre elles (Dimensions non compatibles).\n");
     return res;
@@ -111,7 +107,7 @@ Matrice dot(Matrice m1, Matrice m2){
 }
 
 Matrice addition(Matrice m1, Matrice m2){
-  Matrice m3 = init0(m1.nbL,m1.nbC);
+  Matrice m3 = init0(m1.nbC,m1.nbL);
 
   if((m1.nbL != m2.nbL) || (m1.nbC != m2.nbC)){
     printf("Les matrices ne peuvent pas être additionnés entre elles (Dimensions non compatibles).\n");
@@ -128,7 +124,7 @@ Matrice addition(Matrice m1, Matrice m2){
 }
 
 Matrice soustraction(Matrice m1, Matrice m2){
-  Matrice m3 = init0(m1.nbL,m1.nbC);
+  Matrice m3 = init0(m1.nbC,m1.nbL);
 
   if((m1.nbL != m2.nbL) || (m1.nbC != m2.nbC)){
     printf("Les matrices ne peuvent pas être soustraites entre elles (Dimensions non compatibles).\n");
@@ -163,10 +159,10 @@ int main(int argc, char const *argv[]) {
   int m2x=3;
   int m2y = 4;
   m = init_rand(mx,my);
-  //m2 = init_rand(m2x,m2y);
+  m2 = init_rand(m2x,m2y);
   affichage(m);
-  //affichage(m2);
-  m3 = transpose(m);
+  affichage(m2);
+  m3 = dot(m,m2);
   affichage(m3);
 
   /*double data[5][4] = {{0,1,3,0},

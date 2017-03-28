@@ -19,3 +19,4 @@ int aleatoire(int a, int b);
 int explorer(SMap *map, int idPlayer, int marque[], int *lenMarque, int idCell);
 int inTab(int id, int tab[], int lenTab);
 int allCellsFull(int idPlayer, SMap *map);
+double inactionTurn(int idPlayer, Noeud *head);

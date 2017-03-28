@@ -35,7 +35,6 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 
 	//Creation des stacks
 	map->stack = malloc(nbPlayer * sizeof(unsigned int));
-
 	if(map->stack == NULL)
 		exit(-1);
 

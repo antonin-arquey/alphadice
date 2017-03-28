@@ -11,6 +11,8 @@ Renvoie 1 si le tour est bon, -1 si il est pas valide
 void verify(unsigned int i, SMap *map,STurn *turn){
 	if(verifyTurn(i, map, turn)){
 		moveTurn(map, turn);
+	} else {
+		printf("coup non valide !!!\n");
 	}
 }
 

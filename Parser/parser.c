@@ -4,24 +4,35 @@
 int main (int argc,char* argv[]){
 	FILE *fp;
 	char buff[255];
-	int i, nbTer;
+	int i, nbTer, etat = 0;
 	
 	fp = fopen("game.log", "r");
 	fscanf(fp, "%s", buff);
-	printf("1 : %s\n", buff );
+	printf("nbTer : %s\n", buff );
 	nbTer = atoi(buff);
-	
-	for(i=0; i < nbTer; i++){
-		
+	lseek(fp, +2, SEEK_CUR);
+	for(i=0; i <= nbTer; i++){
+		fgets(buff, 255, (FILE*)fp);
+		if(i>0){
+			printf("Coordonnées Terrain %d : %s\n", i, buff );
+		}
 	}
 	
-	fscanf(fp, "%s", buff);
-	printf("1 : %s\n", buff );
-
-	fgets(buff, 255, (FILE*)fp);
-	printf("2: %s\n", buff );
-
-	fgets(buff, 255, (FILE*)fp);
-	printf("3: %s\n", buff );
-	fclose(fp);
+	do{
+		lseek(fp, -1, SEEK_CUR);
+		switch(etat){
+			//case 0 : case nothing
+			case 0 : 
+				lseek(fp, +1, SEEK_CUR);
+				etat=1;
+				break;
+			//case 1 : case tour
+			case 1 : 
+				//fscanf(fp, "%s", buff); //Prends un caractere
+				fgets(buff, 255, (FILE*)fp); //Prends une ligne
+				printf("1 : %s\n", buff );
+				break;
+		}
+	}while(fgetc(fp) != EOF);
+	
 }

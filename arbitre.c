@@ -169,7 +169,7 @@ void endTurn(int idPlayer, SMap *map)
 			}
 		}
 	}
-	Log("///\n");
+	Log("/-/\n");
 }
 
 //Vérifie si toutes les cellules du joueurs sont pleines

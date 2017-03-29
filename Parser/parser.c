@@ -38,13 +38,12 @@ int main (int argc,char* argv[]){
 				//lseek(fp, +1, SEEK_CUR);
 				etat=1;
 				break;
-			//case 1 : case tour
+			//case 1 : case debut tour
 			case 1 : 
-				printf("YOLO à nous le jeux\n");
+				printf("Attaque : %s\n", buff);
 				break;
-			// Fin d'un tour
+			//case 2 : case distribution dé
 			case 2 :
-				printf("FIN d'un tour\n");
 				printf("Le terrain n°%s reçoit un dé\n", buff);
 				break;
 			case 3 :

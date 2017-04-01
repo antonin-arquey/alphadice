@@ -81,7 +81,7 @@ int main(int argc, char* argv[]){
 				sprintf(str, "###\n%d\n###\n",  i);
 				Log(str);
 				printf("Victoire du joueur %d !!\n", i);
-				return 0;
+				return 0; //attention on ne free pas avant de partir !!!
 			}
 			freeMap(mapCopy);
 			endTurn(i, map);

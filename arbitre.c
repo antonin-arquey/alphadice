@@ -18,19 +18,16 @@ void verify(unsigned int i, SMap *map,STurn *turn){
 
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn){
 	//Verifiez que la cellule de départ est bien au joueur
-	if(map->cells[turn->cellFrom].owner != idPlayer){
+	if(map->cells[turn->cellFrom].owner != idPlayer)
 		return 0;
-	}
 
-	if(map->cells[turn->cellFrom].nbDices <= 1){
+	if(map->cells[turn->cellFrom].nbDices <= 1)
 		return 0;
-	}
 
 	//Verifier que la cellule de départ et d'arrivée sont adjacentes
 	for(int i = 0; i < map->cells[turn->cellFrom].nbNeighbors; i++){
-		if(map->cells[turn->cellFrom].neighbors[i]->id == turn->cellTo){
+		if(map->cells[turn->cellFrom].neighbors[i]->id == turn->cellTo)
 			return 1;
-		}
 	}
 	return 0;
 }
@@ -46,7 +43,6 @@ int lancerDe(int nbDe){
 }
 
 /* Fonction qui jour le tour et modifie la map en conséquent */
-
 void moveTurn(SMap *map, STurn *turn){
 	SCell *cellAttacker = &map->cells[turn->cellFrom];
 	SCell *cellDefender = &map->cells[turn->cellTo];
@@ -75,54 +71,40 @@ int getDiceToDistribute(int idPlayer, SMap *map){
 	int max = 0;
 
 	//On génére un tableau contenant les position des cellules dans map->cells
-	for(int i = 0 ; i < map->nbCells ; i++)
-	{
-		if(map->cells[i].owner == idPlayer)
-		{
+	for(int i = 0 ; i < map->nbCells ; i++){
+		if(map->cells[i].owner == idPlayer){
 			playerCell[nbPlayerCell] = i;
 			nbPlayerCell++;
 		}
 	}
 
-	for(int i = 0; i < nbPlayerCell ; i++)
-	{
+	for(int i = 0; i < nbPlayerCell ; i++){
 		int calcul = 0;
 		if(!(inTab(playerCell[i], marque, lenMarque)))
-		{
 			calcul += explorer(map, idPlayer, marque, &lenMarque, playerCell[i]);
-		}
 		if(calcul > max)
-		{
 			max = calcul;
-		}
 	}
 	return max;
 }
 
 
 //Fonction récursive réalisant l'exploration en profondeur pour chercher le total de cellule adjacentes
-int explorer(SMap *map, int idPlayer, int marque[], int* lenMarque, int idCell)
-{
+int explorer(SMap *map, int idPlayer, int marque[], int* lenMarque, int idCell){
 	int calcul = 1; //Cellule adjacentes plus un
 	marque[*lenMarque] = idCell; //Marquage de la cellule pour ne pas la recompter
 	(*lenMarque)++; //Incrementation de la valeur du pointeur
 
-	for(int j = 0 ; j < map->cells[idCell].nbNeighbors ; j++)
-	{
+	for(int j = 0 ; j < map->cells[idCell].nbNeighbors ; j++){
 		//Si un des voisins est a nous et n'est pas deja marqué
 		if(map->cells[idCell].neighbors[j]->owner == idPlayer && !(inTab(map->cells[idCell].neighbors[j]->id, marque, *lenMarque)))
-		{
-			//On l'explore
 			calcul += explorer(map, idPlayer, marque, lenMarque, map->cells[idCell].neighbors[j]->id);
-		}
 	}
 	return calcul;
 }
 
-int inTab(int id, int tab[], int lenTab)
-{
-	for(int i = 0 ; i  < lenTab ; i++)
-	{
+int inTab(int id, int tab[], int lenTab){
+	for(int i = 0 ; i  < lenTab ; i++){
 		if(tab[i] == id)
 			return 1;
 	}
@@ -132,8 +114,7 @@ int inTab(int id, int tab[], int lenTab)
 /*
 Fonction qui répartit les dés a la fin d'un tour d'un joueur
 */
-void endTurn(int idPlayer, SMap *map)
-{
+void endTurn(int idPlayer, SMap *map){
 	int playerCell[60];
 	int nbPlayerCell = 0;
 
@@ -148,7 +129,7 @@ void endTurn(int idPlayer, SMap *map)
 	int nbDiceDistributed = getDiceToDistribute(idPlayer, map) + map->stack[idPlayer];
 	printf("Je distribue %d dés !! \n", nbDiceDistributed);
 	int random;
-	Log("///\n");
+	Log("/répartition dés/\n");
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé
 	for(int i = 1 ; i <= nbDiceDistributed ; i++){
 		random = aleatoire(0, nbPlayerCell-1);
@@ -169,14 +150,12 @@ void endTurn(int idPlayer, SMap *map)
 			}
 		}
 	}
-	Log("/-/\n");
+	Log("/Fin répartition/\n");
 }
 
 //Vérifie si toutes les cellules du joueurs sont pleines
-int allCellsFull(int idPlayer, SMap *map)
-{
-	for(int i=0 ; i  < map->nbCells ; i++)
-	{
+int allCellsFull(int idPlayer, SMap *map){
+	for(int i=0 ; i  < map->nbCells ; i++){
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices < 8)
 			return 0;
 	}
@@ -210,7 +189,7 @@ int verifArguments(int argc, char* argv[], int *nbLib){
 */
 
 int victoire(unsigned int idPlayer, SMap *map){
-	for(int i = 0; i < map->nbCells; i++)	{
+	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner != idPlayer){
 			return 0;
 		}
@@ -237,13 +216,11 @@ SMap* deepCopy(SMap *map){
 
 	mapCopy->stack = malloc(sizeof(int) * nbPlayer);
 
-	for(int i=0 ; i < nbPlayer ; i++)
-	{
+	for(int i=0 ; i < nbPlayer ; i++){
 		mapCopy->stack[i] = map->stack[i];
 	}
 
-	for(int i=0 ; i < mapCopy->nbCells; i++)
-	{
+	for(int i=0 ; i < mapCopy->nbCells; i++){
 		mapCopy->cells[i].id = map->cells[i].id;
 		mapCopy->cells[i].owner = map->cells[i].owner;
 		mapCopy->cells[i].nbDices = map->cells[i].nbDices;
@@ -254,10 +231,8 @@ SMap* deepCopy(SMap *map){
 			exit(-1);
 	}
 
-	for(int i=0 ; i < mapCopy->nbCells; i++)
-	{
-		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++)
-		{
+	for(int i=0 ; i < mapCopy->nbCells; i++){
+		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++){
 			int idToAdd = map->cells[i].neighbors[j]->id;
 			mapCopy->cells[i].neighbors[j] = &(mapCopy->cells[idToAdd]);
 		}

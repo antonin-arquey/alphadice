@@ -30,10 +30,6 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 	int size = sizeof(map->stack);
 	//SMap mapCopys[200];
 	SMap **mapCopys = malloc(200 * sizeof(*map));
-	/*for (int x = 0; x < 200; x++) {
-		//deepCopy2(&mapCopys[x],map);
-		mapCopys[x] = deepCopy(map);
-	}*/
 	ChanceNode nodes[100];
 	STurn turns[100];
 	Noeud fils[200];
@@ -42,7 +38,7 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
 			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
 				if(map->cells[i].neighbors[j]->owner != idPlayer){
-					nodes[compteur].turn = &turns[compteur];//peut etre modifier et plus utiliser les STurn
+					nodes[compteur].turn = &turns[compteur];
 					nodes[compteur].turn->cellFrom = map->cells[i].id;
 					nodes[compteur].turn->cellTo = map->cells[i].neighbors[j]->id;
 					nodes[compteur].probaDroite = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[j]->nbDices];
@@ -56,6 +52,7 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 					mapCopys[compteurBis] = deepCopy(map);
 					moveTurnFail(mapCopys[compteurBis],nodes[compteur].turn);
 					nodes[compteur].filsGauche->map = mapCopys[compteurBis];
+
 					compteur += 1; compteurBis += 1;
 				}
 			}
@@ -65,7 +62,7 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 	if(compteur > 0){
 		ChanceNode filsNodes[compteur];
 		head->fils = filsNodes;
-		for(int x = 0; x < compteur; x++){//a cause du <=
+		for(int x = 0; x < compteur; x++){
 			if(profondeur > 0){
 				turnIA(idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, turn, profondeur - 1);
 				turnIA(idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, turn, profondeur - 1);
@@ -73,7 +70,7 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 			head->fils[x] = nodes[x];
 		}
 
-		EndTurnNode endTurnNode[1];// = malloc(sizeof(EndTurnNode));
+		EndTurnNode endTurnNode[1];
 		endTurnNode->nbFils = 5;
 		Noeud nodeAlea[5];
 		for(int i = 0; i < endTurnNode->nbFils; i++){
@@ -89,7 +86,6 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 
 		}
 		endTurnNode->filsAlea = nodeAlea;
-
 		head->mapAlea = endTurnNode;
 
 		if(profondeur == 0){
@@ -100,8 +96,7 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 			bestMove2(idPlayer, head);
 	}
 
-	for(int z = 0 ; z < compteurBis; z++)
-	{
+	for(int z = 0 ; z < compteurBis; z++){
 		freeMap(mapCopys[z]);
 	}
 	free(mapCopys);
@@ -214,42 +209,6 @@ SMap* deepCopy(const SMap *map){
 	return mapCopy;
 }
 
-void deepCopy2(SMap *mapCopy, const SMap *map){
-	printf("okj1\n");
-	if(mapCopy == NULL)
-		exit(-1);
-	printf("okj1\n");
-	int nbPlayer = sizeof(map->stack) / sizeof(int);
-	SCell cellsCopy[map->nbCells];
-	int stackCopy[nbPlayer];
-	SCell* tabNeighborsCopy[60][30];
-	printf("okj1\n");
-	mapCopy->stack = stackCopy;
-	mapCopy->nbCells = map->nbCells;
-	for(int i=0 ; i < nbPlayer; i++){
-		stackCopy[i] = map->stack[i];
-		mapCopy->stack[i] = stackCopy[i];
-	}
-	printf("okj1\n");
-	for(int i=0 ; i < mapCopy->nbCells; i++){
-		cellsCopy[i].id = map->cells[i].id;
-		cellsCopy[i].owner = map->cells[i].owner;
-		cellsCopy[i].nbDices = map->cells[i].nbDices;
-		cellsCopy[i].nbNeighbors = map->cells[i].nbNeighbors;
-		cellsCopy[i].neighbors = tabNeighborsCopy[i];
-		mapCopy->cells[i] = cellsCopy[i];
-	}
-	printf("okj1\n");
-	int idToAdd;
-	for(int i=0 ; i < mapCopy->nbCells; i++){
-		for(int j=0 ; j  < mapCopy->cells[i].nbNeighbors; j++){
-			idToAdd = map->cells[i].neighbors[j]->id;
-			mapCopy->cells[i].neighbors[j] = &(mapCopy->cells[idToAdd]);
-		}
-	}
-	printf("okj\n");
-	//return mapCopy;
-}
 /*
 Fonction qui répartit les dés a la fin d'un tour d'un joueur
 */

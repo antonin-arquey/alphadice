@@ -1,5 +1,13 @@
-prog: main.o
-	gcc -o main -Wall main.o -std=c99
+CC=gcc
+CFLAGS= `sdl2-config --cflags --libs`
+DEPS = log.h
+OBJ = parser.c log.c
 
-main.o: main.c
-	gcc -o main.o -c main.c -Wall -std=c99
+%.o: %.c $(DEPS)
+	$(CC) -std=c99 -c -o $@ $< $(CFLAGS) -lm
+
+parser: $(OBJ)
+	gcc -g -std=c99 -o $@ $^ $(CFLAGS) -ldl
+
+clean:
+	rm -rf parser

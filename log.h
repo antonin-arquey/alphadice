@@ -4,6 +4,6 @@
   #define LOGFILE "game.log"
 
   void Log(char* msg);
-  char* ReadFile(char *filename);
+  
 
 #endif

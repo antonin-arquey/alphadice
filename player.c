@@ -6,19 +6,14 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-Coord waitMouseEvent()
-{
-  while(1)
-  {
+Coord waitMouseEvent(){
+  while(1){
     SDL_Event event;
-    if(SDL_PollEvent(&event))
-    {
-      if(event.type == SDL_QUIT)
-      {
+    if(SDL_PollEvent(&event)){
+      if(event.type == SDL_QUIT){
         exit(0);
       }
-      if(event.type == SDL_MOUSEBUTTONDOWN)
-      {
+      if(event.type == SDL_MOUSEBUTTONDOWN){
         Coord c;
         int x;
         int y;
@@ -47,12 +42,11 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_T
 
   displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
   SDL_RenderPresent(renderer);
-  do{
 
+  do{
     c = waitMouseEvent();
     turn->cellTo = mat_map[c.x][c.y];
-    if(turn->cellTo != turn->cellFrom && map->cells[turn->cellTo].owner == idPlayer)
-    {
+    if(turn->cellTo != turn->cellFrom && map->cells[turn->cellTo].owner == idPlayer){
       turn->cellFrom = turn->cellTo;
       turn->cellTo = -1;
       displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
@@ -64,8 +58,7 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_T
   displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
 	SDL_RenderPresent(renderer);
 
-  if(map->cells[turn->cellTo].owner == idPlayer){
+  if(map->cells[turn->cellTo].owner == idPlayer)
     return 0;
-  }
   return 1;
 }

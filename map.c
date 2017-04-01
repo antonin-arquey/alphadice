@@ -110,7 +110,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		sprintf(str, "%d,%d,%d,%d,%d\n", j, territoires[j].owner, i, k, territoires[j].nbDices);
 		Log(str);
 	}
-	Log("/-/\n");
+	Log("/Fin Map/\n");
 
 	//génération des territoires
 	for (int j=0;j<size_map_h;j++){

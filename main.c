@@ -24,19 +24,15 @@ int main(int argc, char* argv[]){
 	printf("Paramètres de la partie :\n\t Nombre de parties : %d\n\t Nombre de joueurs %d (%d IA / %d interactifs)\n", nbGame, nbPlayer, nbLib, nbPlayer-nbLib);
 
 	void **libs;
-	playT PlayTurn[nbPlayer];
-	initG InitGame[nbPlayer];
+	playT PlayTurn[nbLib];
+	initG InitGame[nbLib];
+	endG EndGame[nbLib];
 	// Chargement de la librairie dynamique
 
-	if(nbLib == 1) //Si une seule librairie
+	if(nbLib > 0) //Si une seule librairie
 	{
-		libs = loadLib(nbLib, argv[3], NULL, InitGame, PlayTurn);
+		libs = loadLib(nbLib, argv, InitGame, PlayTurn, EndGame);
 	}
-	else if(nbLib == 2)//Si deux libraries
-	{
-		libs = loadLib(nbLib, argv[3], argv[4], InitGame, PlayTurn);
-	}
-
 
 	/*Initialisation des IA */
 

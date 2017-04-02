@@ -171,7 +171,7 @@ int allCellsFull(int idPlayer, SMap *map){
 // programme. Modifie la valeur du pointeur nbLib passé en parametre pour matcher le nombre de lib
 int verifArguments(int argc, char* argv[], int *nbLib){
 
-	if(argc<3 || argc>5){
+	if(argc<3){
 		rappelSyntaxe("Mauvais nombre d'arguments\n");
 		return 1;
 	}
@@ -184,7 +184,13 @@ int verifArguments(int argc, char* argv[], int *nbLib){
 		return 1;
 	}
 
+	if(argc-3 > nbPlayer){
+		rappelSyntaxe("Trop de librairies dynamiques\n");
+		return 1;
+	}
+
 	*nbLib = argc - 3;
+
 	return 0;
 }
 

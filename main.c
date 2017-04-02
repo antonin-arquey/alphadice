@@ -50,55 +50,59 @@ int main(int argc, char* argv[]){
 	SDL_Texture *diceTextures[10];
 	loadDiceTextures(renderer, diceTextures);
 
-	SMap *map = createMap(nbPlayer, renderer, matrice_map, tab_pays);
-	SDL_RenderPresent(renderer);
-	displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
-	SDL_RenderPresent(renderer);
-
+	SMap *map = NULL;
 
 	STurn *turn = malloc(sizeof(STurn));
 	// Boucle du jeu (doit se terminer lorsque l'on ferme la fenêtre ou que l'on quitte proprement le jeu)
-	int cpt=0;
-	while(cpt<100 && windowIsNotClosed()){
-		printf("Tour numero : %d\n", cpt);
-		for(int i = 0; i < nbPlayer; i++){
+	for(int p=0 ; p < nbGame ; p++)
+	{
+		int vic = 0;
+		printf("GAME %d / %d\n", p+1, nbGame);
+		map = createMap(nbPlayer, renderer, matrice_map, tab_pays);
+		SDL_RenderPresent(renderer);
+		displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
+		SDL_RenderPresent(renderer);
 
-			//Tour des joueurs humains
-			if(i+nbLib < nbPlayer){
-				while(PlayerTurn(i, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
-		      verify(i, map, turn);
-					displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
-					SDL_RenderPresent(renderer);
-		    }
-			}
-			else{ //Tour des IA
-				SMap *mapCopy = deepCopy(map);
-				printf("Turn to AI %d\n", i);
-				while(PlayTurn[0](i, mapCopy, turn)){
-					if(!verify(i, map, turn))
-						break;
-					freeMap(mapCopy);
-					mapCopy = deepCopy(map);
-					displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
-					SDL_RenderPresent(renderer);
+		while(windowIsNotClosed() && !vic){
+			for(int i = 0; i < nbPlayer; i++){
+				//Tour des joueurs humains
+				if(i+nbLib < nbPlayer){
+					printf("Turn to Player %d\n", i);
+					while(PlayerTurn(i, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
+			      verify(i, map, turn);
+						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
+						SDL_RenderPresent(renderer);
+			    }
 				}
-				freeMap(mapCopy);
-			}
+				else{ //Tour des IA
+					SMap *mapCopy = deepCopy(map);
+					printf("Turn to AI %d\n", i);
+					while(PlayTurn[0](i, mapCopy, turn)){
+						if(!verify(i, map, turn))
+							break;
+						freeMap(mapCopy);
+						mapCopy = deepCopy(map);
+						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
+						SDL_RenderPresent(renderer);
+					}
+					freeMap(mapCopy);
+				}
 
-			if(victoire(i, map)){
-				char str[20];
-				sprintf(str, "###\n%d\n###\n",  i);
-				Log(str);
-				printf("Victoire du joueur %d !!\n", i);
-				return 0; //attention on ne free pas avant de partir !!!
-			}
+				if(victoire(i, map)){
+					char str[20];
+					sprintf(str, "###\n%d\n###\n",  i);
+					Log(str);
+					printf("Victoire du joueur %d !!\n", i);
+					vic = 1;
+				}
 
-			endTurn(i, map);
-			displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
-			SDL_RenderPresent(renderer);
+				endTurn(i, map);
+				displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
+				SDL_RenderPresent(renderer);
+			}
 		}
-		cpt++;
 	}
+
 
 	freeDiceTextures(diceTextures);
 	free(turn);

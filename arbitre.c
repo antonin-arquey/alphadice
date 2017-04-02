@@ -128,6 +128,7 @@ void endTurn(int idPlayer, SMap *map){
 	}
 
 	int nbDiceDistributed = getDiceToDistribute(idPlayer, map) + map->stack[idPlayer];
+	map->stack[idPlayer] = 0;
 	printf("Je distribue %d dés !! \n", nbDiceDistributed);
 	int random;
 	Log("/répartition dés/\n");
@@ -144,7 +145,7 @@ void endTurn(int idPlayer, SMap *map){
 			if(allCellsFull(idPlayer, map)){
 
 				map->stack[idPlayer] += nbDiceDistributed - i + 1;
-				
+
 				if(map->stack[idPlayer] > 40){
 					map->stack[idPlayer] = 40;
 				}

@@ -98,7 +98,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		}
 	}
 	char str[10];
-	sprintf(str, "%d\n", nb_pays);
+	sprintf(str, "%d,%d,\n", nb_pays, nbPlayer);
 	Log(str);
 	//génération des centres des territoires;
 	for (int j=0;j<nb_pays;j++){

@@ -136,13 +136,16 @@ void endTurn(int idPlayer, SMap *map){
 		if(map->cells[playerCell[random]].nbDices < 8){
 			map->cells[playerCell[random]].nbDices++;
 			char str[100];
-			sprintf(str, "%d\n", map->cells[playerCell[random]].id);
+			sprintf(str, "%d,\n", map->cells[playerCell[random]].id);
 			Log(str);
 		}
 		else{
 			if(allCellsFull(idPlayer, map)){
 				map->stack[idPlayer] += nbDiceDistributed - i + 1;
 				printf("je stack %d dé\n", map->stack[idPlayer]);
+				char str[10];
+				sprintf(str, "/%d,%d,\n", idPlayer, map->stack[idPlayer]);
+				Log(str);
 				break;
 			}
 			else{

@@ -26,7 +26,7 @@ Coord waitMouseEvent(){
   }
 }
 
-int PlayerTurn(int idPlayer,SMap *map, int mat_map[800][600], STurn *turn, SDL_Texture *diceTextures[], SDL_Renderer* renderer, int tab_pays[][2]){
+int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn *turn, SDL_Texture *diceTextures[], SDL_Renderer* renderer, int tab_pays[][2]){
   Coord c;
   turn->cellFrom = -1;
   turn->cellTo = -1;

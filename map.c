@@ -1,12 +1,13 @@
 #include "map.h"
 #include "interface.h"
 #include "log.h"
+#include "window.h"
 #include <time.h>
 #include <unistd.h>
 
 //matrice de la map
-int size_map_h=800;
-int size_map_l=600;
+int size_map_h=WIN_WIDTH;
+int size_map_l=WIN_HEIGHT;
 //int mat_map[size_map_h][size_map_l];
 
 int aleatoire(int a, int b){

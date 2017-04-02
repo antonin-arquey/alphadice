@@ -13,7 +13,7 @@ int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
 	int nbPlayer, nbGame;
 	int nbLib = 0;
-	int matrice_map[800][600];
+	int matrice_map[WIN_WIDTH][WIN_HEIGHT];
 	int tab_pays[80][2];
 
 	if(verifArguments(argc, argv, &nbLib)){
@@ -38,7 +38,8 @@ int main(int argc, char* argv[]){
 	}
 
 
-	/*Initialisation du jeu */
+	/*Initialisation des IA */
+
 	SPlayerInfo *info = malloc(sizeof(SPlayerInfo));
 	//InitGame[0](1, nbPlayer, info); //id de quel joueur ? *info de quel joueur ?
 

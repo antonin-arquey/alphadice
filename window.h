@@ -5,6 +5,9 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#define WIN_WIDTH 800
+#define WIN_HEIGHT 600
+
 // Fonction créant un fenêtre 800x600 et la retourne
 SDL_Window* createWindow();
 

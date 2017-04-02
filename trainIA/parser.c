@@ -33,7 +33,7 @@ void moveTurnWin(SMap *map, STurn *turn){
 
 int main(int argc, char const *argv[]){
 	char ch;
-	char file_name[25] = "game.log";
+	char file_name[25] = "game2.log";
   	FILE *fp;
  
    	fp = fopen(file_name,"r"); // read mode

@@ -14,7 +14,7 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 	memcpy(info->name, stratName, 30);
 }
 
-void EndGame(unsigned int idWinner)
+void EndGame(unsigned int id, unsigned int idWinner)
 {
 	char str[10];
 	Log("---\n");
@@ -23,8 +23,8 @@ void EndGame(unsigned int idWinner)
 	Log("---\n");
 }
 
-int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
-  return turnIA(idPlayer, map, turn);
+int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
+  return turnIA(id, map, turn);
 }
 
 int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){

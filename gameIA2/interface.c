@@ -14,7 +14,7 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 	memcpy(info->name, stratName, 30);
 }
 
-void EndGame(unsigned int idWinner)
+void EndGame(unsigned int id, unsigned int idWinner)
 {
 	char str[10];
 	Log("---\n");
@@ -23,7 +23,7 @@ void EndGame(unsigned int idWinner)
 	Log("---\n");
 }
 
-int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
+int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
 	SArbre arbre[1];//*arbre = malloc(sizeof(SArbre));
 	Noeud newHead[1];
 	STurn bestTurn[1];
@@ -34,7 +34,7 @@ int PlayTurn(int idPlayer, const SMap *map, STurn *turn){
 	turn->cellFrom = -1; turn->cellTo = -1;
 	printf("------------ nouvelle requete de turn ---------------\n");
 	arbre->head->map = deepCopy(map); //mapCopy;
-  	turnIA(idPlayer, arbre->head, map, turn, 1);//peut-etre pas besoin de passer la map en param
+  	turnIA(id, arbre->head, map, turn, 1);//peut-etre pas besoin de passer la map en param
 	if(turn->cellFrom != -1 && turn->cellTo != -1){//return evalArbre(idPlayer, arbre->head, turn, 2);
 		//turn->cellFrom = arbre->head->bestTurn->cellFrom;
 		//turn->cellTo = arbre->head->bestTurn->cellTo;

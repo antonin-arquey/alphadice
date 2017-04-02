@@ -142,8 +142,13 @@ void endTurn(int idPlayer, SMap *map){
 		}
 		else{
 			if(allCellsFull(idPlayer, map)){
+
 				map->stack[idPlayer] += nbDiceDistributed - i + 1;
-				printf("je stack %d dé\n", map->stack[idPlayer]);
+				
+				if(map->stack[idPlayer] > 40){
+					map->stack[idPlayer] = 40;
+				}
+
 				char str[10];
 				sprintf(str, "/%d,%d,\n", idPlayer, map->stack[idPlayer]);
 				Log(str);

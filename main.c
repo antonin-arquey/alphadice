@@ -61,7 +61,6 @@ int main(int argc, char* argv[]){
 	int cpt=0;
 	while(cpt<100 && windowIsNotClosed()){
 		printf("Tour numero : %d\n", cpt);
-
 		for(int i = 0; i < nbPlayer; i++){
 
 			//Tour des joueurs humains

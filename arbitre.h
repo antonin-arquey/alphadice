@@ -30,6 +30,6 @@ int victoire(unsigned int idPlayer, SMap *map);
 
 void freeMap(SMap *map);
 
-SMap* deepCopy(SMap *map);
+SMap* deepCopy(SMap *map, int nbPlayer);
 
 #endif

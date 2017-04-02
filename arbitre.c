@@ -216,7 +216,7 @@ int victoire(unsigned int idPlayer, SMap *map){
 /*
 	Fonction permettant de renvoyer une copie profonde de la map
 */
-SMap* deepCopy(SMap *map){
+SMap* deepCopy(SMap *map, int nbPlayer){
 	SMap* mapCopy = malloc(sizeof(SMap));
 
 	if(mapCopy == NULL)
@@ -228,7 +228,6 @@ SMap* deepCopy(SMap *map){
 	if(mapCopy->cells == NULL)
 		exit(-1);
 
-	int nbPlayer = sizeof(map->stack) / sizeof(int);
 
 	mapCopy->stack = malloc(sizeof(int) * nbPlayer);
 

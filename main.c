@@ -75,13 +75,13 @@ int main(int argc, char* argv[]){
 			    }
 				}
 				else{ //Tour des IA
-					SMap *mapCopy = deepCopy(map);
+					SMap *mapCopy = deepCopy(map, nbPlayer);
 					printf("Turn to AI %d\n", i);
 					while(PlayTurn[0](i, mapCopy, turn)){
 						if(!verify(i, map, turn))
 							break;
 						freeMap(mapCopy);
-						mapCopy = deepCopy(map);
+						mapCopy = deepCopy(map, nbPlayer);
 						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
 						SDL_RenderPresent(renderer);
 					}

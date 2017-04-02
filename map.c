@@ -107,7 +107,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		k = aleatoire(border,size_map_l - border);
 		mat_map[i][k]=j; tabPays[j][0]=i;	tabPays[j][1]=k;
 		char str[20];
-		sprintf(str, "%d/%d/%d/%d/%d\n", j, territoires[j].owner, i, k, territoires[j].nbDices);
+		sprintf(str, "%d,%d,%d,%d,%d,\n", j, territoires[j].owner, i, k, territoires[j].nbDices);
 		Log(str);
 	}
 	Log("/Fin Map/\n");

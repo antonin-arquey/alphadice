@@ -54,8 +54,8 @@ void moveTurn(SMap *map, STurn *turn){
 	}
 	cellAttacker->nbDices = 1;
 
-	char str2[1000];
-	sprintf(str2, "%d,%d,%d,%d,%d\n",  cellAttacker->owner, turn->cellFrom, turn->cellTo, sommeAttacker, sommeDefender);
+	char str2[100];
+	sprintf(str2, "%d,%d,%d,%d,%d,\n",  cellAttacker->owner, turn->cellFrom, turn->cellTo, sommeAttacker, sommeDefender);
 	Log(str2);
 }
 

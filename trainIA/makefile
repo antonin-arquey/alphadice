@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS= `sdl2-config --cflags --libs`
-DEPS = log.h interface.h map.h
-OBJ = parser.c log.c map.c
+DEPS = log.h interface.h
+OBJ = parser.c log.c
 
 %.o: %.c $(DEPS)
 	$(CC) -std=c99 -c -o $@ $< $(CFLAGS) -lm

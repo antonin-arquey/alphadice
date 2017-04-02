@@ -2,6 +2,7 @@ AlphaDice
 game.log
 ia.so
 gameIA/libIA.so
+gameIA2/libIA2.so
 
 ### C ###
 # Prerequisites

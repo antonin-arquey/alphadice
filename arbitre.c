@@ -8,12 +8,13 @@
 Fonction vérifiant un tour rendu
 Renvoie 1 si le tour est bon, -1 si il est pas valide
 */
-void verify(unsigned int i, SMap *map,STurn *turn){
+int verify(unsigned int i, SMap *map,STurn *turn){
 	if(verifyTurn(i, map, turn)){
 		moveTurn(map, turn);
-	} else {
-		printf("coup non valide !!!\n");
+		return 1;
 	}
+	printf("coup non valide !!!\n");
+	return 0;
 }
 
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn){

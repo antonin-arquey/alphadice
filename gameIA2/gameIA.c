@@ -24,11 +24,10 @@ int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur){
 	//return bestMove(idPlayer, head, turn);
 }
 
-void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur){
+void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur){
 	int compteur = 0; int compteurBis = 0;
 	int nbPlayer = sizeof(map->stack) / sizeof(int);
 	int size = sizeof(map->stack);
-	//SMap mapCopys[200];
 	SMap **mapCopys = malloc(200 * sizeof(*map));
 	ChanceNode nodes[100];
 	STurn turns[100];
@@ -64,24 +63,25 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 		head->fils = filsNodes;
 		for(int x = 0; x < compteur; x++){
 			if(profondeur > 0){
-				turnIA(idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, turn, profondeur - 1);
-				turnIA(idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, turn, profondeur - 1);
+				turnIA(id, idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, turn, profondeur - 1);
+				turnIA(id, idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, turn, profondeur - 1);
 			}
 			head->fils[x] = nodes[x];
 		}
 
 		EndTurnNode endTurnNode[1];
-		endTurnNode->nbFils = 5;
-		Noeud nodeAlea[5];
+		endTurnNode->nbFils = 3;
+		Noeud nodeAlea[3];
 		for(int i = 0; i < endTurnNode->nbFils; i++){
 			mapCopys[compteurBis] = deepCopy(map);
 			endTurn(idPlayer, mapCopys[compteurBis]);
 			nodeAlea[i].map = mapCopys[compteurBis];
 			compteurBis++;
 			if(profondeur > 0){
-				printf("nbPlayer : %d size %d\n", nbPlayer, size);
-				idPlayer = (idPlayer + 1) % 8;
-				turnIA(idPlayer, &nodeAlea[i], nodeAlea[i].map, turn, profondeur - 1);
+				//printf("nbPlayer : %d size %d\n", nbPlayer, size);
+				//idPlayer++;// = (idPlayer + 1) % 8;
+				int copyID = (idPlayer + 1) % 8;
+				turnIA(id, copyID, &nodeAlea[i], nodeAlea[i].map, turn, profondeur - 1);
 			}
 
 		}
@@ -89,11 +89,16 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 		head->mapAlea = endTurnNode;
 
 		if(profondeur == 0){
-			bestMove(idPlayer, head);
+			bestMove(id, head);
 			turn->cellFrom = head->bestTurn->cellFrom;
 			turn->cellTo = head->bestTurn->cellTo;
 		}else
-			bestMove2(idPlayer, head);
+			if(id != idPlayer){
+				bestMove3(idPlayer, head);
+			}
+			else{
+				bestMove2(idPlayer, head);
+			}
 	}
 
 	for(int z = 0 ; z < compteurBis; z++){
@@ -103,7 +108,7 @@ void turnIA(int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profond
 }
 
 void bestMove2(int idPlayer, Noeud *head){
-	head->maxQ = inactionTurn(idPlayer, head);//mapEvaluation(idPlayer, head->map);//voir s'il faut pas regarder les fils alea
+	head->maxQ = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
 	STurn bestTurn[1];
 	head->bestTurn = bestTurn;
 	head->bestTurn->cellFrom = -1;
@@ -112,6 +117,23 @@ void bestMove2(int idPlayer, Noeud *head){
 	for(int i = 0; i < head->nbFils; i++){
 		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ;
 		if (val > head->maxQ){
+			head->maxQ = val;
+			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;
+			head->bestTurn->cellTo = head->fils[i].turn->cellTo;
+		}
+	}
+}
+
+void bestMove3(int idPlayer, Noeud *head){
+	head->maxQ = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
+	STurn bestTurn[1];
+	head->bestTurn = bestTurn;
+	head->bestTurn->cellFrom = -1;
+	head->bestTurn->cellTo = -1;
+	double val;
+	for(int i = 0; i < head->nbFils; i++){
+		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ;
+		if (val < head->maxQ){
 			head->maxQ = val;
 			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;
 			head->bestTurn->cellTo = head->fils[i].turn->cellTo;
@@ -130,7 +152,7 @@ double inactionTurn(int idPlayer, Noeud *head){
 
 
 void bestMove(int idPlayer, Noeud *head){
-	head->maxQ = inactionTurn(idPlayer, head); //mapEvaluation(idPlayer, head->map);
+	head->maxQ = mapEvaluation(idPlayer, head->map); //inactionTurn(idPlayer, head);
 	STurn bestTurn[1];
 	head->bestTurn = bestTurn;
 	head->bestTurn->cellFrom = -1;
@@ -147,8 +169,6 @@ void bestMove(int idPlayer, Noeud *head){
 }
 
 double mapEvaluation(int idPlayer, SMap *map){
-	if(map == NULL)
-		exit(-1);
 	double alpha = 0.1; double beta = 2;
 	//printf("nbDices : %d / nbToGive : %d \n", getAmountOfDices(idPlayer, map), getDicesToDistribute(idPlayer, map));
 	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);

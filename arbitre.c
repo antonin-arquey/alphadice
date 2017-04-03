@@ -13,7 +13,6 @@ int verify(unsigned int i, SMap *map,STurn *turn){
 		moveTurn(map, turn);
 		return 1;
 	}
-	printf("coup non valide !!!\n");
 	return 0;
 }
 
@@ -129,7 +128,6 @@ void endTurn(int idPlayer, SMap *map){
 
 	int nbDiceDistributed = getDiceToDistribute(idPlayer, map) + map->stack[idPlayer];
 	map->stack[idPlayer] = 0;
-	printf("Je distribue %d dés !! \n", nbDiceDistributed);
 	int random;
 	Log("/répartition dés/\n");
 	//On prend un sommet aléatoire qu'il possède et on ajoute un dé

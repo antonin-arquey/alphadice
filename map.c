@@ -36,6 +36,7 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 
 	//Creation des stacks
 	map->stack = malloc(nbPlayer * sizeof(unsigned int));
+
 	if(map->stack == NULL)
 		exit(-1);
 
@@ -84,11 +85,6 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 		deJoueur[territoires[i].owner] -= de;
 		territoires[i].nbDices = 1 + de;
 	}
-
-	//affichage pour voir s'il reste des dés
-	/*for(int i = 0; i < nbPlayer; i++){
-		printf("Il reste %d dés pour le joueur %d\n", deJoueur[i], i);
-	}*/
 
 
 	/*Initialisation graphique de la map*/
@@ -196,12 +192,15 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 			//Affichage des bordures
 			if (turn != NULL && turn->cellFrom == mat_map[j][k]){
 				SDL_SetRenderDrawColor(renderer,0,0,0,0);
-			}else if (turn != NULL && turn->cellTo == mat_map[j][k]){
+			}
+			else if (turn != NULL && turn->cellTo == mat_map[j][k]){
 				SDL_SetRenderDrawColor(renderer,255,255,255,0);
-			}else if(mat_map[j][k] != mat_map[j-1][k] || mat_map[j][k] != mat_map[j][k-1] || mat_map[j][k] != mat_map[j-1][k-1]){
+			}
+			else if (mat_map[j][k] != mat_map[j-1][k] || mat_map[j][k] != mat_map[j][k-1] || mat_map[j][k] != mat_map[j-1][k-1]){
 				SDL_SetRenderDrawColor(renderer,0,0,0,0);
-			}else{
-			//Affichage des couleurs des territoires
+			}
+			else{
+				//Affichage des couleurs des territoires
 				SDL_SetRenderDrawColor(renderer,tabColor[map->cells[mat_map[j][k]].owner][0],tabColor[map->cells[mat_map[j][k]].owner][1],tabColor[map->cells[mat_map[j][k]].owner][2],tabColor[map->cells[mat_map[j][k]].owner][3]);
 			}
 			createPoint(renderer,j,k);

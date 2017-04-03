@@ -13,7 +13,7 @@ int plusdeTerritoires(int b, int nbTerritoiresOwne[], int nbPlayer);
 // Fonction affichant la carte sur le renderer
 // Actuellement en test afin d'afficher juste
 // des hexagones sur la taille de la map
-void displayMap(SDL_Renderer* renderer, SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn* turn, int tabPays[][2], SDL_Texture *diceTextures[]);
+void displayMap(SDL_Renderer* renderer, SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn* turn, int tabPays[][2], SDL_Texture *diceTextures[], int idPlayer);
 double getDistance(int x1, int y1, int x2, int y2);
 int isVoisin(SMap *map, int t1, int t2);
 void addVoisin(SMap *map,int tl, int t2);

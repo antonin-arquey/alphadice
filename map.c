@@ -185,7 +185,7 @@ void addVoisin(SMap *map, int t1, int t2){
 }
 
 // Fonction affichant la carte sur le renderer
-void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2], SDL_Texture *diceTextures[]){
+void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2], SDL_Texture *diceTextures[], int idPlayer){
 	int tabColor[8][4] = {{242, 202,  39, 1}, { 44, 195, 107, 1},
 												{236,	 94,   0, 1}, {231,  76,  60, 1},
 												{102,   0, 153, 1},	{ 44,  62,  80, 1},
@@ -224,10 +224,40 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 			//Position de l'image X Y
 			position.x = tabPays[i][0] - 20;
 			position.y = tabPays[i][1] - 60;
-			//position.w /= 2;
-			//position.h /= 2;
+
+
 			//Texture appliqué au renderer
 			SDL_RenderCopy(renderer, diceTexture, NULL, &position);
+
+			//Position du footer
+			SDL_Rect footer;
+			footer.x = 0;
+			footer.y = WIN_HEIGHT;
+			footer.w = WIN_WIDTH;
+			footer.h = 100;
+			SDL_SetRenderDrawColor(renderer,150,150,150,0);
+			SDL_RenderFillRect(renderer, &footer);
+
+			//Position du carré indiquant le joueur en cours
+			SDL_Rect playerIndic;
+			playerIndic.x = 50;
+			playerIndic.y = WIN_HEIGHT + 25;
+			playerIndic.w = 50;
+			playerIndic.h = 50;
+			SDL_SetRenderDrawColor(renderer,tabColor[idPlayer][0],tabColor[idPlayer][1],tabColor[idPlayer][2],tabColor[idPlayer][3]);
+			SDL_RenderFillRect(renderer, &playerIndic);
+
+			//Position du bouton passer son tour
+
+			SDL_QueryTexture(diceTextures[9], NULL, NULL, &position.w, &position.h);
+
+			//Position de l'image X Y
+
+			position.x = WIN_WIDTH / 2 - position.w / 2;
+			position.y = WIN_HEIGHT + position.h / 2;
+
+			//Texture appliqué au renderer
+			SDL_RenderCopy(renderer, diceTextures[9], NULL, &position);
 	}
 }
 
@@ -245,11 +275,19 @@ double getDistance(int x1, int y1, int x2, int y2){
 
 void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]){
 	char filename[20] = "valeur/0.bmp";
-	for(int i = 0 ; i < 9 ; i++)	{
-		char remp = i + '0' ;
-		filename[7] = remp;
-		SDL_Surface* image = SDL_LoadBMP(filename);
-		SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 255, 255, 255));
+	SDL_Surface* image;
+	for(int i = 0 ; i < 10 ; i++)	{
+
+		if(i < 9){
+			char remp = i + '0' ;
+			filename[7] = remp;
+			image = SDL_LoadBMP(filename);
+			SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 255, 255, 255));
+		}
+		else{
+			image = SDL_LoadBMP("valeur/btn.bmp");
+		}
+
 		if(!image) {
 				printf("Erreur de chargement de l'image : %s",SDL_GetError());
 				exit(-1);
@@ -258,6 +296,7 @@ void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]){
 		diceTextures[i] = SDL_CreateTextureFromSurface(renderer,image);
 		SDL_FreeSurface(image);
 	}
+
 }
 
 void freeDiceTextures(SDL_Texture *diceTextures[]){

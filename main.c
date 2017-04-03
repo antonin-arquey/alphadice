@@ -50,6 +50,7 @@ int main(int argc, char* argv[]){
 	SDL_Texture *diceTextures[10];
 	loadDiceTextures(renderer, diceTextures);
 
+
 	SMap *map = NULL;
 
 	STurn *turn = malloc(sizeof(STurn));
@@ -60,7 +61,7 @@ int main(int argc, char* argv[]){
 		printf("GAME %d / %d\n", p+1, nbGame);
 		map = createMap(nbPlayer, renderer, matrice_map, tab_pays);
 		SDL_RenderPresent(renderer);
-		displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures);
+		displayMap(renderer,map,matrice_map,NULL, tab_pays, diceTextures, 0);
 		SDL_RenderPresent(renderer);
 
 		while(windowIsNotClosed() && !vic){
@@ -68,9 +69,11 @@ int main(int argc, char* argv[]){
 				//Tour des joueurs humains
 				if(i+nbLib < nbPlayer){
 					printf("Turn to Player %d\n", i);
+					displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures, i);
+					SDL_RenderPresent(renderer);
 					while(PlayerTurn(i, map, matrice_map, turn, diceTextures, renderer, tab_pays)){
 			      verify(i, map, turn);
-						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
+						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures, i);
 						SDL_RenderPresent(renderer);
 			    }
 				}
@@ -82,7 +85,7 @@ int main(int argc, char* argv[]){
 							break;
 						freeMap(mapCopy);
 						mapCopy = deepCopy(map, nbPlayer);
-						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
+						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures, i);
 						SDL_RenderPresent(renderer);
 					}
 					freeMap(mapCopy);
@@ -95,9 +98,10 @@ int main(int argc, char* argv[]){
 					printf("Victoire du joueur %d !!\n", i);
 					vic = 1;
 				}
-
-				endTurn(i, map);
-				displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures);
+				else{
+					endTurn(i, map);
+				}
+				displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures, i);
 				SDL_RenderPresent(renderer);
 			}
 		}

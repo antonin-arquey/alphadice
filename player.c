@@ -31,7 +31,7 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn
   turn->cellFrom = -1;
   turn->cellTo = -1;
 
-  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
 	SDL_RenderPresent(renderer);
 
   do {
@@ -40,22 +40,28 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn
 
   } while(map->cells[turn->cellFrom].owner != idPlayer);
 
-  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
   SDL_RenderPresent(renderer);
 
   do{
     c = waitMouseEvent();
+    //Si le joueur clique sur le bouton
+    /*if(c.x <= 315+170 && c.x >= 315 && c.y <= 629+59 && c.y >= 629){
+      printf("passe ton tour"\n);
+      return 0;
+    }*/
+
     turn->cellTo = mat_map[c.x][c.y];
     if(turn->cellTo != turn->cellFrom && map->cells[turn->cellTo].owner == idPlayer){
       turn->cellFrom = turn->cellTo;
       turn->cellTo = -1;
-      displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
+      displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
     	SDL_RenderPresent(renderer);
     }
   } while(!verifyTurn(idPlayer, map, turn) && !(turn->cellTo == turn->cellFrom));
 
 
-  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
 	SDL_RenderPresent(renderer);
 
   if(map->cells[turn->cellTo].owner == idPlayer)

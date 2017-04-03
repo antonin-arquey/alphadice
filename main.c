@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
 	SDL_Window* window = createWindow();
 	SDL_Renderer* renderer = createRenderer(window);
 
-	SDL_Texture *diceTextures[10];
+	SDL_Texture *diceTextures[65];
 	loadDiceTextures(renderer, diceTextures);
 
 

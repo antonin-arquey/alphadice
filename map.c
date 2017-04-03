@@ -210,10 +210,10 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 	for(int i = 0 ; i < map->nbCells ; i++)	{
 			SDL_Texture *diceTexture;
 			if(map->cells[i].nbDices < 9)	{
-				diceTexture = diceTextures[map->cells[i].nbDices];
+				diceTexture = diceTextures[(map->cells[i].owner*8)+(map->cells[i].nbDices)-1];
 			}
 			else{
-				diceTexture = diceTextures[9];
+				diceTexture = diceTextures[64];
 			}
 			SDL_Rect position;
 
@@ -248,7 +248,7 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 
 			//Position du bouton passer son tour
 
-			SDL_QueryTexture(diceTextures[9], NULL, NULL, &position.w, &position.h);
+			SDL_QueryTexture(diceTextures[64], NULL, NULL, &position.w, &position.h);
 
 			//Position de l'image X Y
 
@@ -256,7 +256,7 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 			position.y = WIN_HEIGHT + position.h / 2;
 
 			//Texture appliqué au renderer
-			SDL_RenderCopy(renderer, diceTextures[9], NULL, &position);
+			SDL_RenderCopy(renderer, diceTextures[64], NULL, &position);
 	}
 }
 
@@ -273,33 +273,31 @@ double getDistance(int x1, int y1, int x2, int y2){
 }
 
 void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]){
-	char filename[20] = "valeur/0.bmp";
+	char filename[20] = "valeur/de0_0.bmp";
 	SDL_Surface* image;
-	for(int i = 0 ; i < 10 ; i++)	{
-
-		if(i < 9){
-			char remp = i + '0' ;
-			filename[7] = remp;
+	for(int i = 0 ; i < 8 ; i++){
+		for (int j=1; j<9;j++){
+			char nbDe = j + '0' ;
+			char player = i + '0';
+			filename[11] = nbDe;
+			filename[9]=player;
 			image = SDL_LoadBMP(filename);
 			SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 255, 255, 255));
+			diceTextures[(i*8)+(j-1)] = SDL_CreateTextureFromSurface(renderer,image);
 		}
-		else{
-			image = SDL_LoadBMP("valeur/btn.bmp");
-		}
-
-		if(!image) {
-				printf("Erreur de chargement de l'image : %s",SDL_GetError());
-				exit(-1);
-		}
-
-		diceTextures[i] = SDL_CreateTextureFromSurface(renderer,image);
-		SDL_FreeSurface(image);
 	}
 
+	image = SDL_LoadBMP("valeur/btn.bmp");
+	if(!image) {
+		printf("Erreur de chargement de l'image : %s",SDL_GetError());
+				exit(-1);
+	}
+	diceTextures[64] = SDL_CreateTextureFromSurface(renderer,image);
+	SDL_FreeSurface(image);
 }
 
 void freeDiceTextures(SDL_Texture *diceTextures[]){
-	for(int i=0 ; i < 10; i++)	{
+	for(int i=0 ; i < 65; i++)	{
 		SDL_DestroyTexture(diceTextures[i]);
 	}
 }

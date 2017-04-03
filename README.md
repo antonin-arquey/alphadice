@@ -4,10 +4,10 @@
 
 ### Utilisation
 
-'''bash
+```bash
 make
 ./Alphadice 1 3 ./libIA.so
-'''
+```
 ##### Arguments
 
 Premier argument : Nombre de parties (au moins 1)

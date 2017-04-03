@@ -16,6 +16,7 @@ int verify(unsigned int i, SMap *map,STurn *turn){
 	return 0;
 }
 
+//Vérifie si les paramètres sont valident (Renvoi 0 si faux)
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn){
 	//Verifiez que la cellule de départ est bien au joueur
 	if(map->cells[turn->cellFrom].owner != idPlayer)
@@ -103,6 +104,7 @@ int explorer(SMap *map, int idPlayer, int marque[], int* lenMarque, int idCell){
 	return calcul;
 }
 
+//Vérifie si un id se trouve dans un tableau
 int inTab(int id, int tab[], int lenTab){
 	for(int i = 0 ; i  < lenTab ; i++){
 		if(tab[i] == id)
@@ -198,10 +200,7 @@ int verifArguments(int argc, char* argv[], int *nbLib){
 	return 0;
 }
 
-/* Renvoie 1 si le joueur correspondant a l'id passé en parametres a gagné
-	0 sinon
-*/
-
+/* Renvoie 1 si le joueur correspondant a l'id passé en parametres a gagné 0 sinon */
 int victoire(unsigned int idPlayer, SMap *map){
 	for(int i = 0; i < map->nbCells; i++){
 		if(map->cells[i].owner != idPlayer){
@@ -211,9 +210,7 @@ int victoire(unsigned int idPlayer, SMap *map){
 	return 1;
 }
 
-/*
-	Fonction permettant de renvoyer une copie profonde de la map
-*/
+/* Fonction permettant de renvoyer une copie profonde de la map */
 SMap* deepCopy(SMap *map, int nbPlayer){
 	SMap* mapCopy = malloc(sizeof(SMap));
 
@@ -253,9 +250,7 @@ SMap* deepCopy(SMap *map, int nbPlayer){
 	return mapCopy;
 }
 
-/*
-	Libere proprement la mémoire occupé par la map
-*/
+/* Libere proprement la mémoire occupé par la map */
 void freeMap(SMap *map){
 	if(map != NULL){
 		for(int i=0 ; i  < map->nbCells ; i++){

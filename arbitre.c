@@ -49,6 +49,8 @@ void moveTurn(SMap *map, STurn *turn){
 	SCell *cellDefender = &map->cells[turn->cellTo];
 	int sommeAttacker = lancerDe(cellAttacker->nbDices);
 	int sommeDefender = lancerDe(cellDefender->nbDices);
+	printf("%d vs %d\n",sommeAttacker,sommeDefender);
+	setScore(sommeAttacker, sommeDefender);
 	if(sommeAttacker > sommeDefender){
 		cellDefender->owner = cellAttacker->owner;
 		cellDefender->nbDices = cellAttacker->nbDices - 1;

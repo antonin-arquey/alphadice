@@ -10,6 +10,9 @@ int size_map_h=WIN_WIDTH;
 int size_map_l=WIN_HEIGHT;
 //int mat_map[size_map_h][size_map_l];
 
+int score_attacker = -1;
+int score_defender = -1;
+
 int aleatoire(int a, int b){
 	return rand() % (b-a+1) + a;
 }
@@ -181,7 +184,7 @@ void addVoisin(SMap *map, int t1, int t2){
 }
 
 // Fonction affichant la carte sur le renderer
-void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2], SDL_Texture *diceTextures[], int idPlayer){
+void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_map_l],STurn *turn, int tabPays[][2], SDL_Texture *diceTextures[], SDL_Texture *scoreTextures[], int idPlayer){
 	int tabColor[8][4] = {{242, 202,  39, 1}, { 44, 195, 107, 1},
 												{236,	 94,   0, 1}, {231,  76,  60, 1},
 												{102,   0, 153, 1},	{ 44,  62,  80, 1},
@@ -246,6 +249,52 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 			SDL_SetRenderDrawColor(renderer,tabColor[idPlayer][0],tabColor[idPlayer][1],tabColor[idPlayer][2],tabColor[idPlayer][3]);
 			SDL_RenderFillRect(renderer, &playerIndic);
 
+			//Affichage du score des dés
+			if((score_attacker != -1) && (score_defender!=-1)){
+				SDL_Texture *scoreTexture1;
+				SDL_Texture *scoreTexture2;
+				int dizaine;
+
+				//Affichage du score des dés de l'attaquant
+				if (score_attacker<10){
+					scoreTexture1 = scoreTextures[score_attacker];
+					position.x = 160;
+					position.y = WIN_HEIGHT+10;
+					SDL_RenderCopy(renderer,scoreTexture1, NULL, &position);
+
+				}else{
+					dizaine = (int) (score_attacker - (score_attacker%10))/10;
+					scoreTexture1 = scoreTextures[(score_attacker %10)];
+					scoreTexture2 = scoreTextures[dizaine];
+
+					position.x = 210;
+					position.y = WIN_HEIGHT+10;
+					SDL_RenderCopy(renderer,scoreTexture1, NULL, &position);
+					position.x = 160;
+					position.y = WIN_HEIGHT+10;
+					SDL_RenderCopy(renderer,scoreTexture2, NULL, &position);
+				}
+
+				//Affichage du score des dés du défenseur
+				if (score_defender<10){
+					scoreTexture1 = scoreTextures[score_defender];
+					position.x = 600;
+					position.y = WIN_HEIGHT+10;
+					SDL_RenderCopy(renderer,scoreTexture1, NULL, &position);
+
+				}else{
+					dizaine = (int) (score_defender - (score_defender%10))/10;
+					scoreTexture1 = scoreTextures[(score_defender %10)];
+					scoreTexture2 = scoreTextures[dizaine];
+
+					position.x = 600;
+					position.y = WIN_HEIGHT+10;
+					SDL_RenderCopy(renderer,scoreTexture1, NULL, &position);
+					position.x = 550;
+					position.y = WIN_HEIGHT+10;
+					SDL_RenderCopy(renderer,scoreTexture2, NULL, &position);
+				}
+			}
 			//Position du bouton passer son tour
 
 			SDL_QueryTexture(diceTextures[64], NULL, NULL, &position.w, &position.h);
@@ -318,5 +367,10 @@ void freeScoreTextures(SDL_Texture *scoreTextures[]){
 	for(int i=0 ; i < 10; i++)	{
 		SDL_DestroyTexture(scoreTextures[i]);
 	}
+}
+
+void setScore(int sd, int sc){
+	score_attacker = sd;
+	score_defender = sc;
 }
 

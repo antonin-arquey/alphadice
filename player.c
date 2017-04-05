@@ -26,12 +26,12 @@ Coord waitMouseEvent(){
   }
 }
 
-int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn *turn, SDL_Texture *diceTextures[], SDL_Renderer* renderer, int tab_pays[][2]){
+int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn *turn, SDL_Texture *diceTextures[],  SDL_Texture *scoreTextures[], SDL_Renderer* renderer, int tab_pays[][2]){
   Coord c;
   turn->cellFrom = -1;
   turn->cellTo = -1;
 
-  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, scoreTextures, idPlayer);
 	SDL_RenderPresent(renderer);
 
   do {
@@ -44,7 +44,7 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn
     }
   } while(turn->cellFrom == -1 || map->cells[turn->cellFrom].owner != idPlayer);
 
-  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, scoreTextures, idPlayer);
   SDL_RenderPresent(renderer);
 
   do{
@@ -58,7 +58,7 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn
       if(turn->cellTo != turn->cellFrom && map->cells[turn->cellTo].owner == idPlayer){
         turn->cellFrom = turn->cellTo;
         turn->cellTo = -1;
-        displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
+        displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, scoreTextures, idPlayer);
       	SDL_RenderPresent(renderer);
       }
     }
@@ -67,7 +67,7 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn
   } while(!verifyTurn(idPlayer, map, turn) && !(turn->cellTo == turn->cellFrom));
 
 
-  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, idPlayer);
+  displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, scoreTextures, idPlayer);
 	SDL_RenderPresent(renderer);
 
   if(map->cells[turn->cellTo].owner == idPlayer)

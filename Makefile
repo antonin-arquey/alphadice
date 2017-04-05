@@ -7,7 +7,7 @@ OBJ = window.c main.c renderer.c map.c arbitre.c libLoader.c player.c log.c
 	$(CC) -std=c99 -c -o $@ $< $(CFLAGS) -lm
 
 AlphaDice: $(OBJ)
-	gcc -g -std=c99 -o $@ $^ $(CFLAGS) -ldl -lSDL2_ttf
+	gcc -g -std=c99 -o $@ $^ $(CFLAGS) -ldl
 
 clean:
 	rm -rf AlphaDice

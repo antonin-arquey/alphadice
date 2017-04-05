@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 
+int nbrPlayer;
+
 void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 	char teamates[6][50] = {"ARQUEY Antonin",
 													"LE CORGUILLE Laouenan",
@@ -12,6 +14,7 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 	char stratName[30] = "AlphaDice";
 	memcpy(info->members, teamates, 300);
 	memcpy(info->name, stratName, 30);
+	nbrPlayer = nbPlayer;
 }
 
 void EndGame(unsigned int id, unsigned int idWinner)
@@ -68,4 +71,8 @@ int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
 		return 1;
 	}
 	return 0;
+}
+
+int getNbPlayer(){
+	return nbrPlayer;
 }

@@ -5,6 +5,7 @@
 void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur);
 int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur);
 void freeMap(SMap *map);
+int getNbPlayer();
 void moveTurnWin(SMap *map, STurn *turn);
 void moveTurnFail(SMap *map, STurn *turn);
 int getDicesToDistribute(int idPlayer, SMap *map);

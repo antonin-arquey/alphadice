@@ -3,6 +3,7 @@
 #include "../log.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int nbrPlayer;
 
@@ -41,7 +42,7 @@ int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
 		turn->cellFrom = arbre->head->bestTurn->cellFrom;
 		turn->cellTo = arbre->head->bestTurn->cellTo;
 		printf("PlayTurn cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
-
+		free(arbre->head->bestTurn);
 		freeMap(arbre->head->map);
 		return 1;
 	}

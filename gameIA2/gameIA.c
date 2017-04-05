@@ -98,8 +98,8 @@ void bestMove2(int idPlayer, Noeud *head){
 		head->maxQ[i] = inactionTurn(idPlayer, head);//mapEvaluation(i, head->map);
 	}
 	//head->maxQ[] = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
-	STurn bestTurn[1];
-	head->bestTurn = bestTurn;
+	//STurn bestTurn[1];
+	head->bestTurn =  malloc(sizeof(STurn));
 	head->bestTurn->cellFrom = 0;
 	head->bestTurn->cellTo = 0;
 	double val, valmax;

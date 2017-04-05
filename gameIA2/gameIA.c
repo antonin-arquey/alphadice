@@ -22,7 +22,7 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 
 STurn *turnGlobal;
 
-void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, int profondeur){
+void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur){
 	int compteur = 0; int compteurBis = 0;
 	SMap **mapCopys = malloc(200 * sizeof(*map));
 	ChanceNode nodes[100];
@@ -59,8 +59,8 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, int profondeur){
 		head->fils = filsNodes;
 		for(int x = 0; x < compteur; x++){
 			if(profondeur > 0){
-				turnIA(id, idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, profondeur - 1);
-				turnIA(id, idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, profondeur - 1);
+				turnIA(id, idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, turn, profondeur - 1);
+				turnIA(id, idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, turn, profondeur - 1);
 			}
 			head->fils[x] = nodes[x];
 		}
@@ -75,7 +75,7 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, int profondeur){
 			compteurBis++;
 			if(profondeur > 0){
 				int copyID = (idPlayer + 1) % getNbPlayer();
-				turnIA(id, copyID, &nodeAlea[i], nodeAlea[i].map, profondeur - 1);
+				turnIA(id, copyID, &nodeAlea[i], nodeAlea[i].map, turn, profondeur - 1);
 			}
 		}
 		endTurnNode->filsAlea = nodeAlea;
@@ -83,14 +83,18 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, int profondeur){
 
 		if(profondeur == 0)
 			bestMove(id, head);
-		else
+		else{
 			bestMove2(idPlayer, head);
+			turn->cellFrom = head->bestTurn->cellFrom;
+			turn->cellTo = head->bestTurn->cellTo;
+		}
 	}
 
 	for(int z = 0 ; z < compteurBis; z++){
 		freeMap(mapCopys[z]);
 	}
 	free(mapCopys);
+	free(head->bestTurn);
 }
 
 void bestMove2(int idPlayer, Noeud *head){
@@ -118,10 +122,8 @@ void bestMove2(int idPlayer, Noeud *head){
 		head->maxQ[i] = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
 	}
 
-	if(head->fils[compteur].turn->cellTo < 60 && head->fils[compteur].turn->cellFrom < 60){
-		head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
-		head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;
-	}
+	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
+	head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;
 
 }
 
@@ -141,8 +143,7 @@ void bestMove(int idPlayer, Noeud *head){
 	for (int i = 0; i < getNbPlayer(); i++) {
 		head->maxQ[i] = inactionTurn(i, head);// mapEvaluation(i, head->map); //
 	}
-	STurn bestTurn[1];
-	head->bestTurn = bestTurn;
+	head->bestTurn = malloc(sizeof(STurn));
 	head->bestTurn->cellFrom = 0;
 	head->bestTurn->cellTo = 0;
 	double val, valmax;

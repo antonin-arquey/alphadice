@@ -92,11 +92,7 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 			bestMove(id, head);
 			turn->cellFrom = head->bestTurn->cellFrom;
 			turn->cellTo = head->bestTurn->cellTo;
-		}else
-			if(id != idPlayer){
-				bestMove3(idPlayer, head);
-			}
-			else{
+		}else{
 				bestMove2(idPlayer, head);
 			}
 	}
@@ -108,37 +104,34 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 }
 
 void bestMove2(int idPlayer, Noeud *head){
-	head->maxQ = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
+	for (int i = 0; i < getNbPlayer(); i++) {
+		head->maxQ[i] = mapEvaluation(i, head->map); //inactionTurn(idPlayer, head);
+	}
+	//head->maxQ[] = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
 	STurn bestTurn[1];
 	head->bestTurn = bestTurn;
 	head->bestTurn->cellFrom = -1;
 	head->bestTurn->cellTo = -1;
-	double val;
+	double val, valmax;
+	int compteur;
 	for(int i = 0; i < head->nbFils; i++){
-		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ;
-		if (val > head->maxQ){
-			head->maxQ = val;
-			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;
-			head->bestTurn->cellTo = head->fils[i].turn->cellTo;
+		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
+		if (val > valmax){
+			valmax = val;
+			compteur = 0;
 		}
 	}
-}
 
-void bestMove3(int idPlayer, Noeud *head){
-	head->maxQ = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
-	STurn bestTurn[1];
-	head->bestTurn = bestTurn;
-	head->bestTurn->cellFrom = -1;
-	head->bestTurn->cellTo = -1;
-	double val;
-	for(int i = 0; i < head->nbFils; i++){
-		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ;
-		if (val < head->maxQ){
-			head->maxQ = val;
-			head->bestTurn->cellFrom = head->fils[i].turn->cellFrom;
-			head->bestTurn->cellTo = head->fils[i].turn->cellTo;
-		}
+	if(compteur == 0){
+		return;
 	}
+
+	for (int i = 0; i < getNbPlayer(); i++) {
+		head->maxQ[i] = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
+	}
+	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
+	head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;
+
 }
 
 double inactionTurn(int idPlayer, Noeud *head){
@@ -176,7 +169,7 @@ void bestMove(int idPlayer, Noeud *head){
 	}
 
 	for (int i = 0; i < getNbPlayer(); i++) {
-		head->maxQ[i] = head->fils[comtpeur].probaDroite * mapEvaluation(i, head->fils[compteur].filsDroit->map) + (1 - head->fils[compteur].probaDroite) * mapEvaluation(i, head->fils[compteur].filsGauche->map);
+		head->maxQ[i] = head->fils[compteur].probaDroite * mapEvaluation(i, head->fils[compteur].filsDroit->map) + (1 - head->fils[compteur].probaDroite) * mapEvaluation(i, head->fils[compteur].filsGauche->map);
 	}
 	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
 	head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;

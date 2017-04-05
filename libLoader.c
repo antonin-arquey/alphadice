@@ -18,6 +18,7 @@ void** loadLib(int nbLib, char *argv[], initG initTab[], playT playTab[], endG e
     	fprintf(stderr, "%s\n", dlerror());
     	exit(-1);
     }
+    printf("JE CHARGE la lib %s DANS lib[%d]\n", argv[k+3], k);
   }
 
   for(int i = 0 ; i < nbLib ; i++) {

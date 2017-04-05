@@ -6,7 +6,7 @@ typedef struct Noeud{
 	struct ChanceNode *fils;
 	struct EndTurnNode *mapAlea;
 	int nbFils;
-	double maxQ;
+	double maxQ[8];
 	STurn *bestTurn;
 }Noeud;
 

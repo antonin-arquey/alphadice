@@ -8,6 +8,7 @@
 #include "log.h"
 #include "player.h"
 #include <unistd.h>
+#include <SDL2/SDL_ttf.h>
 
 int main(int argc, char* argv[]){
 	/* Récupération des paramètres */
@@ -49,8 +50,7 @@ int main(int argc, char* argv[]){
 
 	SDL_Texture *diceTextures[65];
 	loadDiceTextures(renderer, diceTextures);
-
-
+	TTF_Init();
 	SMap *map = NULL;
 
 	STurn *turn = malloc(sizeof(STurn));
@@ -117,6 +117,7 @@ int main(int argc, char* argv[]){
 	free(info);
 
 	// Ferme le jeu
+	TTF_Quit();
 	destroyWindow(window, renderer);
 	freeLib(libs, nbLib);
 	return 0;

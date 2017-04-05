@@ -81,9 +81,11 @@ int main(int argc, char* argv[]){
 					SMap *mapCopy = deepCopy(map, nbPlayer);
 					printf("Turn to AI %d\n", i);
 					while(PlayTurn[nbPlayer - i - 1](i, mapCopy, turn)){
-						if(!verify(i, map, turn))
+						if(!verify(i, map, turn)){
 							printf("erreur move\n");
 							break;
+						}
+
 						freeMap(mapCopy);
 						mapCopy = deepCopy(map, nbPlayer);
 						displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures, i);

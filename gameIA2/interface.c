@@ -32,44 +32,21 @@ int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
 	STurn bestTurn[1];
 	arbre->head = newHead;//malloc(sizeof(Noeud));
 	arbre->head->bestTurn = bestTurn;
-	arbre->head->bestTurn->cellFrom = -1;
-	arbre->head->bestTurn->cellTo = -1;
-	turn->cellFrom = -1; turn->cellTo = -1;
+	arbre->head->bestTurn->cellFrom = 0;
+	arbre->head->bestTurn->cellTo = 0;
 	printf("------------ nouvelle requete de turn ---------------\n");
-	arbre->head->map = deepCopy(map, nbrPlayer); //mapCopy;
-  turnIA(id, id, arbre->head, map, turn, 0);//peut-etre pas besoin de passer la map en param
-	if(turn->cellFrom != -1 && turn->cellTo != -1){//return evalArbre(idPlayer, arbre->head, turn, 2);
-		//turn->cellFrom = arbre->head->bestTurn->cellFrom;
-		//turn->cellTo = arbre->head->bestTurn->cellTo;
+	arbre->head->map = deepCopy(map, nbrPlayer);
+  turnIA(id, id, arbre->head, map, 2);
+	if(arbre->head->bestTurn->cellFrom != 0 && arbre->head->bestTurn->cellTo != 0){//return evalArbre(idPlayer, arbre->head, turn, 2);
+		turn->cellFrom = arbre->head->bestTurn->cellFrom;
+		turn->cellTo = arbre->head->bestTurn->cellTo;
 		printf("PlayTurn cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
-		return 1;
-	}
-	printf("--- je veux pas joueur ---\n");
-	freeMap(arbre->head->map);
-	return 0;
-}
 
-int PlayTurnDeux(int idPlayer, const SMap *map, STurn *turn){
-	int diff = 0;
-	int compteur = 0;
-	for(int i = 0; i< map->nbCells; i++){
-		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
-			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
-				if(map->cells[i].neighbors[j]->owner != idPlayer && (map->cells[i].nbDices - map->cells[i].neighbors[j]->nbDices) > diff){
-					diff = map->cells[i].nbDices - map->cells[i].neighbors[j]->nbDices;
-					turn->cellFrom = map->cells[i].id;
-					turn->cellTo = map->cells[i].neighbors[j]->id;
-					compteur += 1;
-				} else if(map->cells[i].neighbors[j]->owner != idPlayer){
-					compteur += 1;
-				}
-			}
-		}
-	}
-	printf("il y a %d possibilitées\n", compteur);
-	if(diff != 0){
+		freeMap(arbre->head->map);
 		return 1;
 	}
+	printf("--- je ne veux pas joueur ---\n");
+	freeMap(arbre->head->map);
 	return 0;
 }
 

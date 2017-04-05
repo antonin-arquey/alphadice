@@ -9,7 +9,7 @@
 						/*1v1,		1v2,	  1v3, ...
 						  2v1, ...
 						  ...
-						  																		8v8		*/
+		  																		8v8		*/
 double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {0.416652, 0.092621, 0.011578, 0.000773, 0.000021, 0, 		  	0, 				0				},
 												 {0.837916, 0.443657, 0.151995, 0.035888, 0.006106, 0.000768, 0.000071, 0.000005},
@@ -20,9 +20,7 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {1,				0.999801, 0.994674, 0.961525, 0.862370, 0.685111, 0.469154, 0.274377},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
-int evalArbre(int idPlayer, Noeud *head, STurn *turn, int profondeur){
-	//return bestMove(idPlayer, head, turn);
-}
+STurn *turnGlobal;
 
 void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, int profondeur){
 	int compteur = 0; int compteurBis = 0;
@@ -113,16 +111,17 @@ void bestMove2(int idPlayer, Noeud *head){
 			compteur = i;
 		}
 	}
-
 	if(compteur == 0){
 		return;
 	}
-
 	for (int i = 0; i < getNbPlayer(); i++) {
 		head->maxQ[i] = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
 	}
-	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
-	head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;
+
+	if(head->fils[compteur].turn->cellTo < 60 && head->fils[compteur].turn->cellFrom < 60){
+		head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
+		head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;
+	}
 
 }
 

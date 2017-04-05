@@ -9,6 +9,7 @@ Fonction vérifiant un tour rendu
 Renvoie 1 si le tour est bon, -1 si il est pas valide
 */
 int verify(unsigned int i, SMap *map,STurn *turn){
+
 	if(verifyTurn(i, map, turn)){
 		moveTurn(map, turn);
 		return 1;
@@ -18,6 +19,11 @@ int verify(unsigned int i, SMap *map,STurn *turn){
 
 //Vérifie si les paramètres sont valident (Renvoi 0 si faux)
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn){
+
+	if(turn->cellTo >= map->nbCells || turn->cellFrom >= map->nbCells){
+		fprintf(stderr, "Erreur de tour\n");
+		exit(-1);
+	}
 	//Verifiez que la cellule de départ est bien au joueur
 	if(map->cells[turn->cellFrom].owner != idPlayer)
 		return 0;

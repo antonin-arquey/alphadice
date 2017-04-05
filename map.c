@@ -296,8 +296,27 @@ void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]){
 	SDL_FreeSurface(image);
 }
 
+void loadScoreTextures(SDL_Renderer* renderer, SDL_Texture *scoreTextures[]){
+	char filename[20] = "valeur/test/0.bmp";
+	SDL_Surface* image;
+	for(int i = 0 ; i < 10 ; i++){
+		char score = i + '0' ;
+		filename[12]=score;
+		image = SDL_LoadBMP(filename);
+		scoreTextures[i] = SDL_CreateTextureFromSurface(renderer,image);
+	}
+	SDL_FreeSurface(image);
+}
+
 void freeDiceTextures(SDL_Texture *diceTextures[]){
 	for(int i=0 ; i < 65; i++)	{
 		SDL_DestroyTexture(diceTextures[i]);
 	}
 }
+
+void freeScoreTextures(SDL_Texture *scoreTextures[]){
+	for(int i=0 ; i < 10; i++)	{
+		SDL_DestroyTexture(scoreTextures[i]);
+	}
+}
+

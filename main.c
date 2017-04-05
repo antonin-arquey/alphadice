@@ -50,6 +50,8 @@ int main(int argc, char* argv[]){
 	SDL_Texture *diceTextures[65];
 	loadDiceTextures(renderer, diceTextures);
 
+	SDL_Texture *scoreTextures[10];
+	loadScoreTextures(renderer, scoreTextures);
 
 	SMap *map = NULL;
 
@@ -112,6 +114,7 @@ int main(int argc, char* argv[]){
 
 
 	freeDiceTextures(diceTextures);
+	freeScoreTextures(scoreTextures);
 	free(turn);
 	freeMap(map);
 	for(int k=0 ; k < nbLib ; k++){

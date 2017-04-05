@@ -20,6 +20,8 @@ void addVoisin(SMap *map,int tl, int t2);
 
 //Fonction pour load les textures des chiffres et les free
 void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]);
+void loadScoreTextures(SDL_Renderer* renderer, SDL_Texture *scoreTextures[]);
 void freeDiceTextures(SDL_Texture *diceTextures[]);
+void freeScoreTextures(SDL_Texture *scoreTextures[]);
 
 #endif

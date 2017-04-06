@@ -80,7 +80,7 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 		}
 		endTurnNode->filsAlea = nodeAlea;
 		head->mapAlea = endTurnNode;
-
+		head->bestTurn = malloc(sizeof(STurn));
 		if(profondeur == 0)
 			bestMove(id, head);
 		else{
@@ -88,13 +88,14 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 			turn->cellFrom = head->bestTurn->cellFrom;
 			turn->cellTo = head->bestTurn->cellTo;
 		}
+		free(head->bestTurn);
 	}
 
 	for(int z = 0 ; z < compteurBis; z++){
 		freeMap(mapCopys[z]);
 	}
 	free(mapCopys);
-	free(head->bestTurn);
+
 }
 
 void bestMove2(int idPlayer, Noeud *head){
@@ -102,8 +103,6 @@ void bestMove2(int idPlayer, Noeud *head){
 		head->maxQ[i] = inactionTurn(idPlayer, head);//mapEvaluation(i, head->map);
 	}
 	//head->maxQ[] = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
-	//STurn bestTurn[1];
-	head->bestTurn =  malloc(sizeof(STurn));
 	head->bestTurn->cellFrom = 0;
 	head->bestTurn->cellTo = 0;
 	double val, valmax;
@@ -118,7 +117,13 @@ void bestMove2(int idPlayer, Noeud *head){
 	if(compteur == 0){
 		return;
 	}
+	/* tu parcourt le tableau des fils pour i jusqu'a nbPlayer mais il n'y a pas toujours assez de fils pour ca */
 	for (int i = 0; i < getNbPlayer(); i++) {
+		if(i >= head->nbFils){
+			fprintf(stderr, "Je n'ai que %d fils mais il y a %d joueurs\n", head->nbFils, getNbPlayer());
+			fprintf(stderr, "SEGFAULT\n");
+			exit(-1);
+		}
 		head->maxQ[i] = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
 	}
 
@@ -143,7 +148,6 @@ void bestMove(int idPlayer, Noeud *head){
 	for (int i = 0; i < getNbPlayer(); i++) {
 		head->maxQ[i] = inactionTurn(i, head);// mapEvaluation(i, head->map); //
 	}
-	head->bestTurn = malloc(sizeof(STurn));
 	head->bestTurn->cellFrom = 0;
 	head->bestTurn->cellTo = 0;
 	double val, valmax;

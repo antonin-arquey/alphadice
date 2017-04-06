@@ -21,8 +21,7 @@ int verify(unsigned int i, SMap *map,STurn *turn){
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn){
 
 	if(turn->cellTo >= map->nbCells || turn->cellFrom >= map->nbCells){
-		fprintf(stderr, "Erreur de tour\n");
-		exit(-1);
+		return 0;
 	}
 	//Verifiez que la cellule de départ est bien au joueur
 	if(map->cells[turn->cellFrom].owner != idPlayer)

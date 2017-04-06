@@ -6,5 +6,5 @@
 // Fonction créant le renderer avec un fond noir et des coloris rouge.
 SDL_Renderer* createRenderer(SDL_Window* window);
 
-// Fonction créant un hexagone partant de x,y.
+//Fonction créant un point sur le renderer.
 void createPoint(SDL_Renderer* renderer, int x, int y);

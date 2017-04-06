@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+//Fonction attendant le clic de l'utilisateur pour enregistrer a position du clic
 Coord waitMouseEvent(){
   while(1){
     SDL_Event event;
@@ -26,6 +27,7 @@ Coord waitMouseEvent(){
   }
 }
 
+//
 int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn *turn, SDL_Texture *diceTextures[],  SDL_Texture *scoreTextures[], SDL_Renderer* renderer, int tab_pays[][2]){
   Coord c;
   turn->cellFrom = -1;

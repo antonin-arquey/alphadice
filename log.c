@@ -5,6 +5,7 @@
 
 int logCreated = 0;
 
+//Fonction permettant d'écrire un message dans le fichier de log
 void Log(char *msg)
 {
   FILE *file;

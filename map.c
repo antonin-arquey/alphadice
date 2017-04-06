@@ -13,10 +13,12 @@ int size_map_l=WIN_HEIGHT;
 int score_attacker = -1;
 int score_defender = -1;
 
+//Fonction générant un nombre aléatoire entre a et b.
 int aleatoire(int a, int b){
 	return rand() % (b-a+1) + a;
 }
 
+//Fonction retournant 1 si le player b a plus de territoire qu'un autre joueur. 0 sinon.
 int plusdeTerritoires(int b, int nbTerritoiresOwne[], int nbPlayer){
 	for(int i = 0; i < nbPlayer; i++){
 		if(nbTerritoiresOwne[b] > nbTerritoiresOwne[i])
@@ -163,9 +165,8 @@ SMap* createMap(int nbPlayer, SDL_Renderer* renderer, int mat_map[size_map_h][si
 	return map;
 }
 
+//Fonction qui regarde si les cellules c1 et c2 sont déjà voisines. Renvoi 1 si oui, 0 sinon.
 int isVoisin(SMap *map, int t1, int t2){
-	//fonction qui regarde si les cellules c1 et c2 sont déjà voisines
-	//renvoie 1 si oui, 0 sinon.
 	SCell *territoires = map->cells;
 	for(int i=0;i<(territoires[t1].nbNeighbors);i++){
 		if(territoires[t1].neighbors[i]->id == t2)
@@ -176,6 +177,7 @@ int isVoisin(SMap *map, int t1, int t2){
 	return 0;
 }
 
+//
 void addVoisin(SMap *map, int t1, int t2){
 	map->cells[t1].neighbors[map->cells[t1].nbNeighbors] = &(map->cells[t2]);
 	map->cells[t1].nbNeighbors++;
@@ -309,6 +311,7 @@ void displayMap(SDL_Renderer* renderer, SMap *map,int mat_map[size_map_h][size_m
 	}
 }
 
+//Fonction retournant la distance entre le point(x1,y1) et (x2,y2).
 double getDistance(int x1, int y1, int x2, int y2){
 	double d1 = (x2-x1);
 	double d2 = (y2-y1);
@@ -321,6 +324,7 @@ double getDistance(int x1, int y1, int x2, int y2){
 	return (d1+d2);
 }
 
+//Fonction pour load les textures des dés et les free
 void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]){
 	char filename[20] = "valeur/de0_0.bmp";
 	SDL_Surface* image;
@@ -345,6 +349,7 @@ void loadDiceTextures(SDL_Renderer* renderer, SDL_Texture *diceTextures[]){
 	SDL_FreeSurface(image);
 }
 
+//Fonction pour load les textures des scores et les free
 void loadScoreTextures(SDL_Renderer* renderer, SDL_Texture *scoreTextures[]){
 	char filename[20] = "valeur/test/0.bmp";
 	SDL_Surface* image;
@@ -357,20 +362,22 @@ void loadScoreTextures(SDL_Renderer* renderer, SDL_Texture *scoreTextures[]){
 	SDL_FreeSurface(image);
 }
 
+//Libère la mémoire du tableau de texture des dés
 void freeDiceTextures(SDL_Texture *diceTextures[]){
 	for(int i=0 ; i < 65; i++)	{
 		SDL_DestroyTexture(diceTextures[i]);
 	}
 }
 
+//Libère la mémoire du tableau de texture des scores
 void freeScoreTextures(SDL_Texture *scoreTextures[]){
 	for(int i=0 ; i < 10; i++)	{
 		SDL_DestroyTexture(scoreTextures[i]);
 	}
 }
 
+//
 void setScore(int sd, int sc){
 	score_attacker = sd;
 	score_defender = sc;
 }
-

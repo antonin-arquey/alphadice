@@ -20,6 +20,7 @@ SDL_Renderer* createRenderer(SDL_Window* window)
 	return renderer;
 }
 
+//Fonction créant un point sur le renderer.
 void createPoint(SDL_Renderer* renderer, int x, int y){
 	SDL_RenderDrawPoint(renderer,x,y);
 }

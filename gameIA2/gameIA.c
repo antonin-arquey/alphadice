@@ -119,12 +119,12 @@ void bestMove2(int idPlayer, Noeud *head){
 	}
 	/* tu parcourt le tableau des fils pour i jusqu'a nbPlayer mais il n'y a pas toujours assez de fils pour ca */
 	for (int i = 0; i < getNbPlayer(); i++) {
-		if(i >= head->nbFils){
+		/*if(i >= head->nbFils){
 			fprintf(stderr, "Je n'ai que %d fils mais il y a %d joueurs\n", head->nbFils, getNbPlayer());
 			fprintf(stderr, "SEGFAULT\n");
 			exit(-1);
-		}
-		head->maxQ[i] = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
+		}*/
+		head->maxQ[i] = head->fils[compteur].probaDroite * head->fils[compteur].filsDroit->maxQ[i] + (1 - head->fils[compteur].probaDroite) * head->fils[compteur].filsGauche->maxQ[i];
 	}
 
 	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;

@@ -38,7 +38,7 @@ int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
 	turn->cellFrom = 0; turn->cellTo = 0;
 	printf("------------ nouvelle requete de turn ---------------\n");
 	arbre->head->map = deepCopy(map, nbrPlayer);
-  turnIA(id, id, arbre->head, map, turn, 1);
+  turnIA(id, id, arbre->head, map, turn, 2);
 	if(turn->cellTo != 0 && turn->cellFrom != 0){
 		printf("PlayTurn cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
 		freeMap(arbre->head->map);

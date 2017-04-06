@@ -171,9 +171,9 @@ void bestMove(int idPlayer, Noeud *head){
 }
 
 double mapEvaluation(int idPlayer, SMap *map){
-	double alpha = 0.1; double beta = 2;
+	double alpha = 0.1; double beta = 0.1;
 	//printf("nbDices : %d / nbToGive : %d \n", getAmountOfDices(idPlayer, map), getDicesToDistribute(idPlayer, map));
-	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);
+	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map) + 5 * getnbTerritoires(idPlayer, map);
 	//printf("%f\n", value);
 	return value;
 }
@@ -300,6 +300,15 @@ int getAmountOfDices(int idPlayer, SMap *map){
 	return nbDices;
 }
 
+int getnbTerritoires(int idPlayer, SMap *map){
+	int nbTerritoires = 0;
+	for(int i = 0; i < map->nbCells; i++){
+		if(map->cells[i].owner == idPlayer){
+			nbTerritoires += 1;
+		}
+	}
+	return nbTerritoires;
+}
 /*
 Trouve le plus grand nombre de territoire connexe appartenant au joueur passé en paramètre
 */

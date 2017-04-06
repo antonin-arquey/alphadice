@@ -10,6 +10,8 @@ void moveTurnWin(SMap *map, STurn *turn);
 void moveTurnFail(SMap *map, STurn *turn);
 int getDicesToDistribute(int idPlayer, SMap *map);
 int getAmountOfDices(int idPlayer, SMap *map);
+int getnbTerritoires(int idPlayer, SMap *map);
+
 double mapEvaluation(int idPlayer, SMap *map);
 void bestMove(int idPlayer, Noeud *head);
 void bestMove2(int idPlayer, Noeud *head);

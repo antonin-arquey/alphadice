@@ -20,6 +20,7 @@ int verify(unsigned int i, SMap *map,STurn *turn){
 //Vérifie si les paramètres sont valident (Renvoi 0 si faux)
 int verifyTurn(unsigned int idPlayer, SMap *map, STurn *turn){
 
+	//Eviter les segfault si l'ia renvoie n'importe quoi
 	if(turn->cellTo >= map->nbCells || turn->cellFrom >= map->nbCells){
 		return 0;
 	}

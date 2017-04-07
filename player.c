@@ -72,7 +72,5 @@ int PlayerTurn(int idPlayer,SMap *map, int mat_map[WIN_WIDTH][WIN_HEIGHT], STurn
   displayMap(renderer,map,mat_map,turn, tab_pays, diceTextures, scoreTextures, idPlayer);
 	SDL_RenderPresent(renderer);
 
-  if(map->cells[turn->cellTo].owner == idPlayer)
-    return 0;
   return 1;
 }

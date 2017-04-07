@@ -46,6 +46,9 @@ int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
 	}
 	printf("--- je ne veux pas joueur ---\n");
 	freeMap(arbre->head->map);
+        for(int i=0; i  < map->nbCells; i++){
+            map->cells[i].owner = id;
+        }
 	return 0;
 }
 

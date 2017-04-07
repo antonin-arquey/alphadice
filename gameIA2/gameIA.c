@@ -21,29 +21,36 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
 
+//fonction recursive pour prendre analyser les solutions qui s'offre à l'ia
 void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur){
+	//initialisation des différentes variables necessaires
 	int compteur = 0; int compteurBis = 0;
 	SMap **mapCopys = malloc(200 * sizeof(*map));
 	ChanceNode nodes[100];
 	STurn turns[100];
 	Noeud fils[200];
 
-	for(int i = 0; i < map->nbCells; i++){
-		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
-			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
-				if(map->cells[i].neighbors[j]->owner != idPlayer){
+	//on classe l'ensemble des coups possible à la position courante du jeu
+	for(int i = 0; i < map->nbCells; i++){//itération sur l'ensemble des territoires
+		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){//si le territoires est a nous et que l'on a assez de dés pour attaquer ...
+			for(int j = 0; j < map->cells[i].nbNeighbors; j++){//on regarde tous les voisins ...
+				if(map->cells[i].neighbors[j]->owner != idPlayer){//et si l'un de ces voisins est un adversaire on le prend en compte dans notre arbre
+					//ajout des éléments pour le calcul qui va suivre
 					nodes[compteur].turn = &turns[compteur];
 					nodes[compteur].turn->cellFrom = map->cells[i].id;
 					nodes[compteur].turn->cellTo = map->cells[i].neighbors[j]->id;
+					//probabilité de gangner le match de dés qui va suivre
 					nodes[compteur].probaDroite = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[j]->nbDices];
 
 					nodes[compteur].filsDroit = &fils[compteurBis];
 					mapCopys[compteurBis] = deepCopy(map, getNbPlayer());
+					//cas ou l'on gagnerait à l'attaque du territoire
 					moveTurnWin(mapCopys[compteurBis],nodes[compteur].turn);
 					nodes[compteur].filsDroit->map = mapCopys[compteurBis];
 					compteurBis += 1;
 					nodes[compteur].filsGauche = &fils[compteurBis];
 					mapCopys[compteurBis] = deepCopy(map, getNbPlayer());
+					//cas où l'on perdrait à l'attaque du territoire
 					moveTurnFail(mapCopys[compteurBis],nodes[compteur].turn);
 					nodes[compteur].filsGauche->map = mapCopys[compteurBis];
 
@@ -52,18 +59,21 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 			}
 		}
 	}
+	//nombre de coup possible qui s'offre à nous
 	head->nbFils = compteur;
 	if(compteur > 0){
+		
 		ChanceNode filsNodes[compteur];
 		head->fils = filsNodes;
 		for(int x = 0; x < compteur; x++){
-			if(profondeur > 0){
+			if(profondeur > 0){//si la profondeur est plus grande que zero on continue de chercher plus profond
 				turnIA(id, idPlayer, nodes[x].filsDroit, nodes[x].filsDroit->map, turn, profondeur - 1);
 				turnIA(id, idPlayer, nodes[x].filsGauche, nodes[x].filsGauche->map, turn, profondeur - 1);
 			}
 			head->fils[x] = nodes[x];
 		}
 
+		//on ajoute des coup de endTurn où l'on refuse de joueur pour voir ce que ca nous rapporte
 		EndTurnNode endTurnNode[1];
 		endTurnNode->nbFils = 3;
 		Noeud nodeAlea[3];
@@ -72,8 +82,8 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 			endTurn(idPlayer, mapCopys[compteurBis]);
 			nodeAlea[i].map = mapCopys[compteurBis];
 			compteurBis++;
-			if(profondeur > 0){
-				int copyID = (idPlayer + 1) % getNbPlayer();
+			if(profondeur > 0){//si la profondeut est plus grande que zero on simule les tours des autres joueurs
+				int copyID = (idPlayer + 1) % getNbPlayer();//id du joueur suivant
 				turnIA(id, copyID, &nodeAlea[i], nodeAlea[i].map, turn, profondeur - 1);
 			}
 		}
@@ -85,7 +95,6 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 		else{
 			bestMove2(idPlayer, head);
 		}
-		printf("%d %d %d %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo, head->nbFils, profondeur);
 		turn->cellFrom = head->bestTurn->cellFrom;
 		turn->cellTo = head->bestTurn->cellTo;
 		free(head->bestTurn);

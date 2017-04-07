@@ -23,7 +23,7 @@ double getDistance(int x1, int y1, int x2, int y2);
 //Fonction qui regarde si les cellules c1 et c2 sont déjà voisines. Renvoi 1 si oui, 0 sinon.
 int isVoisin(SMap *map, int t1, int t2);
 
-//
+//qui permet d'ajouter les voisins des cells
 void addVoisin(SMap *map,int tl, int t2);
 
 //Fonction pour load les textures des dés et les free
@@ -38,7 +38,7 @@ void freeDiceTextures(SDL_Texture *diceTextures[]);
 //Libère la mémoire du tableau de texture des scores
 void freeScoreTextures(SDL_Texture *scoreTextures[]);
 
-//
+//fonction qui permet de compléter la valeur des varialbles globales
 void setScore(int sd, int sc);
 
 

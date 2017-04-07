@@ -2,14 +2,19 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+/* l'ensemble du code qui suit à parmis d'estimer la probabilité de gagner à x dés vs n dés
+   par exemple quelle est la proba en ayant 5 et que l'adversaire en à 3 de le battre
+   Ce code n'a pas besoin de run encore mais est toujours là pour illustrer notre demarche 
+ */
 int aleatoire(int a, int b){
 	return rand() % (b-a+1) + a;
 }
 
+//fonction qui simule un lancé de dé
 int lancerDe(int nbDe){
 	int s = 0;
-	for(int i=0 ; i < nbDe ; i++)
-	{
+	for(int i=0 ; i < nbDe ; i++){
 		s += aleatoire(1, 6);
 	}
 	return s;
@@ -23,8 +28,8 @@ int main(int argc, char const *argv[]){
 
 	clock_t start = clock();
 
-	for(int x = 1; x < 9; x++){
-		for(int y = 1; y < 9; y++){
+	for(int x = 1; x < 9; x++){//itération entre 1 - 8
+		for(int y = 1; y < 9; y++){//itération entre 1 - 8
 			compteur = 0;
 			for (int i = 0; i < count; ++i){
 				if(lancerDe(x) > lancerDe(y)){

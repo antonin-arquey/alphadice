@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "map.h"
-//#include "interface.h"
 
+
+/*Ce code aurait servit à parser l'ensemble des fichiers de log pour pouvoir après extraire des paramêtres de mouvement
+  et ensuite apprendre par apprentissagesupervisé une fonction d'évaluation des maps plus optimisé que celle que l'on a 
+  au niveau des feuilles de l'arbre de recherche */
+
+//fonction qui retourne la valeur entre la a eme virgule et la b eme
 int valeur(char *str, int a, int b){
 	int compteur = 0;
 	char strVal[100];
@@ -19,10 +24,12 @@ int valeur(char *str, int a, int b){
 	}
 }
 
+//fonction qui simule une attaque raté
 void moveTurnFail(SMap *map, STurn *turn){
 	map->cells[turn->cellFrom].nbDices = 1;
 }
 
+//fonction qui simule le succès d'une attaque
 void moveTurnWin(SMap *map, STurn *turn){
 	SCell *cellAttacker = &map->cells[turn->cellFrom];
 	SCell *cellDefender = &map->cells[turn->cellTo];

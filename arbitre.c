@@ -184,7 +184,7 @@ int allCellsFull(int idPlayer, SMap *map){
 // programme. Modifie la valeur du pointeur nbLib passé en parametre pour matcher le nombre de lib
 int verifArguments(int argc, char* argv[], int *nbLib){
 
-	if(argc<3){
+	if((argc<3)&&(argc>11)){
 		rappelSyntaxe("Mauvais nombre d'arguments\n");
 		return 1;
 	}
@@ -273,8 +273,9 @@ void freeMap(SMap *map){
 // Affichage des régles en cas de problème de paramètre au lancement
 void rappelSyntaxe(char* affichage){
 	printf("%s",affichage);
+	printf("Rappel syntaxe : ");
 	printf("Parametre 1 : Nombre de parties souhaitees (max 9)\n");
 	printf("Parametre 2 : Nombre de joueurs souhaites (max 8)\n");
-	printf("Parametre 3 et + : Fichiers d'IA a utiliser (max 2)\n");
+	printf("Parametre 3 et + : Fichiers d'IA a utiliser (max 8)\n");
 	printf("Exemple : ./AlphaDice 2 6 ./gameIA/libIA.so ./gameIA/libIA.so\n");
 }

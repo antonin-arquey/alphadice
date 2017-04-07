@@ -1,6 +1,5 @@
 #include "interface.h"
 #include "gameIA.h"
-#include "../log.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,11 +19,6 @@ void InitGame(unsigned int id, unsigned int nbPlayer, SPlayerInfo *info){
 
 void EndGame(unsigned int id, unsigned int idWinner)
 {
-	char str[10];
-	Log("###\n");
-	sprintf(str, "%d\n", idWinner);
-	Log(str);
-	Log("###\n");
 }
 
 int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
@@ -36,15 +30,12 @@ int PlayTurn(unsigned int id, const SMap *map, STurn *turn){
 	arbre->head->bestTurn->cellFrom = 0;
 	arbre->head->bestTurn->cellTo = 0;
 	turn->cellFrom = 0; turn->cellTo = 0;
-	printf("------------ nouvelle requete de turn ---------------\n");
 	arbre->head->map = deepCopy(map, nbrPlayer);
   turnIA(id, id, arbre->head, map, turn, 1);
 	if(turn->cellTo != 0 && turn->cellFrom != 0){
-		printf("PlayTurn cellFrom %d -> cellTo %d\n", turn->cellFrom, turn->cellTo);
 		freeMap(arbre->head->map);
 		return 1;
 	}
-	printf("--- je ne veux pas joueur ---\n");
 	freeMap(arbre->head->map);
         for(int i=0; i  < map->nbCells; i++){
             map->cells[i].owner = id;

@@ -70,7 +70,6 @@ int main(int argc, char* argv[]){
 			for(int i = 0; i < nbPlayer; i++){
 				//Tour des joueurs humains
 				if(i+nbLib < nbPlayer){
-					printf("Turn to Player %d\n", i);
 					displayMap(renderer,map,matrice_map,turn, tab_pays, diceTextures, scoreTextures, i);
 					SDL_RenderPresent(renderer);
 					while(PlayerTurn(i, map, matrice_map, turn, diceTextures, scoreTextures, renderer, tab_pays)){
@@ -81,10 +80,8 @@ int main(int argc, char* argv[]){
 				}
 				else{ //Tour des IA
 					SMap *mapCopy = deepCopy(map, nbPlayer);
-					printf("Turn to AI %d\n", i);
 					while(PlayTurn[nbPlayer - i - 1](i, mapCopy, turn)){
 						if(!verify(i, map, turn)){
-							printf("erreur move\n");
 							break;
 						}
 

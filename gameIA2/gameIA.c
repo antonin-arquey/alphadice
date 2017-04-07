@@ -152,6 +152,7 @@ void bestMove(int idPlayer, Noeud *head){
 	head->bestTurn->cellTo = 0;
 	double val, valmax;
 	int compteur;
+        valmax = head->maxQ[idPlayer];
 	for(int i = 0; i < head->nbFils; i++){
 		val = head->fils[i].probaDroite * mapEvaluation(idPlayer, head->fils[i].filsDroit->map) + (1 - head->fils[i].probaDroite) * mapEvaluation(idPlayer, head->fils[i].filsGauche->map);
 		if (val > valmax){

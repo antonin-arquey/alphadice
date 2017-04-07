@@ -5,20 +5,19 @@ typedef struct Noeud{
 	SMap *map;
 	struct ChanceNode *fils;
 	struct EndTurnNode *mapAlea;
-	int nbFils;
-	double maxQ[8];
-	STurn *bestTurn;
+	int nbFils;//nombre d'attaque possible à partir de la position
+	double maxQ[8];//valeur d'évaluation pour l'ensemble des joueur de la partie
+	STurn *bestTurn;//meilleur coup à jouer
 }Noeud;
 
-typedef struct ChanceNode {
-	double probaDroite;
-	//int probaGauche; 1 - probaDroite
+typedef struct ChanceNode {//noeud pour simuler l'incertitude de la reussite d'une attauqe
+	double probaDroite;//proba que l'action se realise
 	STurn *turn;
-	Noeud *filsDroit;
-	Noeud *filsGauche;
+	Noeud *filsDroit;//cas on l'on reussi l'attaque
+	Noeud *filsGauche;//cas on ne reussi pas l'attaque
 }ChanceNode;
 
-typedef struct EndTurnNode {
+typedef struct EndTurnNode {//noeud pour simuler la fin d'un tour
 	Noeud *filsAlea;
 	int nbFils;
 } EndTurnNode;
@@ -27,22 +26,3 @@ typedef struct{
 	Noeud *head;
 }SArbre;
 
-SArbre *createArbre(SMap *map);
-void deleteArbre(SArbre *arbre);
-void addElement(Noeud *noeud, SMap **map, STurn **turn, double proba[], int nbElement);
-
-Noeud* getFils(Noeud *noeud, int numero);
-void creation(SArbre *arbre, int niveau);
-
-
-
-/*Noeud* AddElementBegin(SArbre *arbre,Data elem);
-Noeud* AddElementEnd(SArbre *arbre,Data elem);
-Noeud* AddElementAfter(SArbre *arbre,Noeud *noeud,Data elem);
-void DeleteCell(SArbre *arbre,Noeud *noeud);
-
-Noeud* GetFirstElement(SArbre *arbre);
-Noeud* GetLastElement(SArbre *arbre);
-Noeud* GetPrevElement(Noeud *noeud);
-Noeud* GetNextElement(Noeud *noeud);*/
-//Data getData(Noeud *noeud);

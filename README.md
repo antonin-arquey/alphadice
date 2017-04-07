@@ -6,7 +6,7 @@
 
 ```bash
 make
-./Alphadice 1 3 ./libIA.so
+./Alphadice 1 3 ./gameIA/libIA.so .gameIA/libIA2.so
 ```
 ##### Arguments
 
@@ -27,11 +27,13 @@ Quand un joueur attaque depuis un des ses territoires un territoire adjacent, un
 Ligne 1 : nombre de pays n
 n lignes suivantes : idCellule, idOwner, coordX, coordY, nbDices
 
-Symbole /-/ : Debut d'un tour
+Symbole /Fin Map/ : Fin de la répartition des territoires début de la partie
+
+Symbole /Fin répartition/ : Fin de la répartition des dés, Debut d'un tour
 
   idAttaquant, idCelluleFrom, idCelluleTo, ScoreAttack, ScoreDefense
 
-Symbole /// : fin du tour d'un joueur et début de la remise des dé
+Symbole /répartition dés/ : fin du tour d'un joueur et début de la remise des dé
 
   idCell (on rajoute un dé a cette cellule)
 

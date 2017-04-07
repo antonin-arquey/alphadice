@@ -35,19 +35,17 @@ int turnIA(int idPlayer, const SMap *map, STurn *turn){
 		if(map->cells[i].owner == idPlayer && map->cells[i].nbDices > 1){
 			for(int j = 0; j < map->cells[i].nbNeighbors; j++){
 				if(map->cells[i].neighbors[j]->owner != idPlayer){
-					nodes[compteur].turn = &turns[compteur];//malloc(sizeof(STurn));//peut etre modifier et plus utiliser les STurn
+					nodes[compteur].turn = &turns[compteur];
 					nodes[compteur].turn->cellFrom = map->cells[i].id;
 					nodes[compteur].turn->cellTo = map->cells[i].neighbors[j]->id;
 					nodes[compteur].probaDroite = tabProba[map->cells[i].nbDices][map->cells[i].neighbors[j]->nbDices];
 
-					nodes[compteur].filsDroit = &fils[compteurBis];//malloc(sizeof(Noeud));
+					nodes[compteur].filsDroit = &fils[compteurBis];
 					compteurBis += 1;
-					nodes[compteur].filsGauche = &fils[compteurBis];//malloc(sizeof(Noeud));
-					//freeMap(mapCopy);
+					nodes[compteur].filsGauche = &fils[compteurBis];
 					mapCopy = deepCopy(map);
 					moveTurnWin(mapCopy,nodes[compteur].turn);
 					nodes[compteur].filsDroit->map = mapCopy;
-					//freeMap(mapCopy);
 					mapCopy = deepCopy(map);
 					moveTurnFail(mapCopy,nodes[compteur].turn);
 					nodes[compteur].filsGauche->map = mapCopy;
@@ -93,7 +91,6 @@ int bestMove(int idPlayer, SArbre *arbre, STurn *turn){
 	double val;
 	for(int i = 0; i < arbre->head->nbFils; i++){
 		val = arbre->head->fils[i].probaDroite * mapEvaluation(idPlayer, arbre->head->fils[i].filsDroit->map) + (1 - arbre->head->fils[i].probaDroite) * mapEvaluation(idPlayer, arbre->head->fils[i].filsGauche->map);
-		//printf("%f : %f / %f\n", valHead, valMax, val);
 		if (val > valMax){
 			valMax = val;
 			turn->cellFrom = arbre->head->fils[i].turn->cellFrom;

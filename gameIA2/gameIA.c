@@ -20,7 +20,6 @@ double tabProba[9][9] = {{0,				0,				0,				0,				0,				0,				0,				0				},
 												 {1,				0.999801, 0.994674, 0.961525, 0.862370, 0.685111, 0.469154, 0.274377},
 												 {1,				0.999984, 0.999072, 0.989525, 0.947766, 0.843873, 0.673508, 0.471108}};
 
-STurn *turnGlobal;
 
 void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int profondeur){
 	int compteur = 0; int compteurBis = 0;
@@ -85,9 +84,10 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 			bestMove(id, head);
 		else{
 			bestMove2(idPlayer, head);
-			turn->cellFrom = head->bestTurn->cellFrom;
-			turn->cellTo = head->bestTurn->cellTo;
 		}
+		printf("%d %d %d %d\n", head->bestTurn->cellFrom, head->bestTurn->cellTo, head->nbFils, profondeur);
+		turn->cellFrom = head->bestTurn->cellFrom;
+		turn->cellTo = head->bestTurn->cellTo;
 		free(head->bestTurn);
 	}
 
@@ -100,13 +100,11 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 
 void bestMove2(int idPlayer, Noeud *head){
 	for (int i = 0; i < getNbPlayer(); i++) {
-		head->maxQ[i] = inactionTurn(idPlayer, head);//mapEvaluation(i, head->map);
+		head->maxQ[i] = inactionTurn2(idPlayer, head);
 	}
-	//head->maxQ[] = mapEvaluation(idPlayer, head->map);//inactionTurn(idPlayer, head);//voir s'il faut pas regarder les fils alea
-	head->bestTurn->cellFrom = 0;
-	head->bestTurn->cellTo = 0;
-	double val, valmax;
-	int compteur;
+	double val;
+	double valmax = head->maxQ[idPlayer];
+	int compteur = 0;
 	for(int i = 0; i < head->nbFils; i++){
 		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
 		if (val > valmax){
@@ -115,15 +113,11 @@ void bestMove2(int idPlayer, Noeud *head){
 		}
 	}
 	if(compteur == 0){
+		head->bestTurn->cellFrom = 0;
+		head->bestTurn->cellTo = 0;
 		return;
 	}
-	/* tu parcourt le tableau des fils pour i jusqu'a nbPlayer mais il n'y a pas toujours assez de fils pour ca */
-	for (int i = 0; i < getNbPlayer(); i++) {
-		/*if(i >= head->nbFils){
-			fprintf(stderr, "Je n'ai que %d fils mais il y a %d joueurs\n", head->nbFils, getNbPlayer());
-			fprintf(stderr, "SEGFAULT\n");
-			exit(-1);
-		}*/
+	for (int i = 0; i < getNbPlayer(); i++){
 		head->maxQ[i] = head->fils[compteur].probaDroite * head->fils[compteur].filsDroit->maxQ[i] + (1 - head->fils[compteur].probaDroite) * head->fils[compteur].filsGauche->maxQ[i];
 	}
 
@@ -143,15 +137,22 @@ double inactionTurn(int idPlayer, Noeud *head){
 	return val / head->mapAlea->nbFils;
 }
 
+double inactionTurn2(int idPlayer, Noeud *head){
+	double val = 0;
+	for (int i = 0; i < head->mapAlea->nbFils; i++) {
+		val += head->mapAlea->filsAlea[i].maxQ[idPlayer];
+	}
+	return val / head->mapAlea->nbFils;
+}
+
 
 void bestMove(int idPlayer, Noeud *head){
 	for (int i = 0; i < getNbPlayer(); i++) {
-		head->maxQ[i] = inactionTurn(i, head);// mapEvaluation(i, head->map); //
+		head->maxQ[i] =  inactionTurn(i, head);
 	}
-	head->bestTurn->cellFrom = 0;
-	head->bestTurn->cellTo = 0;
-	double val, valmax;
-	int compteur;
+	double val;
+	double valmax = head->maxQ[idPlayer];
+	int compteur = 0;
 	for(int i = 0; i < head->nbFils; i++){
 		val = head->fils[i].probaDroite * mapEvaluation(idPlayer, head->fils[i].filsDroit->map) + (1 - head->fils[i].probaDroite) * mapEvaluation(idPlayer, head->fils[i].filsGauche->map);
 		if (val > valmax){
@@ -160,10 +161,12 @@ void bestMove(int idPlayer, Noeud *head){
 		}
 	}
 	if(compteur == 0){
+		head->bestTurn->cellFrom = 0;
+		head->bestTurn->cellTo = 0;
 		return;
 	}
 
-	for (int i = 0; i < getNbPlayer(); i++) {
+	for(int i = 0; i < getNbPlayer(); i++){
 		head->maxQ[i] = head->fils[compteur].probaDroite * mapEvaluation(i, head->fils[compteur].filsDroit->map) + (1 - head->fils[compteur].probaDroite) * mapEvaluation(i, head->fils[compteur].filsGauche->map);
 	}
 	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
@@ -171,10 +174,9 @@ void bestMove(int idPlayer, Noeud *head){
 }
 
 double mapEvaluation(int idPlayer, SMap *map){
-	double alpha = 0.1; double beta = 0.1;
-	//printf("nbDices : %d / nbToGive : %d \n", getAmountOfDices(idPlayer, map), getDicesToDistribute(idPlayer, map));
-	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map) + 5 * getnbTerritoires(idPlayer, map);
-	//printf("%f\n", value);
+	double alpha = 0; double beta = 1;
+	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);
+	//double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map) + getnbTerritoires(idPlayer, map);
 	return value;
 }
 

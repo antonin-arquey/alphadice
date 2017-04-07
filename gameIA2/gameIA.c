@@ -90,79 +90,71 @@ void turnIA(int id, int idPlayer, Noeud *head, const SMap *map, STurn *turn, int
 		endTurnNode->filsAlea = nodeAlea;
 		head->mapAlea = endTurnNode;
 		head->bestTurn = malloc(sizeof(STurn));
+		//on evalue la position dans laquelle on est 
 		if(profondeur == 0)
-			bestMove(id, head);
+			bestMove(id, head); // si la profondeur est zero on evalue la map
 		else{
-			bestMove2(idPlayer, head);
+			bestMove2(idPlayer, head); // si la profondeur est plus grande que zero on evalue a partir des evaluations plus profondes
 		}
-		turn->cellFrom = head->bestTurn->cellFrom;
+		turn->cellFrom = head->bestTurn->cellFrom;//stockage des turns finaux
 		turn->cellTo = head->bestTurn->cellTo;
 		free(head->bestTurn);
 	}
 
-	for(int z = 0 ; z < compteurBis; z++){
+	for(int z = 0 ; z < compteurBis; z++){//on free les elements
 		freeMap(mapCopys[z]);
 	}
 	free(mapCopys);
 
 }
 
+//fonction d'évaluation pour les positions qui ne sont pas dans les feuilles de l'arbre
 void bestMove2(int idPlayer, Noeud *head){
 	for (int i = 0; i < getNbPlayer(); i++) {
-		head->maxQ[i] = inactionTurn2(idPlayer, head);
+		head->maxQ[i] = inactionTurn2(idPlayer, head);//on regarde la valeur si l'on fait rien pour ts les joueurs
 	}
 	double val;
 	double valmax = head->maxQ[idPlayer];
 	int compteur = 0;
-	for(int i = 0; i < head->nbFils; i++){
+	for(int i = 0; i < head->nbFils; i++){//on regarde la valeur de chaque attaque par rapport au probabilités de succès
 		val = head->fils[i].probaDroite * head->fils[i].filsDroit->maxQ[idPlayer] + (1 - head->fils[i].probaDroite) * head->fils[i].filsGauche->maxQ[idPlayer];
-		if (val > valmax){
+		if (val > valmax){//on garde la meilleur attaque
 			valmax = val;
 			compteur = i;
 		}
 	}
-	if(compteur == 0){
+	if(compteur == 0){// pas de meilleur attaque que rien faire
 		head->bestTurn->cellFrom = 0;
 		head->bestTurn->cellTo = 0;
 		return;
 	}
-	for (int i = 0; i < getNbPlayer(); i++){
+	for (int i = 0; i < getNbPlayer(); i++){//on met a jour les valeurs pour la meilleure attaque si elle est différente de l'inaction
 		head->maxQ[i] = head->fils[compteur].probaDroite * head->fils[compteur].filsDroit->maxQ[i] + (1 - head->fils[compteur].probaDroite) * head->fils[compteur].filsGauche->maxQ[i];
 	}
-
+	//on stocke la meilleure attaque à jouer
 	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
 	head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;
 
 }
 
-double inactionTurn(int idPlayer, Noeud *head){
-	double val = 0;
-	idPlayer = (idPlayer + 1) % 8;
-	for (int i = 0; i < head->mapAlea->nbFils; i++) {
-		val += mapEvaluation(idPlayer, head->mapAlea->filsAlea[i].map);
-	}
-	if(val == 0)
-		return 0;
-	return val / head->mapAlea->nbFils;
-}
-
+//évaluation pour évaluer l'inaction au niveau d'un noeud différent d'une feuille
 double inactionTurn2(int idPlayer, Noeud *head){
 	double val = 0;
 	for (int i = 0; i < head->mapAlea->nbFils; i++) {
-		val += head->mapAlea->filsAlea[i].maxQ[idPlayer];
+		val += head->mapAlea->filsAlea[i].maxQ[idPlayer];//on regarde la valeur de l'attaque du prochain joueur
 	}
-	return val / head->mapAlea->nbFils;
+	return val / head->mapAlea->nbFils;//on fait une moyenne par rapport a différentes cartes après répartition des dés gangnés pendant le tour
 }
 
-
+//fonction d'évaluation au niveau des feuilles de l'arbre
 void bestMove(int idPlayer, Noeud *head){
-	for (int i = 0; i < getNbPlayer(); i++) {
+	for (int i = 0; i < getNbPlayer(); i++){
 		head->maxQ[i] =  inactionTurn(i, head);
 	}
 	double val;
 	double valmax = head->maxQ[idPlayer];
 	int compteur = 0;
-	for(int i = 0; i < head->nbFils; i++){
+	for(int i = 0; i < head->nbFils; i++){// la différence se situe ici ou l'on évalue en fonction de la map et pas des prochains coups (car ces coups n'ont pas été simulés)
 		val = head->fils[i].probaDroite * mapEvaluation(idPlayer, head->fils[i].filsDroit->map) + (1 - head->fils[i].probaDroite) * mapEvaluation(idPlayer, head->fils[i].filsGauche->map);
 		if (val > valmax){
 			valmax = val;
@@ -175,24 +167,38 @@ void bestMove(int idPlayer, Noeud *head){
 		return;
 	}
 
-	for(int i = 0; i < getNbPlayer(); i++){
+	for(int i = 0; i < getNbPlayer(); i++){//recupération des valueurs de la meilleure attaque
 		head->maxQ[i] = head->fils[compteur].probaDroite * mapEvaluation(i, head->fils[compteur].filsDroit->map) + (1 - head->fils[compteur].probaDroite) * mapEvaluation(i, head->fils[compteur].filsGauche->map);
 	}
 	head->bestTurn->cellFrom = head->fils[compteur].turn->cellFrom;
 	head->bestTurn->cellTo = head->fils[compteur].turn->cellTo;
 }
 
+//evaluation pour les feulles de l'arbre quand l'on choisit de ne pas jouer
+double inactionTurn(int idPlayer, Noeud *head){
+	double val = 0;
+	idPlayer = (idPlayer + 1) % 8;
+	for (int i = 0; i < head->mapAlea->nbFils; i++) {
+		val += mapEvaluation(idPlayer, head->mapAlea->filsAlea[i].map);//on évalue directement la map
+	}
+	if(val == 0)
+		return 0;
+	return val / head->mapAlea->nbFils;//on fait toujours une moyenne par rapport à différente issue de distribution de dés
+}
+
+//fonction qui évalue la map (elle évalue la proportion à gagner d'un joueur)
 double mapEvaluation(int idPlayer, SMap *map){
-	double alpha = 0; double beta = 1;
-	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map);
-	//double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map) + getnbTerritoires(idPlayer, map);
+	double alpha = 0.5; double beta = 0.5; double gamma = 2;
+	double value = alpha * getAmountOfDices(idPlayer, map) + beta * getDicesToDistribute(idPlayer, map) + getnbTerritoires(idPlayer, map);
 	return value;
 }
 
+//simule que l'attaque a échoué
 void moveTurnFail(SMap *map, STurn *turn){
 	map->cells[turn->cellFrom].nbDices = 1;
 }
 
+//simule que l'attaque a reussi
 void moveTurnWin(SMap *map, STurn *turn){
 	SCell *cellAttacker = &map->cells[turn->cellFrom];
 	SCell *cellDefender = &map->cells[turn->cellTo];
@@ -201,6 +207,7 @@ void moveTurnWin(SMap *map, STurn *turn){
 	cellAttacker->nbDices = 1;
 }
 
+//permet de faire une copy profonde de la map
 SMap* deepCopy(const SMap *map, int nbPlayer){
 	SMap* mapCopy = malloc(sizeof(SMap));
 
@@ -240,9 +247,8 @@ SMap* deepCopy(const SMap *map, int nbPlayer){
 	return mapCopy;
 }
 
-/*
-Fonction qui répartit les dés a la fin d'un tour d'un joueur
-*/
+
+//Fonction qui répartit les dés a la fin d'un tour d'un joueur
 void endTurn(int idPlayer, SMap *map){
 	int playerCell[60];
 	int nbPlayerCell = 0;
@@ -276,6 +282,7 @@ void endTurn(int idPlayer, SMap *map){
 		}
 	}
 }
+
 //Vérifie si toutes les cellules du joueurs sont pleines
 int allCellsFull(int idPlayer, SMap *map){
 	for(int i=0 ; i  < map->nbCells ; i++){
@@ -289,6 +296,7 @@ int aleatoire(int a, int b){
 	return rand() % (b-a+1) + a;
 }
 
+//fonction qui permet de free l'ensemble des éléments de la map
 void freeMap(SMap *map){
 	if(map != NULL){
 		for(int i=0 ; i  < map->nbCells ; i++){
@@ -301,6 +309,7 @@ void freeMap(SMap *map){
 	}
 }
 
+//permet de retourner le nombre de dés possédés par le joueur
 int getAmountOfDices(int idPlayer, SMap *map){
 	int nbDices = 0;
 	for(int i = 0; i < map->nbCells; i++){
@@ -311,6 +320,7 @@ int getAmountOfDices(int idPlayer, SMap *map){
 	return nbDices;
 }
 
+//permet de retourne le nombre de territoires possédés par le joueur
 int getnbTerritoires(int idPlayer, SMap *map){
 	int nbTerritoires = 0;
 	for(int i = 0; i < map->nbCells; i++){
@@ -320,9 +330,8 @@ int getnbTerritoires(int idPlayer, SMap *map){
 	}
 	return nbTerritoires;
 }
-/*
-Trouve le plus grand nombre de territoire connexe appartenant au joueur passé en paramètre
-*/
+
+//Trouve le plus grand nombre de territoire connexe appartenant au joueur passé en paramètre
 int getDicesToDistribute(int idPlayer, SMap *map){
 
 	int marque[60];
@@ -366,6 +375,7 @@ int explorer(SMap *map, int idPlayer, int marque[], int* lenMarque, int idCell){
 	return calcul;
 }
 
+//fonction qui regarde si un élément est dans le tableau
 int inTab(int id, int tab[], int lenTab){
 	for(int i = 0 ; i  < lenTab ; i++){
 		if(tab[i] == id)

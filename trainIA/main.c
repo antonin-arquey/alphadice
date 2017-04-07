@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+/*Ce code etait destiné à pouvoir analysé un base de données de parties pour ensuite 
+  approximer la meilleure fonction d'évaluation des maps au niveau des feuilles del'arbre de recherche
+*/
+
 typedef struct{
   double** tab;
   int nbL;  //nombre de lignes
@@ -11,6 +16,7 @@ double random(){
     return 2 * (rand() / (RAND_MAX + 1.)) - 1;
 }
 
+//on initialise les paramêtres à apprendre de manière aléatoire
 Matrice init_rand(int wx, int wy){
   Matrice mat;
   mat.tab = malloc(sizeof(double)*wy);
@@ -31,6 +37,7 @@ Matrice init_rand(int wx, int wy){
   return mat;
 }
 
+//initialisation de la matrice avec des zeros
 Matrice init0(int wx, int wy){
   Matrice mat;
   double** w = malloc(sizeof(double)*wy);
@@ -50,8 +57,8 @@ Matrice init0(int wx, int wy){
   return mat;
 }
 
+//fonction pour faire le produit matriciel
 Matrice dot(Matrice m1, Matrice m2){
-  //ax=m1.nbC bx=m2.nbC
   Matrice res;
   res = init0(m1.nbL,m2.nbC);
   if (m1.nbC != m2.nbL){
@@ -74,6 +81,7 @@ Matrice dot(Matrice m1, Matrice m2){
   return res;
 }
 
+//fonction pour faire une addition de matrice
 Matrice addition(Matrice m1, Matrice m2){
   Matrice m3 = init0(m1.nbC,m1.nbL);
 
@@ -91,6 +99,7 @@ Matrice addition(Matrice m1, Matrice m2){
   return m3;
 }
 
+//fonction pour soustraire 2 matrices
 Matrice soustraction(Matrice m1, Matrice m2){
   Matrice m3 = init0(m1.nbC,m1.nbL);
 
@@ -108,6 +117,7 @@ Matrice soustraction(Matrice m1, Matrice m2){
   return m3;
 }
 
+//fonction pour transposer une matrice
 Matrice transpose(Matrice m){
     Matrice r = init0(m.nbL,m.nbC);
 
@@ -120,6 +130,7 @@ Matrice transpose(Matrice m){
     return r;
 }
 
+//appliquer une fonction à chaque élément de la matrice
 void applyMat(Matrice m, double (*f)(double)){
   for (int i = 0; i < m.nbL; i++){
       for (int j=0;j<m.nbC;j++){
@@ -128,6 +139,7 @@ void applyMat(Matrice m, double (*f)(double)){
   }
 }
 
+//fonction pour free les éléments de la matrice
 void freeMat(Matrice m){
   for (int i=0;i<m.nbL;i++){
     free(m.tab[i]);
@@ -148,6 +160,7 @@ double pow2(double m){
   return m*m;
 }
 
+//fonction pour afficher la matrice
 void affichage(Matrice m){
   printf("--affichage du tableau --\n");
   for(int i = 0; i < m.nbL; i++){

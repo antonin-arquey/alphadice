@@ -3,6 +3,7 @@
 
 #include "log.h"
 
+//fonction pour lire un fichier à partir d'un nom donné
 void ReadFile(char *buffer, char *filename)
 {
    int string_size, read_size;

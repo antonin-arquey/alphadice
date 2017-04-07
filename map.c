@@ -177,7 +177,7 @@ int isVoisin(SMap *map, int t1, int t2){
 	return 0;
 }
 
-//
+//fonction qui ajoute les voisins des cells
 void addVoisin(SMap *map, int t1, int t2){
 	map->cells[t1].neighbors[map->cells[t1].nbNeighbors] = &(map->cells[t2]);
 	map->cells[t1].nbNeighbors++;
@@ -376,7 +376,7 @@ void freeScoreTextures(SDL_Texture *scoreTextures[]){
 	}
 }
 
-//
+//permet de conpléter les valeurs des variables globales
 void setScore(int sd, int sc){
 	score_attacker = sd;
 	score_defender = sc;

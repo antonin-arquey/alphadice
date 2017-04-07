@@ -62,22 +62,6 @@ SMap* createMap(int nbPlayer, int nb_pays, int tab_owner[], int tab_de[], int ma
 		}
 	}
 
-	//modification des centres de la table Pays pour afficher les images au centre
-	/*long compteurX, compteurY, compteur;
-	for(int k = 0; k < nb_pays; k++){
-		compteurX = 0; compteur = 0;
-		compteurY = 0;
-		for(int j = 0; j < size_map_h; j++){
-			for(int i = 0; i < size_map_l; i ++){
-				if(mat_map[j][i] == k){
-					compteurX += j; compteurY += i; compteur += 1;
-				}
-			}
-		}
-		compteurX /= compteur; compteurY /= compteur;
-		tabPays[k][0] = compteurX; tabPays[k][1] = compteurY;
-	}*/
-
 	//Génération des voisins
 	for (int j=1;j<size_map_h;j++){
 		for (int k=1;k<size_map_l;k++){
@@ -107,6 +91,7 @@ int isVoisin(SMap *map, int t1, int t2){
 	return 0;
 }
 
+//fonction pour ajouter des voisins à des cellules de la map
 void addVoisin(SMap *map, int t1, int t2){
 	map->cells[t1].neighbors[map->cells[t1].nbNeighbors] = &(map->cells[t2]);
 	map->cells[t1].nbNeighbors++;
@@ -115,6 +100,7 @@ void addVoisin(SMap *map, int t1, int t2){
 }
 
 
+//fonction pour avoir la distance entre 2 points
 double getDistance(int x1, int y1, int x2, int y2){
 	double d1 = (x2-x1);
 	double d2 = (y2-y1);

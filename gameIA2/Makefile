@@ -1,6 +1,6 @@
 
 libIA2.so: interface.o gameIA.o arbre.o
-	gcc -g -shared -o libIA2.so interface.o gameIA.o arbre.o && rm -rf interface.o arbre.o gameIA.o
+	gcc -shared -o libIA2.so interface.o gameIA.o arbre.o && rm -rf interface.o arbre.o gameIA.o
 
 interface.o: interface.h interface.c gameIA.h
 	gcc -fPIC -c interface.c -std=c99
